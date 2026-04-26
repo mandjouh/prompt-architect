@@ -1,13 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const MODULES = [
   {
-    id: 'business',
-    icon: '◈',
-    label: 'Business',
-    color: '#D4FF57',
+    id: 'business', icon: '◈', label: 'Business', color: '#D4FF57',
     desc: 'Plans, pitch, stratégie, finance',
     cases: [
       { id: 'business_plan', label: 'Business Plan', desc: 'Plan complet pour ton projet' },
@@ -18,10 +15,7 @@ const MODULES = [
     ],
   },
   {
-    id: 'contenu',
-    icon: '◉',
-    label: 'Contenu Viral',
-    color: '#FF7A3D',
+    id: 'contenu', icon: '◉', label: 'Contenu Viral', color: '#FF7A3D',
     desc: 'Hooks, scripts, posts, copywriting',
     cases: [
       { id: 'hook_video', label: 'Hook TikTok/Reels', desc: '10 hooks viraux optimisés' },
@@ -32,10 +26,7 @@ const MODULES = [
     ],
   },
   {
-    id: 'pro',
-    icon: '◎',
-    label: 'Usage Pro',
-    color: '#38C4FF',
+    id: 'pro', icon: '◎', label: 'Usage Pro', color: '#38C4FF',
     desc: 'Emails, CV, rapports, lettres',
     cases: [
       { id: 'email_pro', label: 'Email Professionnel', desc: 'Prospection, relance, négociation' },
@@ -46,10 +37,7 @@ const MODULES = [
     ],
   },
   {
-    id: 'dev',
-    icon: '⟁',
-    label: 'Développement',
-    color: '#A47CFF',
+    id: 'dev', icon: '⟁', label: 'Développement', color: '#A47CFF',
     desc: 'Code, SaaS, debug, agents IA',
     cases: [
       { id: 'app_saas', label: 'Brief Technique SaaS', desc: 'Architecture et stack recommandée' },
@@ -61,19 +49,62 @@ const MODULES = [
   },
 ]
 
+export type SavedPrompt = {
+  id: string
+  moduleId: string
+  moduleLabel: string
+  moduleColor: string
+  moduleIcon: string
+  caseLabel: string
+  userInput: string
+  prompt: string
+  savedAt: string
+}
+
+const STORAGE_KEY = 'pa_saved_prompts'
+
+export function getSavedPrompts(): SavedPrompt[] {
+  if (typeof window === 'undefined') return []
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    return raw ? JSON.parse(raw) : []
+  } catch { return [] }
+}
+
+function savePromptToStorage(data: Omit<SavedPrompt, 'id' | 'savedAt'>): SavedPrompt {
+  const existing = getSavedPrompts()
+  const newEntry: SavedPrompt = {
+    ...data,
+    id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    savedAt: new Date().toISOString(),
+  }
+  const updated = [newEntry, ...existing].slice(0, 50)
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
+  return newEntry
+}
+
 export default function GeneratePage() {
   const [selectedModule, setSelectedModule] = useState<string | null>(null)
   const [selectedCase, setSelectedCase] = useState<{ id: string; label: string; desc: string } | null>(null)
   const [input, setInput] = useState('')
   const [generating, setGenerating] = useState(false)
   const [result, setResult] = useState('')
+  const [copied, setCopied] = useState(false)
+  const [justSaved, setJustSaved] = useState(false)
+  const [savedCount, setSavedCount] = useState(0)
 
   const currentModule = MODULES.find(m => m.id === selectedModule)
+
+  useEffect(() => {
+    setSavedCount(getSavedPrompts().length)
+  }, [])
 
   const handleGenerate = async () => {
     if (!input.trim()) return
     setGenerating(true)
     setResult('')
+    setCopied(false)
+    setJustSaved(false)
 
     try {
       const response = await fetch('/api/generate', {
@@ -86,7 +117,25 @@ export default function GeneratePage() {
         }),
       })
       const data = await response.json()
-      setResult(data.prompt || 'Erreur lors de la génération.')
+      const promptResult = data.prompt || 'Erreur lors de la génération.'
+      setResult(promptResult)
+
+      // Auto-save dès qu'un prompt est généré
+      if (currentModule && selectedCase && data.prompt) {
+        savePromptToStorage({
+          moduleId: selectedModule!,
+          moduleLabel: currentModule.label,
+          moduleColor: currentModule.color,
+          moduleIcon: currentModule.icon,
+          caseLabel: selectedCase.label,
+          userInput: input,
+          prompt: promptResult,
+        })
+        const newCount = getSavedPrompts().length
+        setSavedCount(newCount)
+        setJustSaved(true)
+        setTimeout(() => setJustSaved(false), 3000)
+      }
     } catch {
       setResult('Erreur de connexion. Réessaie.')
     }
@@ -94,11 +143,19 @@ export default function GeneratePage() {
     setGenerating(false)
   }
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(result)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
   const reset = () => {
     setSelectedModule(null)
     setSelectedCase(null)
     setInput('')
     setResult('')
+    setCopied(false)
+    setJustSaved(false)
   }
 
   return (
@@ -111,7 +168,6 @@ export default function GeneratePage() {
           <span style={{ fontWeight: 900, fontSize: 15, color: 'white' }}>Prompt Architect</span>
         </a>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          {/* Progress */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11, color: '#4A5568' }}>
             <span style={{ color: selectedModule ? '#D4FF57' : '#4A5568' }}>① Module</span>
             <span>→</span>
@@ -119,15 +175,29 @@ export default function GeneratePage() {
             <span>→</span>
             <span style={{ color: result ? '#D4FF57' : '#4A5568' }}>③ Prompt</span>
           </div>
-          <a href="/library" style={{ fontSize: 11, color: '#4A5568', textDecoration: 'none', border: '1px solid #151C25', padding: '6px 12px' }}>
-            ◈ Bibliothèque
+          <a
+            href="/my-prompts"
+            style={{
+              fontSize: 11, textDecoration: 'none', border: '1px solid',
+              padding: '6px 12px', display: 'flex', alignItems: 'center', gap: 6,
+              borderColor: savedCount > 0 ? '#D4FF5740' : '#151C25',
+              color: savedCount > 0 ? '#D4FF57' : '#4A5568',
+              background: savedCount > 0 ? '#D4FF5708' : 'transparent',
+            }}
+          >
+            ◈ Mes prompts
+            {savedCount > 0 && (
+              <span style={{ background: '#D4FF57', color: '#07090C', fontSize: 9, fontWeight: 900, padding: '1px 6px', lineHeight: 1.5 }}>
+                {savedCount}
+              </span>
+            )}
           </a>
         </div>
       </div>
 
       <div style={{ maxWidth: 800, margin: '0 auto', padding: '40px 24px' }}>
 
-        {/* ÉTAPE 1 — Choix du module */}
+        {/* ÉTAPE 1 */}
         {!selectedModule && (
           <div>
             <div style={{ marginBottom: 32 }}>
@@ -161,7 +231,7 @@ export default function GeneratePage() {
           </div>
         )}
 
-        {/* ÉTAPE 2 — Choix du cas d'usage */}
+        {/* ÉTAPE 2 */}
         {selectedModule && !selectedCase && (
           <div>
             <button onClick={() => setSelectedModule(null)} style={{ background: 'transparent', border: 'none', color: '#4A5568', cursor: 'pointer', fontSize: 13, marginBottom: 24, padding: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -195,7 +265,7 @@ export default function GeneratePage() {
           </div>
         )}
 
-        {/* ÉTAPE 3 — Saisie */}
+        {/* ÉTAPE 3 */}
         {selectedModule && selectedCase && !result && (
           <div>
             <button onClick={() => setSelectedCase(null)} style={{ background: 'transparent', border: 'none', color: '#4A5568', cursor: 'pointer', fontSize: 13, marginBottom: 24, padding: 0 }}>
@@ -209,7 +279,6 @@ export default function GeneratePage() {
               <h1 style={{ fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Décris ton besoin</h1>
               <p style={{ color: '#4A5568', fontSize: 14 }}>Plus tu es précis, meilleur sera ton prompt.</p>
             </div>
-
             <textarea
               rows={6}
               placeholder={`Décris précisément ce que tu veux pour ton ${selectedCase.label}...\n\nExemple : "Une app SaaS de gestion de projets pour agences créatives avec time tracking intégré, ciblant les freelances français, stade MVP..."`}
@@ -217,11 +286,8 @@ export default function GeneratePage() {
               onChange={e => setInput(e.target.value)}
               style={{ width: '100%', background: '#0B0E13', border: '1px solid #151C25', color: 'white', padding: '16px', fontFamily: 'monospace', fontSize: 13, outline: 'none', resize: 'vertical', lineHeight: 1.7, boxSizing: 'border-box', marginBottom: 16 }}
             />
-
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: 12, color: '#2D3748' }}>
-                {input.length} caractères
-              </span>
+              <span style={{ fontSize: 12, color: '#2D3748' }}>{input.length} caractères</span>
               <button
                 onClick={handleGenerate}
                 disabled={!input.trim() || generating}
@@ -252,7 +318,18 @@ export default function GeneratePage() {
               </button>
             </div>
 
-            {/* Infos du prompt */}
+            {/* Badge sauvegarde auto */}
+            {justSaved && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', background: '#D4FF5710', border: '1px solid #D4FF5730', marginBottom: 16, fontSize: 12 }}>
+                <span style={{ color: '#D4FF57' }}>✓</span>
+                <span style={{ color: '#D4FF57' }}>Prompt sauvegardé automatiquement</span>
+                <a href="/my-prompts" style={{ color: '#D4FF57', marginLeft: 'auto', fontSize: 11, textDecoration: 'underline' }}>
+                  Voir mes prompts ({savedCount}) →
+                </a>
+              </div>
+            )}
+
+            {/* Tags */}
             <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
               <span style={{ fontSize: 10, padding: '4px 10px', border: '1px solid', color: currentModule?.color, borderColor: currentModule?.color + '30', background: currentModule?.color + '10' }}>
                 {currentModule?.label}
@@ -265,7 +342,7 @@ export default function GeneratePage() {
               </span>
             </div>
 
-            {/* Prompt affiché */}
+            {/* Prompt */}
             <div style={{ background: '#0B0E13', border: '1px solid #151C25', padding: 24, fontSize: 12, lineHeight: 1.8, color: '#8A9AAA', whiteSpace: 'pre-wrap', maxHeight: '50vh', overflowY: 'auto', marginBottom: 16 }}>
               {result}
             </div>
@@ -273,10 +350,17 @@ export default function GeneratePage() {
             {/* Actions */}
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <button
-                onClick={() => { navigator.clipboard.writeText(result) }}
-                style={{ background: '#D4FF57', color: '#07090C', border: 'none', padding: '12px 24px', fontSize: 12, fontWeight: 900, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.06em' }}
+                onClick={handleCopy}
+                style={{
+                  background: copied ? '#1A3A1A' : '#D4FF57',
+                  color: copied ? '#5EDD5E' : '#07090C',
+                  border: copied ? '1px solid #2A5A2A' : 'none',
+                  padding: '12px 24px', fontSize: 12, fontWeight: 900,
+                  fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.06em',
+                  transition: 'all 0.2s',
+                }}
               >
-                ⎘ COPIER LE PROMPT
+                {copied ? '✓ COPIÉ !' : '⎘ COPIER LE PROMPT'}
               </button>
               <a
                 href="https://claude.ai"
@@ -286,12 +370,12 @@ export default function GeneratePage() {
               >
                 Tester dans Claude
               </a>
-              <button
-                onClick={reset}
-                style={{ border: '1px solid #151C25', color: '#4A5568', background: 'transparent', padding: '12px 24px', fontSize: 12, fontFamily: 'monospace', cursor: 'pointer' }}
+              <a
+                href="/my-prompts"
+                style={{ border: '1px solid #151C25', color: '#4A5568', padding: '12px 24px', fontSize: 12, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}
               >
-                ↺ Nouveau prompt
-              </button>
+                ◈ Mes prompts ({savedCount})
+              </a>
             </div>
 
             {/* Tip */}
