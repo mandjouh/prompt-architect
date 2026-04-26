@@ -1,71 +1,81 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import type { SavedPrompt } from '../generate/page'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '../context/AuthContext'
+import { supabase } from '../lib/supabase'
 
-const MODULE_ICONS: Record<string, string> = {
-  'Business': '◈',
-  'Contenu Viral': '◉',
-  'Usage Pro': '◎',
-  'Développement': '⟁',
-}
-
-const STORAGE_KEY = 'pa_saved_prompts'
-
-function getSavedPrompts(): SavedPrompt[] {
-  if (typeof window === 'undefined') return []
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : []
-  } catch { return [] }
-}
-
-function deletePrompt(id: string): SavedPrompt[] {
-  const updated = getSavedPrompts().filter(p => p.id !== id)
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
-  return updated
-}
-
-function clearAllPrompts() {
-  localStorage.removeItem(STORAGE_KEY)
+type SavedPrompt = {
+  id: string
+  module_id: string
+  module_label: string
+  module_color: string
+  module_icon: string
+  case_label: string
+  user_input: string
+  prompt: string
+  created_at: string
 }
 
 function formatDate(iso: string) {
-  const d = new Date(iso)
-  return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+  return new Date(iso).toLocaleDateString('fr-FR', {
+    day: '2-digit', month: 'short', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  })
 }
 
 export default function MyPromptsPage() {
+  const { user, loading, signOut } = useAuth()
+  const router = useRouter()
   const [prompts, setPrompts] = useState<SavedPrompt[]>([])
   const [selected, setSelected] = useState<SavedPrompt | null>(null)
   const [copied, setCopied] = useState(false)
   const [filterModule, setFilterModule] = useState('Tous')
+  const [fetching, setFetching] = useState(true)
   const [confirmClear, setConfirmClear] = useState(false)
-  const [mounted, setMounted] = useState(false)
+  const [deleting, setDeleting] = useState<string | null>(null)
 
+  // Redirect si pas connecté
   useEffect(() => {
-    setMounted(true)
-    const saved = getSavedPrompts()
-    setPrompts(saved)
-    if (saved.length > 0) setSelected(saved[0])
-  }, [])
-
-  const modules = ['Tous', ...Array.from(new Set(prompts.map(p => p.moduleLabel)))]
-
-  const filtered = filterModule === 'Tous'
-    ? prompts
-    : prompts.filter(p => p.moduleLabel === filterModule)
-
-  const handleDelete = (id: string) => {
-    const updated = deletePrompt(id)
-    setPrompts(updated)
-    if (selected?.id === id) {
-      setSelected(updated.length > 0 ? updated[0] : null)
+    if (!loading && !user) {
+      router.push('/login')
     }
+  }, [user, loading, router])
+
+  // Charger les prompts depuis Supabase
+  useEffect(() => {
+    if (!user) return
+    const fetchPrompts = async () => {
+      setFetching(true)
+      const { data, error } = await supabase
+        .from('saved_prompts')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+
+      if (!error && data) {
+        setPrompts(data)
+        if (data.length > 0) setSelected(data[0])
+      }
+      setFetching(false)
+    }
+    fetchPrompts()
+  }, [user])
+
+  const modules = ['Tous', ...Array.from(new Set(prompts.map(p => p.module_label)))]
+  const filtered = filterModule === 'Tous' ? prompts : prompts.filter(p => p.module_label === filterModule)
+
+  const handleDelete = async (id: string) => {
+    setDeleting(id)
+    await supabase.from('saved_prompts').delete().eq('id', id)
+    const updated = prompts.filter(p => p.id !== id)
+    setPrompts(updated)
+    if (selected?.id === id) setSelected(updated.length > 0 ? updated[0] : null)
+    setDeleting(null)
   }
 
-  const handleClearAll = () => {
-    clearAllPrompts()
+  const handleClearAll = async () => {
+    await supabase.from('saved_prompts').delete().eq('user_id', user!.id)
     setPrompts([])
     setSelected(null)
     setConfirmClear(false)
@@ -77,7 +87,20 @@ export default function MyPromptsPage() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  if (!mounted) return null
+  const handleSignOut = async () => {
+    await signOut()
+    router.push('/')
+  }
+
+  if (loading || fetching) {
+    return (
+      <div style={{ minHeight: '100vh', background: '#07090C', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'monospace' }}>
+        <div style={{ color: '#2D3748', fontSize: 13 }}>⟳ Chargement...</div>
+      </div>
+    )
+  }
+
+  if (!user) return null
 
   return (
     <div style={{ minHeight: '100vh', background: '#07090C', color: 'white', fontFamily: 'monospace', display: 'flex', flexDirection: 'column' }}>
@@ -89,34 +112,35 @@ export default function MyPromptsPage() {
           <span style={{ fontWeight: 900, fontSize: 15, color: 'white' }}>Prompt Architect</span>
         </a>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ fontSize: 10, color: '#2D3748' }}>{user.email}</span>
           {prompts.length > 0 && (
-            <button
-              onClick={() => setConfirmClear(true)}
-              style={{ background: 'transparent', border: '1px solid #2A1A1A', color: '#4A2A2A', padding: '6px 12px', fontSize: 10, cursor: 'pointer', fontFamily: 'monospace', letterSpacing: '0.06em' }}
-            >
+            <button onClick={() => setConfirmClear(true)} style={{ background: 'transparent', border: '1px solid #2A1A1A', color: '#4A2A2A', padding: '6px 12px', fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>
               ✕ TOUT EFFACER
             </button>
           )}
           <span style={{ fontSize: 10, color: '#D4FF57', border: '1px solid #D4FF5730', padding: '4px 10px', letterSpacing: '0.1em' }}>
-            {prompts.length} PROMPT{prompts.length > 1 ? 'S' : ''} SAUVEGARDÉ{prompts.length > 1 ? 'S' : ''}
+            {prompts.length} PROMPT{prompts.length > 1 ? 'S' : ''}
           </span>
           <a href="/generate" style={{ background: '#D4FF57', color: '#07090C', padding: '8px 18px', fontSize: 11, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.06em' }}>
             ✦ NOUVEAU PROMPT
           </a>
+          <button onClick={handleSignOut} style={{ background: 'transparent', border: '1px solid #151C25', color: '#4A5568', padding: '8px 12px', fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>
+            Déconnexion
+          </button>
         </div>
       </div>
 
-      {/* Modal confirmation suppression */}
+      {/* Modal confirmation */}
       {confirmClear && (
         <div style={{ position: 'fixed', inset: 0, background: '#07090CCC', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ background: '#0B0E13', border: '1px solid #2A1A1A', padding: 32, maxWidth: 360, width: '90%' }}>
             <div style={{ fontSize: 11, color: '#FF5A5A', letterSpacing: '0.1em', marginBottom: 12 }}>ATTENTION</div>
-            <p style={{ fontSize: 14, color: 'white', marginBottom: 8, fontWeight: 700 }}>Effacer tous les prompts ?</p>
+            <p style={{ fontSize: 14, color: 'white', fontWeight: 700, marginBottom: 8 }}>Effacer tous les prompts ?</p>
             <p style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.6, marginBottom: 24 }}>
-              Cette action est irréversible. Tes {prompts.length} prompts sauvegardés seront définitivement supprimés.
+              {prompts.length} prompts seront définitivement supprimés du cloud.
             </p>
             <div style={{ display: 'flex', gap: 10 }}>
-              <button onClick={handleClearAll} style={{ flex: 1, background: '#2A0A0A', border: '1px solid #5A1A1A', color: '#FF5A5A', padding: '10px 0', fontSize: 11, fontWeight: 900, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.06em' }}>
+              <button onClick={handleClearAll} style={{ flex: 1, background: '#2A0A0A', border: '1px solid #5A1A1A', color: '#FF5A5A', padding: '10px 0', fontSize: 11, fontWeight: 900, fontFamily: 'monospace', cursor: 'pointer' }}>
                 ✕ OUI, TOUT EFFACER
               </button>
               <button onClick={() => setConfirmClear(false)} style={{ flex: 1, background: 'transparent', border: '1px solid #151C25', color: '#4A5568', padding: '10px 0', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer' }}>
@@ -131,9 +155,9 @@ export default function MyPromptsPage() {
       {prompts.length === 0 ? (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 40, textAlign: 'center' }}>
           <div style={{ fontSize: 48, color: '#0F1520', marginBottom: 24 }}>◈</div>
-          <h2 style={{ fontSize: 20, fontWeight: 900, marginBottom: 12, color: 'white' }}>Aucun prompt sauvegardé</h2>
+          <h2 style={{ fontSize: 20, fontWeight: 900, marginBottom: 12 }}>Aucun prompt sauvegardé</h2>
           <p style={{ color: '#4A5568', fontSize: 13, lineHeight: 1.7, maxWidth: 300, marginBottom: 32 }}>
-            Génère ton premier prompt et il sera automatiquement sauvegardé ici, sur ton appareil.
+            Génère ton premier prompt et il sera automatiquement sauvegardé dans ton compte.
           </p>
           <a href="/generate" style={{ background: '#D4FF57', color: '#07090C', padding: '13px 32px', fontSize: 12, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em' }}>
             ✦ GÉNÉRER MON PREMIER PROMPT
@@ -142,135 +166,89 @@ export default function MyPromptsPage() {
       ) : (
         <div style={{ display: 'flex', flex: 1 }}>
 
-          {/* SIDEBAR — filtres + liste */}
+          {/* SIDEBAR */}
           <div style={{ width: 300, borderRight: '1px solid #151C25', display: 'flex', flexDirection: 'column', position: 'sticky', top: 57, height: 'calc(100vh - 57px)', overflowY: 'auto' }}>
-
-            {/* Filtres */}
             <div style={{ padding: '16px', borderBottom: '1px solid #0F1520' }}>
               <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.12em', marginBottom: 10 }}>FILTRER PAR MODULE</div>
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                 {modules.map(m => (
-                  <button
-                    key={m}
-                    onClick={() => setFilterModule(m)}
-                    style={{
-                      padding: '5px 10px', fontSize: 10, fontFamily: 'monospace', cursor: 'pointer',
-                      border: '1px solid', letterSpacing: '0.04em',
-                      borderColor: filterModule === m ? '#D4FF5740' : '#151C25',
-                      background: filterModule === m ? '#D4FF5710' : 'transparent',
-                      color: filterModule === m ? '#D4FF57' : '#4A5568',
-                    }}
-                  >
+                  <button key={m} onClick={() => setFilterModule(m)} style={{
+                    padding: '5px 10px', fontSize: 10, fontFamily: 'monospace', cursor: 'pointer',
+                    border: '1px solid', letterSpacing: '0.04em',
+                    borderColor: filterModule === m ? '#D4FF5740' : '#151C25',
+                    background: filterModule === m ? '#D4FF5710' : 'transparent',
+                    color: filterModule === m ? '#D4FF57' : '#4A5568',
+                  }}>
                     {m}
                   </button>
                 ))}
               </div>
             </div>
-
-            {/* Liste des prompts */}
             <div style={{ flex: 1, overflowY: 'auto' }}>
-              {filtered.length === 0 ? (
-                <div style={{ padding: 24, color: '#2D3748', fontSize: 12, textAlign: 'center' }}>Aucun prompt dans ce module</div>
-              ) : filtered.map((p, idx) => (
-                <div
-                  key={p.id}
-                  onClick={() => setSelected(p)}
-                  style={{
-                    padding: '14px 16px', borderBottom: '1px solid #0A0D12', cursor: 'pointer',
-                    background: selected?.id === p.id ? '#0D1118' : 'transparent',
-                    borderLeft: `2px solid ${selected?.id === p.id ? p.moduleColor : 'transparent'}`,
-                    transition: 'all 0.1s',
-                    position: 'relative',
-                  }}
-                  onMouseEnter={e => { if (selected?.id !== p.id) e.currentTarget.style.background = '#0B0E13' }}
-                  onMouseLeave={e => { if (selected?.id !== p.id) e.currentTarget.style.background = 'transparent' }}
-                >
+              {filtered.map(p => (
+                <div key={p.id} onClick={() => setSelected(p)} style={{
+                  padding: '14px 16px', borderBottom: '1px solid #0A0D12', cursor: 'pointer',
+                  background: selected?.id === p.id ? '#0D1118' : 'transparent',
+                  borderLeft: `2px solid ${selected?.id === p.id ? p.module_color : 'transparent'}`,
+                }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-                    <span style={{ fontSize: 9, color: p.moduleColor, display: 'flex', alignItems: 'center', gap: 4, letterSpacing: '0.08em' }}>
-                      {p.moduleIcon} {p.moduleLabel.toUpperCase()}
+                    <span style={{ fontSize: 9, color: p.module_color, letterSpacing: '0.08em' }}>
+                      {p.module_icon} {p.module_label.toUpperCase()}
                     </span>
                     <button
                       onClick={e => { e.stopPropagation(); handleDelete(p.id) }}
-                      style={{ background: 'transparent', border: 'none', color: '#2D3748', cursor: 'pointer', fontSize: 12, padding: '0 4px', lineHeight: 1 }}
-                      title="Supprimer"
+                      style={{ background: 'transparent', border: 'none', color: deleting === p.id ? '#FF5A5A' : '#2D3748', cursor: 'pointer', fontSize: 11, padding: '0 4px' }}
                     >
-                      ✕
+                      {deleting === p.id ? '⟳' : '✕'}
                     </button>
                   </div>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: selected?.id === p.id ? 'white' : '#8A9AAA', marginBottom: 4, lineHeight: 1.3 }}>
-                    {p.caseLabel}
+                  <div style={{ fontSize: 12, fontWeight: 700, color: selected?.id === p.id ? 'white' : '#8A9AAA', marginBottom: 4 }}>
+                    {p.case_label}
                   </div>
-                  <div style={{ fontSize: 10, color: '#2D3748', lineHeight: 1.4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {p.userInput}
+                  <div style={{ fontSize: 10, color: '#2D3748', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {p.user_input}
                   </div>
-                  <div style={{ fontSize: 9, color: '#1A2535', marginTop: 6 }}>
-                    {formatDate(p.savedAt)}
-                  </div>
+                  <div style={{ fontSize: 9, color: '#1A2535', marginTop: 6 }}>{formatDate(p.created_at)}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* PANEL DÉTAIL */}
+          {/* DÉTAIL */}
           <div style={{ flex: 1, position: 'sticky', top: 57, height: 'calc(100vh - 57px)', overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
             {selected ? (
               <>
-                {/* Header */}
                 <div style={{ padding: '24px 32px', borderBottom: '1px solid #151C25' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-                    <span style={{ fontSize: 11, color: selected.moduleColor }}>
-                      {selected.moduleIcon} {selected.moduleLabel}
-                    </span>
+                    <span style={{ fontSize: 11, color: selected.module_color }}>{selected.module_icon} {selected.module_label}</span>
                     <span style={{ color: '#151C25' }}>·</span>
-                    <span style={{ fontSize: 11, color: '#2D3748' }}>{selected.caseLabel}</span>
+                    <span style={{ fontSize: 11, color: '#2D3748' }}>{selected.case_label}</span>
                     <span style={{ color: '#151C25' }}>·</span>
-                    <span style={{ fontSize: 10, color: '#1A2535' }}>{formatDate(selected.savedAt)}</span>
+                    <span style={{ fontSize: 10, color: '#1A2535' }}>{formatDate(selected.created_at)}</span>
                   </div>
-                  <h2 style={{ fontSize: 16, fontWeight: 900, color: 'white', marginBottom: 10, letterSpacing: '-0.02em' }}>
-                    {selected.caseLabel}
-                  </h2>
-                  {/* Contexte utilisateur */}
+                  <h2 style={{ fontSize: 16, fontWeight: 900, marginBottom: 10, letterSpacing: '-0.02em' }}>{selected.case_label}</h2>
                   <div style={{ background: '#0B0E13', border: '1px solid #0F1520', padding: '10px 14px', fontSize: 11, color: '#4A5568', lineHeight: 1.6 }}>
                     <span style={{ color: '#2D3748', fontSize: 9, letterSpacing: '0.1em', display: 'block', marginBottom: 4 }}>TON BESOIN</span>
-                    {selected.userInput}
+                    {selected.user_input}
                   </div>
                 </div>
-
-                {/* Prompt */}
                 <div style={{ flex: 1, padding: '24px 32px', overflowY: 'auto' }}>
                   <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.12em', marginBottom: 14 }}>PROMPT GÉNÉRÉ</div>
-                  <div style={{ fontSize: 12, lineHeight: 1.85, color: '#6A7A8A', whiteSpace: 'pre-wrap' }}>
-                    {selected.prompt}
-                  </div>
+                  <div style={{ fontSize: 12, lineHeight: 1.85, color: '#6A7A8A', whiteSpace: 'pre-wrap' }}>{selected.prompt}</div>
                 </div>
-
-                {/* Actions */}
                 <div style={{ padding: '20px 32px', borderTop: '1px solid #151C25', display: 'flex', gap: 10 }}>
-                  <button
-                    onClick={() => handleCopy(selected.prompt)}
-                    style={{
-                      flex: 1, padding: '12px 0', fontSize: 11, fontWeight: 900,
-                      fontFamily: 'monospace', letterSpacing: '0.08em', border: 'none', cursor: 'pointer',
-                      background: copied ? '#1A3A1A' : '#D4FF57',
-                      color: copied ? '#5EDD5E' : '#07090C',
-                      transition: 'all 0.2s',
-                    }}
-                  >
+                  <button onClick={() => handleCopy(selected.prompt)} style={{
+                    flex: 1, padding: '12px 0', fontSize: 11, fontWeight: 900, fontFamily: 'monospace',
+                    letterSpacing: '0.08em', border: 'none', cursor: 'pointer',
+                    background: copied ? '#1A3A1A' : '#D4FF57',
+                    color: copied ? '#5EDD5E' : '#07090C', transition: 'all 0.2s',
+                  }}>
                     {copied ? '✓ COPIÉ !' : '⎘ COPIER LE PROMPT'}
                   </button>
-                  <a
-                    href="https://claude.ai"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ padding: '12px 20px', fontSize: 11, border: '1px solid #151C25', color: '#4A5568', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6, letterSpacing: '0.04em' }}
-                  >
+                  <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" style={{ padding: '12px 20px', fontSize: 11, border: '1px solid #151C25', color: '#4A5568', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
                     Tester dans Claude
                   </a>
-                  <button
-                    onClick={() => handleDelete(selected.id)}
-                    style={{ padding: '12px 16px', fontSize: 11, border: '1px solid #2A1A1A', color: '#4A2A2A', background: 'transparent', cursor: 'pointer', fontFamily: 'monospace' }}
-                    title="Supprimer ce prompt"
-                  >
+                  <button onClick={() => handleDelete(selected.id)} style={{ padding: '12px 16px', fontSize: 11, border: '1px solid #2A1A1A', color: '#4A2A2A', background: 'transparent', cursor: 'pointer', fontFamily: 'monospace' }}>
                     ✕
                   </button>
                 </div>
@@ -281,16 +259,12 @@ export default function MyPromptsPage() {
               </div>
             )}
           </div>
-
         </div>
       )}
 
-      {/* Info localStorage */}
-      <div style={{ borderTop: '1px solid #0A0D12', padding: '10px 28px', display: 'flex', alignItems: 'center', gap: 8 }}>
-        <span style={{ fontSize: 9, color: '#1A2535' }}>◎</span>
-        <span style={{ fontSize: 10, color: '#1A2535' }}>Prompts stockés localement sur ton appareil — aucun compte requis. Max 50 prompts.</span>
+      <div style={{ borderTop: '1px solid #0A0D12', padding: '10px 28px' }}>
+        <span style={{ fontSize: 10, color: '#1A2535' }}>◎ Prompts sauvegardés en cloud · Supabase · Chiffré</span>
       </div>
-
     </div>
   )
 }
