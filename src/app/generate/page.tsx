@@ -9,7 +9,13 @@ const MODULES = [
     label: 'Business',
     color: '#D4FF57',
     desc: 'Plans, pitch, stratégie, finance',
-    cases: ['Business Plan', 'Pitch Deck', 'Analyse de Marché'],
+    cases: [
+      { id: 'business_plan', label: 'Business Plan', desc: 'Plan complet pour ton projet' },
+      { id: 'pitch_deck', label: 'Pitch Deck', desc: 'Présentation investisseurs' },
+      { id: 'analyse_marche', label: 'Analyse de Marché', desc: 'TAM/SAM/SOM et concurrents' },
+      { id: 'modele_financier', label: 'Modélisation Financière', desc: 'MRR, LTV, CAC et projections' },
+      { id: 'strategie_gtm', label: 'Stratégie GTM', desc: 'Go-To-Market complet' },
+    ],
   },
   {
     id: 'contenu',
@@ -17,7 +23,13 @@ const MODULES = [
     label: 'Contenu Viral',
     color: '#FF7A3D',
     desc: 'Hooks, scripts, posts, copywriting',
-    cases: ['Hook TikTok/Reels', 'Script YouTube', 'Post LinkedIn'],
+    cases: [
+      { id: 'hook_video', label: 'Hook TikTok/Reels', desc: '10 hooks viraux optimisés' },
+      { id: 'script_youtube', label: 'Script YouTube', desc: 'Script complet avec structure' },
+      { id: 'post_linkedin', label: 'Post LinkedIn', desc: 'Post viral avec engagement' },
+      { id: 'copywriting', label: 'Page de Vente', desc: 'Copy persuasif et éthique' },
+      { id: 'newsletter', label: 'Newsletter', desc: 'Template + édition complète' },
+    ],
   },
   {
     id: 'pro',
@@ -25,7 +37,13 @@ const MODULES = [
     label: 'Usage Pro',
     color: '#38C4FF',
     desc: 'Emails, CV, rapports, lettres',
-    cases: ['Email Professionnel', 'CV Optimisé', 'Rapport Exécutif'],
+    cases: [
+      { id: 'email_pro', label: 'Email Professionnel', desc: 'Prospection, relance, négociation' },
+      { id: 'cv', label: 'CV Optimisé ATS', desc: 'CV qui passe les filtres automatiques' },
+      { id: 'rapport', label: 'Rapport Exécutif', desc: 'Rapport pour C-level et board' },
+      { id: 'negociation', label: 'Négociation Salariale', desc: 'Scripts et stratégies' },
+      { id: 'presentation', label: 'Présentation 10 min', desc: 'Structure chronométrée' },
+    ],
   },
   {
     id: 'dev',
@@ -33,13 +51,19 @@ const MODULES = [
     label: 'Développement',
     color: '#A47CFF',
     desc: 'Code, SaaS, debug, agents IA',
-    cases: ['Brief Technique SaaS', 'Génération de Code', 'Debugging'],
+    cases: [
+      { id: 'app_saas', label: 'Brief Technique SaaS', desc: 'Architecture et stack recommandée' },
+      { id: 'generation_code', label: 'Génération de Code', desc: 'Code propre et production-ready' },
+      { id: 'debug', label: 'Debugging Méthodique', desc: 'Diagnostic et résolution de bugs' },
+      { id: 'agent_ia', label: 'Agent IA System Prompt', desc: 'System prompt production-ready' },
+      { id: 'cicd', label: 'Pipeline CI/CD', desc: 'GitHub Actions complet' },
+    ],
   },
 ]
 
 export default function GeneratePage() {
   const [selectedModule, setSelectedModule] = useState<string | null>(null)
-  const [selectedCase, setSelectedCase] = useState<string | null>(null)
+  const [selectedCase, setSelectedCase] = useState<{ id: string; label: string; desc: string } | null>(null)
   const [input, setInput] = useState('')
   const [generating, setGenerating] = useState(false)
   const [result, setResult] = useState('')
@@ -57,7 +81,7 @@ export default function GeneratePage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           module: selectedModule,
-          caseType: selectedCase,
+          caseType: selectedCase?.label,
           userInput: input,
         }),
       })
@@ -70,42 +94,66 @@ export default function GeneratePage() {
     setGenerating(false)
   }
 
+  const reset = () => {
+    setSelectedModule(null)
+    setSelectedCase(null)
+    setInput('')
+    setResult('')
+  }
+
   return (
-    <div className="min-h-screen bg-[#07090C] text-white font-mono">
-      
-      {/* Header */}
-      <div className="border-b border-[#151C25] px-6 py-4 flex items-center justify-between">
-        <a href="/" className="text-[#D4FF57] font-black text-lg">
-          PROMPT ARCHITECT
+    <div style={{ minHeight: '100vh', background: '#07090C', color: 'white', fontFamily: 'monospace' }}>
+
+      {/* HEADER */}
+      <div style={{ borderBottom: '1px solid #151C25', padding: '14px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, background: '#07090CEE', backdropFilter: 'blur(12px)', zIndex: 100 }}>
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
+          <div style={{ width: 26, height: 26, background: '#D4FF57', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 900, color: '#07090C' }}>PA</div>
+          <span style={{ fontWeight: 900, fontSize: 15, color: 'white' }}>Prompt Architect</span>
         </a>
-        <span className="text-xs text-gray-500">Générateur de prompts experts</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          {/* Progress */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11, color: '#4A5568' }}>
+            <span style={{ color: selectedModule ? '#D4FF57' : '#4A5568' }}>① Module</span>
+            <span>→</span>
+            <span style={{ color: selectedCase ? '#D4FF57' : '#4A5568' }}>② Cas d&apos;usage</span>
+            <span>→</span>
+            <span style={{ color: result ? '#D4FF57' : '#4A5568' }}>③ Prompt</span>
+          </div>
+          <a href="/library" style={{ fontSize: 11, color: '#4A5568', textDecoration: 'none', border: '1px solid #151C25', padding: '6px 12px' }}>
+            ◈ Bibliothèque
+          </a>
+        </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 py-12">
+      <div style={{ maxWidth: 800, margin: '0 auto', padding: '40px 24px' }}>
 
-        {/* Étape 1 — Choix du module */}
+        {/* ÉTAPE 1 — Choix du module */}
         {!selectedModule && (
           <div>
-            <h2 className="text-2xl font-black mb-2">Choisis ton module</h2>
-            <p className="text-gray-500 text-sm mb-8">Sélectionne la catégorie qui correspond à ton besoin</p>
-            <div className="grid grid-cols-2 gap-4">
-              {MODULES.map((m) => (
+            <div style={{ marginBottom: 32 }}>
+              <div style={{ fontSize: 11, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 8 }}>ÉTAPE 1 / 3</div>
+              <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Choisis ton module</h1>
+              <p style={{ color: '#4A5568', fontSize: 14 }}>Sélectionne la catégorie qui correspond à ton besoin</p>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
+              {MODULES.map(m => (
                 <button
                   key={m.id}
                   onClick={() => setSelectedModule(m.id)}
-                  className="border border-[#151C25] bg-[#0B0E13] p-6 text-left hover:border-[#D4FF57]/30 transition-all group"
+                  style={{ border: '1px solid #151C25', background: '#0B0E13', padding: 24, textAlign: 'left', cursor: 'pointer', color: 'white', transition: 'all 0.15s' }}
+                  onMouseEnter={e => (e.currentTarget.style.borderColor = m.color + '50')}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = '#151C25')}
                 >
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-2xl" style={{ color: m.color }}>{m.icon}</span>
-                    <span className="font-black text-lg">{m.label}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                    <span style={{ fontSize: 22, color: m.color }}>{m.icon}</span>
+                    <span style={{ fontWeight: 900, fontSize: 16 }}>{m.label}</span>
                   </div>
-                  <p className="text-gray-500 text-sm mb-4">{m.desc}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {m.cases.map(c => (
-                      <span key={c} className="text-xs px-2 py-1 border border-[#151C25] text-gray-600">
-                        {c}
-                      </span>
+                  <p style={{ fontSize: 13, color: '#4A5568', marginBottom: 16, lineHeight: 1.5 }}>{m.desc}</p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    {m.cases.slice(0, 3).map(c => (
+                      <span key={c.id} style={{ fontSize: 10, padding: '2px 8px', border: '1px solid #151C25', color: '#2D3748' }}>{c.label}</span>
                     ))}
+                    <span style={{ fontSize: 10, padding: '2px 8px', color: '#2D3748' }}>+{m.cases.length - 3}</span>
                   </div>
                 </button>
               ))}
@@ -113,79 +161,144 @@ export default function GeneratePage() {
           </div>
         )}
 
-        {/* Étape 2 — Choix du cas d'usage */}
+        {/* ÉTAPE 2 — Choix du cas d'usage */}
         {selectedModule && !selectedCase && (
           <div>
-            <button onClick={() => setSelectedModule(null)} className="text-gray-500 text-sm mb-6 hover:text-white">
-              ← Retour
+            <button onClick={() => setSelectedModule(null)} style={{ background: 'transparent', border: 'none', color: '#4A5568', cursor: 'pointer', fontSize: 13, marginBottom: 24, padding: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
+              ← Retour aux modules
             </button>
-            <h2 className="text-2xl font-black mb-2">Que veux-tu créer ?</h2>
-            <p className="text-gray-500 text-sm mb-8">Sélectionne ton cas d&apos;usage</p>
-            <div className="flex flex-col gap-3">
-              {currentModule?.cases.map((c) => (
+            <div style={{ marginBottom: 32 }}>
+              <div style={{ fontSize: 11, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 8 }}>ÉTAPE 2 / 3</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+                <span style={{ fontSize: 20, color: currentModule?.color }}>{currentModule?.icon}</span>
+                <h1 style={{ fontSize: 28, fontWeight: 900 }}>{currentModule?.label}</h1>
+              </div>
+              <p style={{ color: '#4A5568', fontSize: 14 }}>Sélectionne ton cas d&apos;usage</p>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {currentModule?.cases.map(c => (
                 <button
-                  key={c}
+                  key={c.id}
                   onClick={() => setSelectedCase(c)}
-                  className="border border-[#151C25] bg-[#0B0E13] p-4 text-left hover:border-[#D4FF57]/30 transition-all flex items-center justify-between"
+                  style={{ border: '1px solid #151C25', background: '#0B0E13', padding: '16px 20px', textAlign: 'left', cursor: 'pointer', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                  onMouseEnter={e => (e.currentTarget.style.borderColor = currentModule.color + '50')}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = '#151C25')}
                 >
-                  <span className="font-medium">{c}</span>
-                  <span className="text-gray-600">→</span>
+                  <div>
+                    <div style={{ fontWeight: 700, marginBottom: 4 }}>{c.label}</div>
+                    <div style={{ fontSize: 12, color: '#4A5568' }}>{c.desc}</div>
+                  </div>
+                  <span style={{ color: '#4A5568', fontSize: 16 }}>→</span>
                 </button>
               ))}
             </div>
           </div>
         )}
 
-        {/* Étape 3 — Saisie et génération */}
+        {/* ÉTAPE 3 — Saisie */}
         {selectedModule && selectedCase && !result && (
           <div>
-            <button onClick={() => setSelectedCase(null)} className="text-gray-500 text-sm mb-6 hover:text-white">
+            <button onClick={() => setSelectedCase(null)} style={{ background: 'transparent', border: 'none', color: '#4A5568', cursor: 'pointer', fontSize: 13, marginBottom: 24, padding: 0 }}>
               ← Retour
             </button>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs text-[#D4FF57] border border-[#D4FF57]/30 px-2 py-1">
-                {currentModule?.label} · {selectedCase}
-              </span>
+            <div style={{ marginBottom: 32 }}>
+              <div style={{ fontSize: 11, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 8 }}>ÉTAPE 3 / 3</div>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 10px', border: '1px solid', borderColor: currentModule?.color + '30', background: currentModule?.color + '10', marginBottom: 12 }}>
+                <span style={{ fontSize: 10, color: currentModule?.color }}>{currentModule?.label} · {selectedCase.label}</span>
+              </div>
+              <h1 style={{ fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Décris ton besoin</h1>
+              <p style={{ color: '#4A5568', fontSize: 14 }}>Plus tu es précis, meilleur sera ton prompt.</p>
             </div>
-            <h2 className="text-2xl font-black mb-6">Décris ton besoin</h2>
+
             <textarea
-              className="w-full bg-[#0B0E13] border border-[#151C25] text-white p-4 font-mono text-sm resize-none focus:outline-none focus:border-[#D4FF57]/30 mb-4"
-              rows={5}
-              placeholder={`Décris précisément ce que tu veux pour ton ${selectedCase}...`}
+              rows={6}
+              placeholder={`Décris précisément ce que tu veux pour ton ${selectedCase.label}...\n\nExemple : "Une app SaaS de gestion de projets pour agences créatives avec time tracking intégré, ciblant les freelances français, stade MVP..."`}
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={e => setInput(e.target.value)}
+              style={{ width: '100%', background: '#0B0E13', border: '1px solid #151C25', color: 'white', padding: '16px', fontFamily: 'monospace', fontSize: 13, outline: 'none', resize: 'vertical', lineHeight: 1.7, boxSizing: 'border-box', marginBottom: 16 }}
             />
-            <button
-              onClick={handleGenerate}
-              disabled={!input.trim() || generating}
-              className="bg-[#D4FF57] text-black font-black px-8 py-3 text-sm tracking-widest hover:bg-yellow-300 transition-all disabled:opacity-40"
-            >
-              {generating ? '⟳ GÉNÉRATION EN COURS...' : '✦ GÉNÉRER LE PROMPT'}
-            </button>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: 12, color: '#2D3748' }}>
+                {input.length} caractères
+              </span>
+              <button
+                onClick={handleGenerate}
+                disabled={!input.trim() || generating}
+                style={{
+                  background: !input.trim() || generating ? '#151C25' : currentModule?.color,
+                  color: !input.trim() || generating ? '#4A5568' : '#07090C',
+                  border: 'none', padding: '12px 28px', fontSize: 12, fontWeight: 900,
+                  fontFamily: 'monospace', cursor: !input.trim() || generating ? 'not-allowed' : 'pointer',
+                  letterSpacing: '0.06em',
+                }}
+              >
+                {generating ? '⟳ GÉNÉRATION EN COURS...' : '✦ GÉNÉRER LE PROMPT'}
+              </button>
+            </div>
           </div>
         )}
 
-        {/* Résultat */}
+        {/* RÉSULTAT */}
         {result && (
           <div>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-black">Ton prompt expert ✦</h2>
-              <button
-                onClick={() => { setResult(''); setInput(''); setSelectedCase(null); }}
-                className="text-gray-500 text-sm hover:text-white"
-              >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+              <div>
+                <div style={{ fontSize: 11, color: '#D4FF57', letterSpacing: '0.1em', marginBottom: 6 }}>PROMPT GÉNÉRÉ</div>
+                <h1 style={{ fontSize: 24, fontWeight: 900 }}>Ton prompt expert ✦</h1>
+              </div>
+              <button onClick={reset} style={{ background: 'transparent', border: '1px solid #151C25', color: '#4A5568', padding: '8px 16px', fontSize: 12, cursor: 'pointer', fontFamily: 'monospace' }}>
                 ← Nouveau prompt
               </button>
             </div>
-            <div className="bg-[#0B0E13] border border-[#151C25] p-6 font-mono text-sm leading-relaxed text-gray-300 whitespace-pre-wrap mb-4">
+
+            {/* Infos du prompt */}
+            <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+              <span style={{ fontSize: 10, padding: '4px 10px', border: '1px solid', color: currentModule?.color, borderColor: currentModule?.color + '30', background: currentModule?.color + '10' }}>
+                {currentModule?.label}
+              </span>
+              <span style={{ fontSize: 10, padding: '4px 10px', border: '1px solid #151C25', color: '#4A5568' }}>
+                {selectedCase?.label}
+              </span>
+              <span style={{ fontSize: 10, padding: '4px 10px', border: '1px solid #151C25', color: '#4A5568' }}>
+                {result.length} caractères
+              </span>
+            </div>
+
+            {/* Prompt affiché */}
+            <div style={{ background: '#0B0E13', border: '1px solid #151C25', padding: 24, fontSize: 12, lineHeight: 1.8, color: '#8A9AAA', whiteSpace: 'pre-wrap', maxHeight: '50vh', overflowY: 'auto', marginBottom: 16 }}>
               {result}
             </div>
-            <button
-              onClick={() => navigator.clipboard.writeText(result)}
-              className="bg-[#D4FF57] text-black font-black px-8 py-3 text-sm tracking-widest hover:bg-yellow-300 transition-all"
-            >
-              ⎘ COPIER LE PROMPT
-            </button>
+
+            {/* Actions */}
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <button
+                onClick={() => { navigator.clipboard.writeText(result) }}
+                style={{ background: '#D4FF57', color: '#07090C', border: 'none', padding: '12px 24px', fontSize: 12, fontWeight: 900, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.06em' }}
+              >
+                ⎘ COPIER LE PROMPT
+              </button>
+              <a
+                href="https://claude.ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ border: '1px solid #151C25', color: '#4A5568', padding: '12px 24px', fontSize: 12, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}
+              >
+                Tester dans Claude
+              </a>
+              <button
+                onClick={reset}
+                style={{ border: '1px solid #151C25', color: '#4A5568', background: 'transparent', padding: '12px 24px', fontSize: 12, fontFamily: 'monospace', cursor: 'pointer' }}
+              >
+                ↺ Nouveau prompt
+              </button>
+            </div>
+
+            {/* Tip */}
+            <div style={{ marginTop: 20, padding: '12px 16px', background: '#D4FF5710', border: '1px solid #D4FF5730', fontSize: 12, color: '#4A5568', lineHeight: 1.6 }}>
+              <span style={{ color: '#D4FF57', fontWeight: 700 }}>Tip : </span>
+              Colle ce prompt dans Claude ou ChatGPT. Pour de meilleurs résultats, remplace les éléments entre crochets [comme ceci] par tes informations spécifiques.
+            </div>
           </div>
         )}
 
