@@ -47,7 +47,7 @@ const MODULES_PREMIUM = [
       { id: 'workflow_auto', label: 'Workflow Automatisation', desc: 'n8n, Zapier, Make — flux complets' },
       { id: 'agent_system', label: 'Agent IA Avancé', desc: 'System prompt production-ready' },
       { id: 'prompt_chaining', label: 'Prompt Chaining', desc: 'Enchaînement de prompts complexes' },
-      { id: 'fine_tuning', label: 'Fine-tuning Dataset', desc: 'Données d'entraînement structurées' },
+      { id: 'fine_tuning', label: 'Fine-tuning Dataset', desc: "Données d'entraînement structurées" },
       { id: 'rag_system', label: 'Système RAG', desc: 'Retrieval Augmented Generation' },
     ]},
   { id: 'ecommerce', icon: '◑', label: 'E-commerce & Vente', color: '#FF4D8B', desc: 'Fiches produits, emails, upsell, conversion', premium: true,
