@@ -17,6 +17,18 @@ type SavedPrompt = {
   created_at: string
 }
 
+type Profile = {
+  plan: 'free' | 'standard' | 'pro' | 'premium'
+  credits_used: number
+}
+
+const PLAN_CONFIG = {
+  free:     { label: 'Free',     limit: 10,  color: '#4A5568', nextPlan: 'standard' },
+  standard: { label: 'Standard', limit: 50,  color: '#38C4FF', nextPlan: 'pro' },
+  pro:      { label: 'Pro',      limit: 100, color: '#D4FF57', nextPlan: 'premium' },
+  premium:  { label: 'Premium',  limit: 400, color: '#A47CFF', nextPlan: null },
+}
+
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('fr-FR', {
     day: '2-digit', month: 'short', year: 'numeric',
@@ -28,6 +40,7 @@ export default function MyPromptsPage() {
   const { user, loading, signOut } = useAuth()
   const router = useRouter()
   const [prompts, setPrompts] = useState<SavedPrompt[]>([])
+  const [profile, setProfile] = useState<Profile | null>(null)
   const [selected, setSelected] = useState<SavedPrompt | null>(null)
   const [copied, setCopied] = useState(false)
   const [filterModule, setFilterModule] = useState('Tous')
@@ -35,31 +48,28 @@ export default function MyPromptsPage() {
   const [confirmClear, setConfirmClear] = useState(false)
   const [deleting, setDeleting] = useState<string | null>(null)
 
-  // Redirect si pas connecté
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login')
-    }
+    if (!loading && !user) router.push('/login')
   }, [user, loading, router])
 
-  // Charger les prompts depuis Supabase
   useEffect(() => {
     if (!user) return
-    const fetchPrompts = async () => {
+    const fetchData = async () => {
       setFetching(true)
-      const { data, error } = await supabase
-        .from('saved_prompts')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
 
-      if (!error && data) {
-        setPrompts(data)
-        if (data.length > 0) setSelected(data[0])
+      const [{ data: promptsData }, { data: profileData }] = await Promise.all([
+        supabase.from('saved_prompts').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
+        supabase.from('profiles').select('plan, credits_used').eq('id', user.id).single(),
+      ])
+
+      if (promptsData) {
+        setPrompts(promptsData)
+        if (promptsData.length > 0) setSelected(promptsData[0])
       }
+      if (profileData) setProfile(profileData)
       setFetching(false)
     }
-    fetchPrompts()
+    fetchData()
   }, [user])
 
   const modules = ['Tous', ...Array.from(new Set(prompts.map(p => p.module_label)))]
@@ -102,6 +112,14 @@ export default function MyPromptsPage() {
 
   if (!user) return null
 
+  const planConfig = profile ? PLAN_CONFIG[profile.plan] : PLAN_CONFIG.free
+  const creditsUsed = profile?.credits_used || 0
+  const creditsLimit = planConfig.limit
+  const creditsLeft = Math.max(0, creditsLimit - creditsUsed)
+  const progressPercent = Math.min(100, (creditsUsed / creditsLimit) * 100)
+  const isNearLimit = progressPercent >= 80
+  const isAtLimit = progressPercent >= 100
+
   return (
     <div style={{ minHeight: '100vh', background: '#07090C', color: 'white', fontFamily: 'monospace', display: 'flex', flexDirection: 'column' }}>
 
@@ -128,6 +146,93 @@ export default function MyPromptsPage() {
             Déconnexion
           </button>
         </div>
+      </div>
+
+      {/* DASHBOARD BANDEAU */}
+      <div style={{ borderBottom: '1px solid #151C25', background: '#0B0E13', padding: '16px 28px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
+
+          {/* Plan actuel */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: planConfig.color }} />
+            <span style={{ fontSize: 10, color: '#2D3748', letterSpacing: '0.1em' }}>PLAN</span>
+            <span style={{ fontSize: 12, fontWeight: 900, color: planConfig.color, letterSpacing: '0.06em' }}>
+              {planConfig.label.toUpperCase()}
+            </span>
+          </div>
+
+          <div style={{ width: 1, height: 20, background: '#151C25' }} />
+
+          {/* Générations */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1, minWidth: 200 }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                <span style={{ fontSize: 10, color: '#2D3748', letterSpacing: '0.1em' }}>GÉNÉRATIONS CE MOIS</span>
+                <span style={{ fontSize: 10, color: isAtLimit ? '#FF5A5A' : isNearLimit ? '#FF7A3D' : '#4A5568' }}>
+                  {creditsUsed} / {creditsLimit}
+                </span>
+              </div>
+              <div style={{ height: 4, background: '#151C25', borderRadius: 2, overflow: 'hidden' }}>
+                <div style={{
+                  height: '100%',
+                  width: `${progressPercent}%`,
+                  background: isAtLimit ? '#FF5A5A' : isNearLimit ? '#FF7A3D' : planConfig.color,
+                  transition: 'width 0.3s ease',
+                  borderRadius: 2,
+                }} />
+              </div>
+            </div>
+            <span style={{ fontSize: 11, color: isAtLimit ? '#FF5A5A' : '#4A5568', whiteSpace: 'nowrap' }}>
+              {isAtLimit ? '⚠ Limite atteinte' : `${creditsLeft} restantes`}
+            </span>
+          </div>
+
+          <div style={{ width: 1, height: 20, background: '#151C25' }} />
+
+          {/* Upgrade ou badge premium */}
+          {planConfig.nextPlan ? (
+            <a
+              href="/pricing"
+              style={{
+                fontSize: 10, fontWeight: 900, letterSpacing: '0.08em', textDecoration: 'none',
+                padding: '6px 14px', border: `1px solid ${isAtLimit ? '#D4FF5740' : '#151C25'}`,
+                color: isAtLimit ? '#D4FF57' : '#4A5568',
+                background: isAtLimit ? '#D4FF5710' : 'transparent',
+                display: 'flex', alignItems: 'center', gap: 6,
+              }}
+            >
+              ✦ {isAtLimit ? 'UPGRADER MAINTENANT' : 'VOIR LES PLANS'}
+            </a>
+          ) : (
+            <span style={{ fontSize: 10, color: '#A47CFF', border: '1px solid #A47CFF30', padding: '6px 14px', letterSpacing: '0.08em' }}>
+              ◈ PLAN PREMIUM
+            </span>
+          )}
+        </div>
+
+        {/* Alerte limite atteinte */}
+        {isAtLimit && (
+          <div style={{ marginTop: 12, padding: '10px 14px', background: '#2A0A0A', border: '1px solid #5A1A1A', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+            <span style={{ fontSize: 12, color: '#FF6B6B' }}>
+              ⚠ Tu as atteint ta limite de {creditsLimit} générations ce mois. Upgrade pour continuer.
+            </span>
+            <a href="/pricing" style={{ fontSize: 11, fontWeight: 900, color: '#D4FF57', textDecoration: 'none', letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>
+              UPGRADER →
+            </a>
+          </div>
+        )}
+
+        {/* Alerte proche limite */}
+        {isNearLimit && !isAtLimit && (
+          <div style={{ marginTop: 12, padding: '10px 14px', background: '#1A0F00', border: '1px solid #3A2A00', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+            <span style={{ fontSize: 12, color: '#FF9A3D' }}>
+              ⚡ Plus que {creditsLeft} génération{creditsLeft > 1 ? 's' : ''} ce mois sur ton plan {planConfig.label}.
+            </span>
+            <a href="/pricing" style={{ fontSize: 11, fontWeight: 900, color: '#FF9A3D', textDecoration: 'none', letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>
+              UPGRADER →
+            </a>
+          </div>
+        )}
       </div>
 
       {/* Modal confirmation */}
@@ -190,7 +295,10 @@ export default function MyPromptsPage() {
                   padding: '14px 16px', borderBottom: '1px solid #0A0D12', cursor: 'pointer',
                   background: selected?.id === p.id ? '#0D1118' : 'transparent',
                   borderLeft: `2px solid ${selected?.id === p.id ? p.module_color : 'transparent'}`,
-                }}>
+                }}
+                  onMouseEnter={e => { if (selected?.id !== p.id) e.currentTarget.style.background = '#0B0E13' }}
+                  onMouseLeave={e => { if (selected?.id !== p.id) e.currentTarget.style.background = 'transparent' }}
+                >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
                     <span style={{ fontSize: 9, color: p.module_color, letterSpacing: '0.08em' }}>
                       {p.module_icon} {p.module_label.toUpperCase()}
