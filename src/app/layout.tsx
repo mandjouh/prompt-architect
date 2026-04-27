@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     template: '%s | Prompt Architect',
   },
   description: 'Transforme ta demande simple en prompt expert, structuré et optimisé par IA. 4 modules, 20 cas d\'usage, propulsé par Claude. Gratuit.',
+  verification: {
+    google: 'w13Wcx86JARneQeGERgu7-IoeydWmiDzV6Tu4QpwGSM',
+  },
   keywords: [
     'prompt engineering', 'générateur de prompts', 'prompt IA', 'ChatGPT prompt',
     'Claude prompt', 'prompt expert', 'prompt architect', 'prompt business',
@@ -19,6 +22,9 @@ export const metadata: Metadata = {
   authors: [{ name: 'Prompt Architect', url: APP_URL }],
   creator: 'Prompt Architect',
   publisher: 'Prompt Architect',
+  verification: {
+    google: 'w13Wcx86JARneQeGERgu7-IoeydWmiDzV6Tu4QpwGSM',
+  },
   robots: {
     index: true,
     follow: true,
