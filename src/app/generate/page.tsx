@@ -146,9 +146,14 @@ export default function GeneratePage() {
             <span style={{ color: result ? '#D4FF57' : '#4A5568' }}>③ Prompt</span>
           </div>
           {user ? (
-            <a href="/my-prompts" style={{ fontSize: 11, textDecoration: 'none', border: '1px solid #D4FF5740', padding: '6px 12px', color: '#D4FF57', background: '#D4FF5708' }}>
-              ◈ Mes prompts
-            </a>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <a href="/my-prompts" style={{ fontSize: 11, textDecoration: 'none', border: '1px solid #D4FF5740', padding: '6px 12px', color: '#D4FF57', background: '#D4FF5708' }}>
+                ◈ Mes prompts
+              </a>
+              <a href="/profile" style={{ fontSize: 11, textDecoration: 'none', border: '1px solid #151C25', padding: '6px 12px', color: '#4A5568' }}>
+                ◎ Profil
+              </a>
+            </div>
           ) : (
             <div style={{ display: 'flex', gap: 8 }}>
               <a href="/login" style={{ fontSize: 11, color: '#4A5568', textDecoration: 'none', border: '1px solid #151C25', padding: '6px 12px' }}>

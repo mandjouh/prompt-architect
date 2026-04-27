@@ -142,6 +142,7 @@ export default function MyPromptsPage() {
           <a href="/generate" style={{ background: '#D4FF57', color: '#07090C', padding: '8px 18px', fontSize: 11, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.06em' }}>
             ✦ NOUVEAU PROMPT
           </a>
+          <a href="/profile" style={{ fontSize: 11, color: '#4A5568', textDecoration: 'none', border: '1px solid #151C25', padding: '7px 14px' }}>◎ Profil</a>
           <button onClick={handleSignOut} style={{ background: 'transparent', border: '1px solid #151C25', color: '#4A5568', padding: '8px 12px', fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>
             Déconnexion
           </button>
