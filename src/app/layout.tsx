@@ -22,9 +22,7 @@ export const metadata: Metadata = {
   authors: [{ name: 'Prompt Architect', url: APP_URL }],
   creator: 'Prompt Architect',
   publisher: 'Prompt Architect',
-  verification: {
-    google: 'w13Wcx86JARneQeGERgu7-IoeydWmiDzV6Tu4QpwGSM',
-  },
+  
   robots: {
     index: true,
     follow: true,
