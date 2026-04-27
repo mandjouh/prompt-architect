@@ -1,4 +1,17 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Prompt Architect — Générateur de prompts IA experts',
+  description: 'Transforme ta demande simple en prompt expert par IA. 4 modules, 20 cas d'usage, propulsé par Claude. Gratuit.',
+  alternates: { canonical: 'https://www.prompt-architect.io' },
+  openGraph: {
+    title: 'Prompt Architect — Générateur de prompts IA experts',
+    description: 'Transforme ta demande simple en prompt expert par IA. Gratuit.',
+    url: 'https://www.prompt-architect.io',
+    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+  },
+}
 
 export default function Home() {
   return (
