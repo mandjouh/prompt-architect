@@ -1,13 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import type { Metadata } from 'next'
+import { useParams } from 'next/navigation'
 import { ARTICLES } from '../../lib/blog'
-
-type Props = { params: { slug: string } }
-
-
 
 function renderContent(content: string) {
   const lines = content.split('\n')
@@ -59,20 +54,13 @@ function renderContent(content: string) {
           ))}
         </ul>
       )
-    } else if (line.startsWith('**') && line.endsWith('**')) {
-      elements.push(
-        <p key={i} style={{ fontSize: 14, fontWeight: 900, color: 'white', marginBottom: 12 }}>
-          {line.replace(/\*\*/g, '')}
-        </p>
-      )
     } else if (line.trim() === '') {
       elements.push(<div key={i} style={{ height: 8 }} />)
     } else if (line.trim()) {
-      const formattedLine = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       elements.push(
-        <p key={i} style={{ fontSize: 15, color: '#8A9AAA', lineHeight: 1.85, marginBottom: 16 }}
-          dangerouslySetInnerHTML={{ __html: formattedLine }}
-        />
+        <p key={i} style={{ fontSize: 15, color: '#8A9AAA', lineHeight: 1.85, marginBottom: 16 }}>
+          {line.replace(/\*\*(.*?)\*\*/g, '$1')}
+        </p>
       )
     }
     i++
@@ -87,9 +75,22 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Viral Content': '#FF7A3D',
 }
 
-export default function ArticlePage({ params }: Props) {
-  const article = ARTICLES.find(a => a.slug === params.slug)
-  if (!article) notFound()
+export default function ArticlePage() {
+  const params = useParams()
+  const slug = params?.slug as string
+  const article = ARTICLES.find(a => a.slug === slug)
+
+  if (!article) {
+    return (
+      <div style={{ minHeight: '100vh', background: '#07090C', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'monospace' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: 48, color: '#0F1520', marginBottom: 16 }}>404</div>
+          <p style={{ color: '#4A5568', marginBottom: 24 }}>Article non trouvé</p>
+          <Link href="/blog" style={{ color: '#D4FF57', textDecoration: 'none' }}>← Retour au blog</Link>
+        </div>
+      </div>
+    )
+  }
 
   const relatedArticles = ARTICLES.filter(a => a.slug !== article.slug && a.lang === article.lang).slice(0, 3)
   const color = CATEGORY_COLORS[article.category] || '#D4FF57'
@@ -117,7 +118,7 @@ export default function ArticlePage({ params }: Props) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 32, fontSize: 11, color: '#2D3748' }}>
           <Link href="/blog" style={{ color: '#2D3748', textDecoration: 'none' }}>Blog</Link>
           <span>→</span>
-          <span style={{ color: color }}>{article.category}</span>
+          <span style={{ color }}>{article.category}</span>
         </div>
 
         {/* ARTICLE HEADER */}
@@ -132,39 +133,33 @@ export default function ArticlePage({ params }: Props) {
               {new Date(article.publishedAt).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}
             </span>
           </div>
-
           <h1 style={{ fontSize: 'clamp(24px, 4vw, 40px)', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-0.03em', marginBottom: 20, color: 'white' }}>
             {article.title}
           </h1>
-
           <p style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.75 }}>
             {article.metaDescription}
           </p>
         </div>
 
-        {/* CTA INLINE AVANT ARTICLE */}
+        {/* CTA INLINE */}
         <div style={{ border: '1px solid #D4FF5730', background: '#D4FF5708', padding: '16px 20px', marginBottom: 48, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
-          <span style={{ fontSize: 13, color: '#8A9AAA' }}>
-            💡 Génère des prompts experts en 2 minutes avec notre IA
-          </span>
+          <span style={{ fontSize: 13, color: '#8A9AAA' }}>💡 Génère des prompts experts en 2 minutes avec notre IA</span>
           <Link href="/generate" style={{ fontSize: 11, fontWeight: 900, color: '#D4FF57', textDecoration: 'none', letterSpacing: '0.06em', whiteSpace: 'nowrap', border: '1px solid #D4FF5740', padding: '7px 16px' }}>
             ✦ ESSAYER GRATUITEMENT →
           </Link>
         </div>
 
-        {/* CONTENU DE L'ARTICLE */}
+        {/* CONTENU */}
         <div style={{ marginBottom: 64 }}>
           {renderContent(article.content)}
         </div>
 
         {/* CTA FINAL */}
         <div style={{ border: '1px solid #151C25', background: '#0B0E13', padding: 32, marginBottom: 64, textAlign: 'center' }}>
-          <div style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 12 }}>// PASSE À L'ACTION</div>
-          <h3 style={{ fontSize: 22, fontWeight: 900, marginBottom: 12, letterSpacing: '-0.02em' }}>
-            Arrête de perdre du temps à écrire tes prompts
-          </h3>
+          <div style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 12 }}>// PASSE À L&apos;ACTION</div>
+          <h3 style={{ fontSize: 22, fontWeight: 900, marginBottom: 12, letterSpacing: '-0.02em' }}>Arrête de perdre du temps à écrire tes prompts</h3>
           <p style={{ fontSize: 14, color: '#4A5568', lineHeight: 1.7, marginBottom: 24, maxWidth: 400, margin: '0 auto 24px' }}>
-            Prompt Architect génère des prompts experts en 2 minutes. 10 générations gratuites par mois, sans inscription.
+            Prompt Architect génère des prompts experts en 2 minutes. 5 générations gratuites par mois.
           </p>
           <Link href="/generate" style={{ display: 'inline-block', background: '#D4FF57', color: '#07090C', padding: '14px 36px', fontSize: 12, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em' }}>
             ✦ GÉNÉRER MON PROMPT GRATUITEMENT
@@ -177,10 +172,7 @@ export default function ArticlePage({ params }: Props) {
             <div style={{ fontSize: 10, color: '#2D3748', letterSpacing: '0.12em', marginBottom: 24 }}>ARTICLES SIMILAIRES</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: '#151C25', border: '1px solid #151C25' }}>
               {relatedArticles.map(related => (
-                <Link key={related.slug} href={`/blog/${related.slug}`} style={{ textDecoration: 'none', background: '#07090C', padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}
-                  onMouseEnter={e => (e.currentTarget.style.background = '#0B0E13')}
-                  onMouseLeave={e => (e.currentTarget.style.background = '#07090C')}
-                >
+                <Link key={related.slug} href={`/blog/${related.slug}`} style={{ textDecoration: 'none', background: '#07090C', padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
                   <div>
                     <div style={{ fontSize: 9, color: CATEGORY_COLORS[related.category] || '#D4FF57', letterSpacing: '0.1em', marginBottom: 6 }}>{related.category.toUpperCase()}</div>
                     <div style={{ fontSize: 13, fontWeight: 700, color: 'white' }}>{related.title}</div>
@@ -191,7 +183,6 @@ export default function ArticlePage({ params }: Props) {
             </div>
           </div>
         )}
-
       </div>
 
       {/* FOOTER */}
@@ -206,7 +197,6 @@ export default function ArticlePage({ params }: Props) {
           <Link href="/pricing" style={{ color: '#2D3748', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>PRICING</Link>
         </div>
       </footer>
-
     </div>
   )
 }
