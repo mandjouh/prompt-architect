@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Prompt Architect — Générateur de prompts IA experts',
-  description: 'Transforme ta demande simple en prompt expert par IA. 4 modules, 20 cas d'usage, propulsé par Claude. Gratuit.',
+  description: "Transforme ta demande simple en prompt expert par IA. 4 modules, 20 cas d'usage, propulsé par Claude. Gratuit.",
   alternates: { canonical: 'https://www.prompt-architect.io' },
   openGraph: {
     title: 'Prompt Architect — Générateur de prompts IA experts',
