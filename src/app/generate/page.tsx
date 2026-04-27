@@ -30,7 +30,12 @@ const MODULES_FREE = [
       { id: "negociation", label: "Négociation Salariale", desc: "Scripts et stratégies" },
       { id: "presentation", label: "Présentation 10 min", desc: "Structure chronométrée" },
     ]},
-  { id: "dev", icon: "⟁", label: "Développement", color: '#A47CFF', desc: "Code, SaaS, debug, agents IA", premium: false,
+
+]
+
+// Modules exclusifs payants (Standard, Pro, Premium)
+const MODULES_PREMIUM = [
+  { id: "dev", icon: "⟁", label: "Développement", color: "#A47CFF", desc: "Code, SaaS, debug, agents IA", premium: true,
     cases: [
       { id: "app_saas", label: "Brief Technique SaaS", desc: "Architecture et stack recommandée" },
       { id: "generation_code", label: "Génération de Code", desc: "Code propre et production-ready" },
@@ -38,10 +43,6 @@ const MODULES_FREE = [
       { id: "agent_ia", label: "Agent IA System Prompt", desc: "System prompt production-ready" },
       { id: "cicd", label: "Pipeline CI/CD", desc: "GitHub Actions complet" },
     ]},
-]
-
-// Modules exclusifs payants (Standard, Pro, Premium)
-const MODULES_PREMIUM = [
   { id: "ia_auto", icon: "⟳", label: "IA & Automatisation", color: '#00E5FF', desc: "Workflows, agents, n8n, Zapier, prompts système", premium: true,
     cases: [
       { id: "workflow_auto", label: "Workflow Automatisation", desc: "n8n, Zapier, Make — flux complets" },
@@ -55,7 +56,7 @@ const MODULES_PREMIUM = [
       { id: "fiche_produit", label: "Fiche Produit SEO", desc: "Description optimisée qui convertit" },
       { id: "email_abandon", label: "Email Panier Abandonné", desc: "Séquence de récupération" },
       { id: "upsell_cross", label: "Script Upsell/Cross-sell", desc: "Augmenter le panier moyen" },
-      { id: 'pub_ads', label: "Publicité Facebook/Google", desc: "Copy d'annonces qui convertissent" },
+      { id: "pub_ads", label: "Publicité Facebook/Google", desc: "Copy d'annonces qui convertissent" },
       { id: "page_vente", label: "Landing Page Vente", desc: "Structure de page haute conversion" },
     ]},
   { id: "juridique", icon: "⚖", label: "Juridique & Contrats", color: '#FFB800', desc: "CGV, NDA, contrats, mentions légales", premium: true,
