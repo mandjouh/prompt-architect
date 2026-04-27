@@ -1,16 +1,56 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!,
 })
 
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
+
+const PLAN_LIMITS: Record<string, number> = {
+  free: 10,
+  standard: 50,
+  pro: 100,
+  premium: 400,
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const { module, caseType, userInput } = await request.json()
+    const { module, caseType, userInput, userId } = await request.json()
 
     if (!userInput) {
       return NextResponse.json({ error: 'Input manquant' }, { status: 400 })
+    }
+
+    // Vérifier les limites si utilisateur connecté
+    if (userId) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('plan, credits_used')
+        .eq('id', userId)
+        .single()
+
+      if (profile) {
+        const limit = PLAN_LIMITS[profile.plan] || 10
+        if (profile.credits_used >= limit) {
+          return NextResponse.json({
+            error: 'LIMIT_REACHED',
+            plan: profile.plan,
+            limit,
+            used: profile.credits_used,
+          }, { status: 403 })
+        }
+
+        // Incrémenter le compteur
+        await supabase
+          .from('profiles')
+          .update({ credits_used: profile.credits_used + 1 })
+          .eq('id', userId)
+      }
     }
 
     const systemPrompt = `Tu es PromptArchitect, un expert mondial en prompt engineering.
@@ -35,12 +75,7 @@ Génère un prompt expert et optimisé pour ce besoin.`
       model: 'claude-sonnet-4-5',
       max_tokens: 8192,
       system: systemPrompt,
-      messages: [
-        {
-          role: 'user',
-          content: userMessage,
-        },
-      ],
+      messages: [{ role: 'user', content: userMessage }],
     })
 
     const prompt = message.content[0].type === 'text' ? message.content[0].text : ''
@@ -49,9 +84,6 @@ Génère un prompt expert et optimisé pour ce besoin.`
 
   } catch (error) {
     console.error('Erreur API:', error)
-    return NextResponse.json(
-      { error: 'Erreur lors de la génération' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Erreur lors de la génération' }, { status: 500 })
   }
 }
