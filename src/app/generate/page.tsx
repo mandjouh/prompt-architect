@@ -74,7 +74,7 @@ export default function GeneratePage() {
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ module: selectedModule, caseType: selectedCase?.label, userInput: input }),
+        body: JSON.stringify({ module: selectedModule, caseType: selectedCase?.label, userInput: input, userId: user?.id }),
       })
       const data = await response.json()
       const promptResult = data.prompt || 'Erreur lors de la génération.'
