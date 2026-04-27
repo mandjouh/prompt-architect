@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
 
-const MODULES = [
-  { id: 'business', icon: '◈', label: 'Business', color: '#D4FF57', desc: 'Plans, pitch, stratégie, finance',
+// Modules gratuits + payants
+const MODULES_FREE = [
+  { id: 'business', icon: '◈', label: 'Business', color: '#D4FF57', desc: 'Plans, pitch, stratégie, finance', premium: false,
     cases: [
       { id: 'business_plan', label: 'Business Plan', desc: 'Plan complet pour ton projet' },
       { id: 'pitch_deck', label: 'Pitch Deck', desc: 'Présentation investisseurs' },
@@ -13,7 +14,7 @@ const MODULES = [
       { id: 'modele_financier', label: 'Modélisation Financière', desc: 'MRR, LTV, CAC et projections' },
       { id: 'strategie_gtm', label: 'Stratégie GTM', desc: 'Go-To-Market complet' },
     ]},
-  { id: 'contenu', icon: '◉', label: 'Contenu Viral', color: '#FF7A3D', desc: 'Hooks, scripts, posts, copywriting',
+  { id: 'contenu', icon: '◉', label: 'Contenu Viral', color: '#FF7A3D', desc: 'Hooks, scripts, posts, copywriting', premium: false,
     cases: [
       { id: 'hook_video', label: 'Hook TikTok/Reels', desc: '10 hooks viraux optimisés' },
       { id: 'script_youtube', label: 'Script YouTube', desc: 'Script complet avec structure' },
@@ -21,7 +22,7 @@ const MODULES = [
       { id: 'copywriting', label: 'Page de Vente', desc: 'Copy persuasif et éthique' },
       { id: 'newsletter', label: 'Newsletter', desc: 'Template + édition complète' },
     ]},
-  { id: 'pro', icon: '◎', label: 'Usage Pro', color: '#38C4FF', desc: 'Emails, CV, rapports, lettres',
+  { id: 'pro', icon: '◎', label: 'Usage Pro', color: '#38C4FF', desc: 'Emails, CV, rapports, lettres', premium: false,
     cases: [
       { id: 'email_pro', label: 'Email Professionnel', desc: 'Prospection, relance, négociation' },
       { id: 'cv', label: 'CV Optimisé ATS', desc: 'CV qui passe les filtres automatiques' },
@@ -29,7 +30,7 @@ const MODULES = [
       { id: 'negociation', label: 'Négociation Salariale', desc: 'Scripts et stratégies' },
       { id: 'presentation', label: 'Présentation 10 min', desc: 'Structure chronométrée' },
     ]},
-  { id: 'dev', icon: '⟁', label: 'Développement', color: '#A47CFF', desc: 'Code, SaaS, debug, agents IA',
+  { id: 'dev', icon: '⟁', label: 'Développement', color: '#A47CFF', desc: 'Code, SaaS, debug, agents IA', premium: false,
     cases: [
       { id: 'app_saas', label: 'Brief Technique SaaS', desc: 'Architecture et stack recommandée' },
       { id: 'generation_code', label: 'Génération de Code', desc: 'Code propre et production-ready' },
@@ -39,10 +40,49 @@ const MODULES = [
     ]},
 ]
 
+// Modules exclusifs payants (Standard, Pro, Premium)
+const MODULES_PREMIUM = [
+  { id: 'ia_auto', icon: '⟳', label: 'IA & Automatisation', color: '#00E5FF', desc: 'Workflows, agents, n8n, Zapier, prompts système', premium: true,
+    cases: [
+      { id: 'workflow_auto', label: 'Workflow Automatisation', desc: 'n8n, Zapier, Make — flux complets' },
+      { id: 'agent_system', label: 'Agent IA Avancé', desc: 'System prompt production-ready' },
+      { id: 'prompt_chaining', label: 'Prompt Chaining', desc: 'Enchaînement de prompts complexes' },
+      { id: 'fine_tuning', label: 'Fine-tuning Dataset', desc: 'Données d'entraînement structurées' },
+      { id: 'rag_system', label: 'Système RAG', desc: 'Retrieval Augmented Generation' },
+    ]},
+  { id: 'ecommerce', icon: '◑', label: 'E-commerce & Vente', color: '#FF4D8B', desc: 'Fiches produits, emails, upsell, conversion', premium: true,
+    cases: [
+      { id: 'fiche_produit', label: 'Fiche Produit SEO', desc: 'Description optimisée qui convertit' },
+      { id: 'email_abandon', label: 'Email Panier Abandonné', desc: 'Séquence de récupération' },
+      { id: 'upsell_cross', label: 'Script Upsell/Cross-sell', desc: 'Augmenter le panier moyen' },
+      { id: 'pub_ads', label: 'Publicité Facebook/Google', desc: 'Copy d'annonces qui convertissent' },
+      { id: 'page_vente', label: 'Landing Page Vente', desc: 'Structure de page haute conversion' },
+    ]},
+  { id: 'juridique', icon: '⚖', label: 'Juridique & Contrats', color: '#FFB800', desc: 'CGV, NDA, contrats, mentions légales', premium: true,
+    cases: [
+      { id: 'cgv', label: 'CGV / CGU', desc: 'Conditions générales complètes' },
+      { id: 'nda', label: 'NDA / Accord Confidentialité', desc: 'Contrat de non-divulgation' },
+      { id: 'contrat_prestation', label: 'Contrat de Prestation', desc: 'Contrat freelance professionnel' },
+      { id: 'mentions_legales', label: 'Mentions Légales', desc: 'Conformité RGPD et légale' },
+      { id: 'politique_confidentialite', label: 'Politique de Confidentialité', desc: 'Privacy policy complète' },
+    ]},
+  { id: 'video_ia', icon: '▶', label: 'Création Vidéo IA', color: '#FF6B35', desc: 'Scripts, storyboards, prompts Sora/Runway/Kling', premium: true,
+    cases: [
+      { id: 'prompt_sora', label: 'Prompt Sora / Kling', desc: 'Générer des vidéos IA cinématiques' },
+      { id: 'storyboard', label: 'Storyboard Complet', desc: 'Plan séquence visuel détaillé' },
+      { id: 'script_video_ia', label: 'Script Vidéo IA', desc: 'Script optimisé pour génération IA' },
+      { id: 'prompt_runway', label: 'Prompt Runway ML', desc: 'Effets et transitions avancés' },
+      { id: 'voiceover', label: 'Script Voix Off', desc: 'Narration optimisée pour synthèse vocale' },
+    ]},
+]
+
+const MODULES = [...MODULES_FREE, ...MODULES_PREMIUM]
+
 const LS_KEY = 'pa_saved_prompts'
 
 export default function GeneratePage() {
   const { user } = useAuth()
+  const [userPlan, setUserPlan] = useState<string>('free')
   const [selectedModule, setSelectedModule] = useState<string | null>(null)
   const [selectedCase, setSelectedCase] = useState<{ id: string; label: string; desc: string } | null>(null)
   const [input, setInput] = useState('')
@@ -60,6 +100,10 @@ export default function GeneratePage() {
         const raw = localStorage.getItem(LS_KEY)
         setSavedCount(raw ? JSON.parse(raw).length : 0)
       } catch { setSavedCount(0) }
+    } else {
+      // Charger le plan de l'utilisateur
+      supabase.from('profiles').select('plan').eq('id', user.id).single()
+        .then(({ data }) => { if (data) setUserPlan(data.plan) })
     }
   }, [user])
 
@@ -177,26 +221,69 @@ export default function GeneratePage() {
               <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Choisis ton module</h1>
               <p style={{ color: '#4A5568', fontSize: 14 }}>Sélectionne la catégorie qui correspond à ton besoin</p>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
-              {MODULES.map(m => (
-                <button key={m.id} onClick={() => setSelectedModule(m.id)}
-                  style={{ border: '1px solid #151C25', background: '#0B0E13', padding: 24, textAlign: 'left', cursor: 'pointer', color: 'white', transition: 'all 0.15s' }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = m.color + '50')}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = '#151C25')}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-                    <span style={{ fontSize: 22, color: m.color }}>{m.icon}</span>
-                    <span style={{ fontWeight: 900, fontSize: 16 }}>{m.label}</span>
-                  </div>
-                  <p style={{ fontSize: 13, color: '#4A5568', marginBottom: 16, lineHeight: 1.5 }}>{m.desc}</p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                    {m.cases.slice(0, 3).map(c => (
-                      <span key={c.id} style={{ fontSize: 10, padding: '2px 8px', border: '1px solid #151C25', color: '#2D3748' }}>{c.label}</span>
-                    ))}
-                    <span style={{ fontSize: 10, padding: '2px 8px', color: '#2D3748' }}>+{m.cases.length - 3}</span>
-                  </div>
-                </button>
-              ))}
+            {/* Modules gratuits */}
+            <div style={{ marginBottom: 24 }}>
+              <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.12em', marginBottom: 12 }}>MODULES INCLUS</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
+                {MODULES_FREE.map(m => (
+                  <button key={m.id} onClick={() => setSelectedModule(m.id)}
+                    style={{ border: '1px solid #151C25', background: '#0B0E13', padding: 24, textAlign: 'left', cursor: 'pointer', color: 'white', transition: 'all 0.15s' }}
+                    onMouseEnter={e => (e.currentTarget.style.borderColor = m.color + '50')}
+                    onMouseLeave={e => (e.currentTarget.style.borderColor = '#151C25')}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                      <span style={{ fontSize: 22, color: m.color }}>{m.icon}</span>
+                      <span style={{ fontWeight: 900, fontSize: 16 }}>{m.label}</span>
+                    </div>
+                    <p style={{ fontSize: 13, color: '#4A5568', marginBottom: 16, lineHeight: 1.5 }}>{m.desc}</p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                      {m.cases.slice(0, 3).map(c => (
+                        <span key={c.id} style={{ fontSize: 10, padding: '2px 8px', border: '1px solid #151C25', color: '#2D3748' }}>{c.label}</span>
+                      ))}
+                      <span style={{ fontSize: 10, padding: '2px 8px', color: '#2D3748' }}>+{m.cases.length - 3}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Modules premium */}
+            <div>
+              <div style={{ fontSize: 9, color: '#D4FF57', letterSpacing: '0.12em', marginBottom: 12 }}>MODULES EXCLUSIFS — PLANS PAYANTS 🔒</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
+                {MODULES_PREMIUM.map(m => {
+                  const isLocked = !user || userPlan === 'free'
+                  return (
+                    <button key={m.id}
+                      onClick={() => isLocked ? window.location.href = '/pricing' : setSelectedModule(m.id)}
+                      style={{ border: `1px solid ${isLocked ? '#1A2535' : m.color + '40'}`, background: isLocked ? '#080B0F' : '#0B0E13', padding: 24, textAlign: 'left', cursor: 'pointer', color: 'white', transition: 'all 0.15s', position: 'relative', overflow: 'hidden', opacity: isLocked ? 0.7 : 1 }}
+                    >
+                      {isLocked && (
+                        <div style={{ position: 'absolute', top: 10, right: 10, background: '#D4FF57', color: '#07090C', fontSize: 8, fontWeight: 900, padding: '2px 8px', letterSpacing: '0.08em' }}>
+                          UPGRADE
+                        </div>
+                      )}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                        <span style={{ fontSize: 22, color: isLocked ? '#2D3748' : m.color }}>{m.icon}</span>
+                        <span style={{ fontWeight: 900, fontSize: 16, color: isLocked ? '#4A5568' : 'white' }}>{m.label}</span>
+                        {isLocked && <span style={{ fontSize: 14 }}>🔒</span>}
+                      </div>
+                      <p style={{ fontSize: 13, color: '#2D3748', marginBottom: 16, lineHeight: 1.5 }}>{m.desc}</p>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                        {m.cases.slice(0, 3).map(c => (
+                          <span key={c.id} style={{ fontSize: 10, padding: '2px 8px', border: '1px solid #0F1520', color: '#1A2535' }}>{c.label}</span>
+                        ))}
+                        <span style={{ fontSize: 10, padding: '2px 8px', color: '#1A2535' }}>+{m.cases.length - 3}</span>
+                      </div>
+                      {isLocked && (
+                        <div style={{ marginTop: 12, fontSize: 11, color: '#D4FF57', fontWeight: 700 }}>
+                          ✦ Disponible dès 5$/mois →
+                        </div>
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
           </div>
         )}
