@@ -23,10 +23,10 @@ type Profile = {
 }
 
 const PLAN_CONFIG = {
-  free:     { label: 'Free',     limit: 10,  color: '#4A5568', nextPlan: 'standard' },
+  free:     { label: 'Free',     limit: 5,  color: '#4A5568', nextPlan: 'standard' },
   standard: { label: 'Standard', limit: 50,  color: '#38C4FF', nextPlan: 'pro' },
   pro:      { label: 'Pro',      limit: 100, color: '#D4FF57', nextPlan: 'premium' },
-  premium:  { label: 'Premium',  limit: 400, color: '#A47CFF', nextPlan: null },
+  premium:  { label: 'Premium',  limit: 250, color: '#A47CFF', nextPlan: null },
 }
 
 function formatDate(iso: string) {

@@ -12,10 +12,10 @@ const supabase = createClient(
 )
 
 const PLAN_LIMITS: Record<string, number> = {
-  free: 10,
+  free: 5,
   standard: 50,
   pro: 100,
-  premium: 400,
+  premium: 250,
 }
 
 export async function POST(request: NextRequest) {

@@ -14,10 +14,10 @@ type Profile = {
 }
 
 const PLAN_CONFIG = {
-  free:     { label: 'Free',     limit: 10,  color: '#4A5568', price: '0$' },
+  free:     { label: 'Free',     limit: 5,  color: '#4A5568', price: '0$' },
   standard: { label: 'Standard', limit: 50,  color: '#38C4FF', price: '5$/mois' },
   pro:      { label: 'Pro',      limit: 100, color: '#D4FF57', price: '10$/mois' },
-  premium:  { label: 'Premium',  limit: 400, color: '#A47CFF', price: '20$/mois' },
+  premium:  { label: 'Premium',  limit: 250, color: '#A47CFF', price: '20$/mois' },
 }
 
 export default function ProfilePage() {
