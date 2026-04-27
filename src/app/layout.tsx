@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { AuthProvider } from './context/AuthContext'
+import PWARegister from './components/PWARegister'
 
 const APP_URL = 'https://www.prompt-architect.io'
 
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
     default: 'Prompt Architect — Génère des prompts experts en 2 minutes',
     template: '%s | Prompt Architect',
   },
-  description: 'Transforme ta demande simple en prompt expert, structuré et optimisé par IA. 4 modules, 20 cas d\'usage, propulsé par Claude. Gratuit.',
+  description: "Transforme ta demande simple en prompt expert, structuré et optimisé par IA. 4 modules, 20 cas d'usage, propulsé par Claude. Gratuit.",
   verification: {
     google: 'w13Wcx86JARneQeGERgu7-IoeydWmiDzV6Tu4QpwGSM',
   },
@@ -22,7 +23,6 @@ export const metadata: Metadata = {
   authors: [{ name: 'Prompt Architect', url: APP_URL }],
   creator: 'Prompt Architect',
   publisher: 'Prompt Architect',
-  
   robots: {
     index: true,
     follow: true,
@@ -34,15 +34,8 @@ export const metadata: Metadata = {
     url: APP_URL,
     siteName: 'Prompt Architect',
     title: 'Prompt Architect — Génère des prompts experts en 2 minutes',
-    description: 'Transforme ta demande simple en prompt expert, structuré et optimisé par IA. 4 modules, 20 cas d\'usage, propulsé par Claude.',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Prompt Architect — Générateur de prompts IA experts',
-      },
-    ],
+    description: "Transforme ta demande simple en prompt expert, structuré et optimisé par IA. 4 modules, 20 cas d'usage, propulsé par Claude.",
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Prompt Architect — Générateur de prompts IA experts' }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -61,11 +54,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <meta name="theme-color" content="#07090C" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#D4FF57" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Prompt Architect" />
+        <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body>
         <AuthProvider>
+          <PWARegister />
           {children}
         </AuthProvider>
       </body>

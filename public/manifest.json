@@ -1,0 +1,39 @@
+{
+  "name": "Prompt Architect",
+  "short_name": "PromptArch",
+  "description": "Génère des prompts experts en 2 minutes avec l'IA",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07090C",
+  "theme_color": "#D4FF57",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Générer un prompt",
+      "short_name": "Générer",
+      "url": "/generate",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Mes prompts",
+      "short_name": "Mes prompts",
+      "url": "/my-prompts",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "categories": ["productivity", "utilities"]
+}
