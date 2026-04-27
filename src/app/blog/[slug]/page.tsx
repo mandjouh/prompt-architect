@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
@@ -5,27 +7,7 @@ import { ARTICLES } from '../../lib/blog'
 
 type Props = { params: { slug: string } }
 
-export async function generateStaticParams() {
-  return ARTICLES.map(a => ({ slug: a.slug }))
-}
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const article = ARTICLES.find(a => a.slug === params.slug)
-  if (!article) return {}
-  return {
-    title: article.metaTitle,
-    description: article.metaDescription,
-    alternates: { canonical: `https://www.prompt-architect.io/blog/${article.slug}` },
-    openGraph: {
-      title: article.metaTitle,
-      description: article.metaDescription,
-      url: `https://www.prompt-architect.io/blog/${article.slug}`,
-      type: 'article',
-      publishedTime: article.publishedAt,
-      images: [{ url: '/og-image.png', width: 1200, height: 630 }],
-    },
-  }
-}
 
 function renderContent(content: string) {
   const lines = content.split('\n')

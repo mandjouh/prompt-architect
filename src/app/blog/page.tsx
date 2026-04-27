@@ -1,18 +1,7 @@
-import Link from 'next/link'
-import type { Metadata } from 'next'
-import { ARTICLES } from '../lib/blog'
+'use client'
 
-export const metadata: Metadata = {
-  title: 'Blog Prompt Engineering — Prompt Architect',
-  description: 'Guides, tutoriels et stratégies pour maîtriser le prompt engineering et créer du contenu viral avec l\'IA.',
-  alternates: { canonical: 'https://www.prompt-architect.io/blog' },
-  openGraph: {
-    title: 'Blog Prompt Engineering — Prompt Architect',
-    description: 'Guides, tutoriels et stratégies pour maîtriser le prompt engineering.',
-    url: 'https://www.prompt-architect.io/blog',
-    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
-  },
-}
+import Link from 'next/link'
+import { ARTICLES } from '../lib/blog'
 
 const CATEGORY_COLORS: Record<string, string> = {
   'Guide': '#D4FF57',
