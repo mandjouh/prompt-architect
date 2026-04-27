@@ -7,28 +7,25 @@ const supabase = createClient(
 )
 
 export async function GET(request: NextRequest) {
-  // Sécurité — vérifier que c'est Vercel qui appelle
   const authHeader = request.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
   }
 
   try {
-    const { error, count } = await supabase
+    const { error } = await supabase
       .from('profiles')
       .update({ credits_used: 0 })
       .neq('credits_used', 0)
-      .select('*', { count: 'exact', head: true })
 
     if (error) {
       console.error('Erreur reset credits:', error)
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    console.log(`Reset effectué — ${count} profils mis à jour`)
+    console.log(`Reset effectué le ${new Date().toISOString()}`)
     return NextResponse.json({
       success: true,
-      updated: count,
       date: new Date().toISOString(),
     })
 
