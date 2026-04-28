@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '../context/AuthContext'
-import { supabase } from '../lib/supabase'
 
 // ⚠️ Seul cet email a accès à la page admin
 const ADMIN_EMAIL = 'mandjouh@yahoo.fr'
@@ -25,14 +24,15 @@ const PLAN_CONFIG = {
 }
 
 export default function AdminPage() {
-  const { user, loading } = useAuth()
+  const { user, session, loading } = useAuth()
   const router = useRouter()
   const [users, setUsers] = useState<UserProfile[]>([])
-  const [fetching, setFetching] = useState(true)
+  const [fetching, setFetching] = useState(false)
   const [search, setSearch] = useState('')
   const [updating, setUpdating] = useState<string | null>(null)
   const [updated, setUpdated] = useState<string | null>(null)
   const [filterPlan, setFilterPlan] = useState<string>('all')
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   useEffect(() => {
     if (!loading) {
@@ -41,32 +41,57 @@ export default function AdminPage() {
     }
   }, [user, loading, router])
 
+  // Déclenche fetchUsers uniquement quand session est disponible
   useEffect(() => {
-    if (!user || user.email !== ADMIN_EMAIL) return
-    fetchUsers()
-  }, [user])
+    if (!loading && user?.email === ADMIN_EMAIL && session?.access_token) {
+      fetchUsers(session.access_token)
+    }
+  }, [loading, user, session])
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (token: string) => {
     setFetching(true)
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .order('created_at', { ascending: false })
-    if (data) setUsers(data)
+    setErrorMsg(null)
+    try {
+      const res = await fetch('/api/admin/users', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      const json = await res.json()
+      if (!res.ok) {
+        setErrorMsg(json.error ?? 'Erreur inconnue')
+      } else {
+        setUsers(json.users ?? [])
+      }
+    } catch (e) {
+      setErrorMsg('Erreur réseau')
+    }
     setFetching(false)
   }
 
   const handleChangePlan = async (userId: string, newPlan: string) => {
+    if (!session?.access_token) { setErrorMsg('Session expirée'); return }
     setUpdating(userId)
-    const { error } = await supabase
-      .from('profiles')
-      .update({ plan: newPlan, credits_used: 0 })
-      .eq('id', userId)
-
-    if (!error) {
-      setUsers(prev => prev.map(u => u.id === userId ? { ...u, plan: newPlan as UserProfile['plan'], credits_used: 0 } : u))
-      setUpdated(userId)
-      setTimeout(() => setUpdated(null), 2000)
+    setErrorMsg(null)
+    try {
+      const res = await fetch('/api/admin/users', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ userId, newPlan }),
+      })
+      const json = await res.json()
+      if (!res.ok) {
+        setErrorMsg(json.error ?? 'Erreur mise à jour')
+      } else {
+        setUsers(prev => prev.map(u =>
+          u.id === userId ? { ...u, plan: newPlan as UserProfile['plan'], credits_used: 0 } : u
+        ))
+        setUpdated(userId)
+        setTimeout(() => setUpdated(null), 2000)
+      }
+    } catch (e) {
+      setErrorMsg('Erreur réseau')
     }
     setUpdating(null)
   }
@@ -121,6 +146,13 @@ export default function AdminPage() {
           <p style={{ fontSize: 12, color: '#2D3748' }}>Modifier les plans et accès de tes utilisateurs</p>
         </div>
 
+        {/* ERREUR */}
+        {errorMsg && (
+          <div style={{ marginBottom: 24, padding: '12px 16px', background: '#FF4D4D10', border: '1px solid #FF4D4D40', color: '#FF4D4D', fontSize: 12 }}>
+            ⚠ {errorMsg}
+          </div>
+        )}
+
         {/* STATS */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 1, background: '#151C25', border: '1px solid #151C25', marginBottom: 32 }}>
           {[
@@ -154,7 +186,9 @@ export default function AdminPage() {
               </button>
             ))}
           </div>
-          <button onClick={fetchUsers} style={{ padding: '10px 16px', fontSize: 11, fontFamily: 'monospace', background: 'transparent', border: '1px solid #151C25', color: '#4A5568', cursor: 'pointer' }}>
+          <button
+            onClick={() => session?.access_token && fetchUsers(session.access_token)}
+            style={{ padding: '10px 16px', fontSize: 11, fontFamily: 'monospace', background: 'transparent', border: '1px solid #151C25', color: '#4A5568', cursor: 'pointer' }}>
             ↻ Rafraîchir
           </button>
         </div>
