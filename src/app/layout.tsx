@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import './globals.css'
 import { AuthProvider } from './context/AuthContext'
 import PWARegister from './components/PWARegister'
@@ -63,6 +64,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body>
+        {/* Plausible Analytics — privacy-friendly, no cookies */}
+        <Script
+          src="https://plausible.io/js/pa-frgliIdupAkgYXHqLVW09.js"
+          strategy="afterInteractive"
+        />
+        <Script id="plausible-init" strategy="afterInteractive">{`
+          window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)};
+          window.plausible.init=window.plausible.init||function(i){window.plausible.o=i||{}};
+          window.plausible.init();
+        `}</Script>
         <AuthProvider>
           <PWARegister />
           {children}
