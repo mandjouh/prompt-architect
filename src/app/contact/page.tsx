@@ -12,9 +12,9 @@ export default function ContactPage() {
     setStatus('sending')
 
     try {
-      const res = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
       if (res.ok) {
@@ -153,12 +153,12 @@ export default function ContactPage() {
                     style={{ ...inputStyle, cursor: 'pointer' }}
                   >
                     <option value="" style={{ background: '#0B0E13' }}>Sélectionne un sujet...</option>
-                    <option value="support" style={{ background: '#0B0E13' }}>Support technique</option>
-                    <option value="feedback" style={{ background: '#0B0E13' }}>Feedback / Suggestion</option>
-                    <option value="bug" style={{ background: '#0B0E13' }}>Signaler un bug</option>
-                    <option value="partenariat" style={{ background: '#0B0E13' }}>Partenariat</option>
-                    <option value="facturation" style={{ background: '#0B0E13' }}>Facturation / Abonnement</option>
-                    <option value="autre" style={{ background: '#0B0E13' }}>Autre</option>
+                    <option value="Support technique" style={{ background: '#0B0E13' }}>Support technique</option>
+                    <option value="Feedback / Suggestion" style={{ background: '#0B0E13' }}>Feedback / Suggestion</option>
+                    <option value="Signaler un bug" style={{ background: '#0B0E13' }}>Signaler un bug</option>
+                    <option value="Partenariat" style={{ background: '#0B0E13' }}>Partenariat</option>
+                    <option value="Facturation / Abonnement" style={{ background: '#0B0E13' }}>Facturation / Abonnement</option>
+                    <option value="Autre" style={{ background: '#0B0E13' }}>Autre</option>
                   </select>
                 </div>
 
