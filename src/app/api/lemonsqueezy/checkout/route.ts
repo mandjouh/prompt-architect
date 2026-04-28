@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
               email,
               custom: { user_id: userId },
             },
-            product_options: {
+            checkout_options: {
               redirect_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing?success=true`,
             },
           },
