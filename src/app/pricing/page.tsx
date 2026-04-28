@@ -13,8 +13,7 @@ const PLANS = [
     color: '#4A5568',
     features: ['5 générations / mois', 'Accès aux 3 modules gratuits', 'Sauvegarde locale', 'Bibliothèque 50 prompts'],
     cta: 'Commencer gratuitement',
-    paddlePriceId: null,
-    lsPriceId: null,
+    variantId: null,
   },
   {
     id: 'standard',
@@ -24,8 +23,7 @@ const PLANS = [
     color: '#38C4FF',
     features: ['50 générations / mois', 'Accès aux 8 modules', 'Sauvegarde cloud', 'Bibliothèque 50 prompts', 'Historique illimité'],
     cta: 'Choisir Standard',
-    paddlePriceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_STANDARD,
-    lsPriceId: process.env.NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_STANDARD,
+    variantId: process.env.NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_STANDARD,
   },
   {
     id: 'pro',
@@ -36,8 +34,7 @@ const PLANS = [
     popular: true,
     features: ['100 générations / mois', 'Accès aux 8 modules', 'Sauvegarde cloud', 'Bibliothèque 50 prompts', 'Historique illimité', 'Support prioritaire'],
     cta: 'Choisir Pro',
-    paddlePriceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO,
-    lsPriceId: process.env.NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_PRO,
+    variantId: process.env.NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_PRO,
   },
   {
     id: 'premium',
@@ -47,8 +44,7 @@ const PLANS = [
     color: '#A47CFF',
     features: ['250 générations / mois', 'Accès aux 8 modules', 'Sauvegarde cloud', 'Bibliothèque 50 prompts', 'Historique illimité', 'Support prioritaire', 'Nouvelles fonctionnalités en avant-première'],
     cta: 'Choisir Premium',
-    paddlePriceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_PREMIUM,
-    lsPriceId: process.env.NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_PREMIUM,
+    variantId: process.env.NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_PREMIUM,
   },
 ]
 
@@ -56,7 +52,6 @@ export default function PricingPage() {
   const { user } = useAuth()
   const router = useRouter()
   const [loading, setLoading] = useState<string | null>(null)
-  const [provider, setProvider] = useState<'paddle' | 'lemonsqueezy'>('paddle')
 
   const handleSubscribe = async (plan: typeof PLANS[0]) => {
     if (plan.id === 'free') { router.push('/generate'); return }
@@ -65,23 +60,13 @@ export default function PricingPage() {
     setLoading(plan.id)
 
     try {
-      if (provider === 'lemonsqueezy') {
-        const response = await fetch('/api/lemonsqueezy/checkout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ variantId: plan.lsPriceId, userId: user.id, email: user.email }),
-        })
-        const data = await response.json()
-        if (data.checkoutUrl) window.location.href = data.checkoutUrl
-      } else {
-        const response = await fetch('/api/paddle/checkout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ priceId: plan.paddlePriceId, userId: user.id, email: user.email }),
-        })
-        const data = await response.json()
-        if (data.checkoutUrl) window.location.href = data.checkoutUrl
-      }
+      const response = await fetch('/api/lemonsqueezy/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ variantId: plan.variantId, userId: user.id, email: user.email }),
+      })
+      const data = await response.json()
+      if (data.checkoutUrl) window.location.href = data.checkoutUrl
     } catch {
       console.error('Erreur checkout')
     }
@@ -129,40 +114,9 @@ export default function PricingPage() {
             Simple. Transparent.<br />
             <span style={{ color: '#D4FF57' }}>Sans surprise.</span>
           </h1>
-          <p style={{ color: '#4A5568', fontSize: 14, lineHeight: 1.7, maxWidth: 400, margin: '0 auto 24px' }}>
+          <p style={{ color: '#4A5568', fontSize: 14, lineHeight: 1.7, maxWidth: 400, margin: '0 auto' }}>
             Commence gratuitement. Upgrade quand tu es prêt. Annule à tout moment.
           </p>
-
-          {/* TOGGLE PROVIDER */}
-          <div style={{ display: 'inline-flex', border: '1px solid #151C25', background: '#0D1118', padding: 4, gap: 4 }}>
-            <button
-              onClick={() => setProvider('paddle')}
-              style={{
-                padding: '6px 16px', fontSize: 10, fontWeight: 900, fontFamily: 'monospace',
-                letterSpacing: '0.08em', cursor: 'pointer', border: 'none',
-                background: provider === 'paddle' ? '#D4FF57' : 'transparent',
-                color: provider === 'paddle' ? '#07090C' : '#4A5568',
-                transition: 'all 0.15s',
-              }}
-            >
-              PADDLE
-            </button>
-            <button
-              onClick={() => setProvider('lemonsqueezy')}
-              style={{
-                padding: '6px 16px', fontSize: 10, fontWeight: 900, fontFamily: 'monospace',
-                letterSpacing: '0.08em', cursor: 'pointer', border: 'none',
-                background: provider === 'lemonsqueezy' ? '#D4FF57' : 'transparent',
-                color: provider === 'lemonsqueezy' ? '#07090C' : '#4A5568',
-                transition: 'all 0.15s',
-              }}
-            >
-              LEMON SQUEEZY
-            </button>
-          </div>
-          <div style={{ fontSize: 10, color: '#4A5568', marginTop: 8 }}>
-            {provider === 'lemonsqueezy' ? '🍋 Paiement via Lemon Squeezy' : '🏓 Paiement via Paddle'}
-          </div>
         </div>
 
         {/* PLANS */}
@@ -234,7 +188,7 @@ export default function PricingPage() {
               { q: 'Puis-je annuler à tout moment ?', r: 'Oui, sans frais ni engagement. Ton plan reste actif jusqu\'à la fin de la période payée.' },
               { q: 'Que se passe-t-il si j\'atteins ma limite ?', r: 'Tu reçois une notification. Tu peux upgrader ou attendre le renouvellement mensuel.' },
               { q: 'Les générations non utilisées sont-elles reportées ?', r: 'Non, le compteur se remet à zéro chaque mois à la date de renouvellement.' },
-              { q: 'Comment fonctionne le paiement ?', r: 'Paiement sécurisé via Paddle ou Lemon Squeezy. Carte Visa/Mastercard et autres méthodes locales acceptées.' },
+              { q: 'Comment fonctionne le paiement ?', r: 'Paiement sécurisé via Lemon Squeezy. Carte Visa/Mastercard, Google Pay et PayPal acceptés.' },
             ].map((item, i) => (
               <div key={i} style={{ padding: '20px 0', borderBottom: '1px solid #0F1520' }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: 'white', marginBottom: 8 }}>{item.q}</div>
