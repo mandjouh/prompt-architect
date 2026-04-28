@@ -19,13 +19,10 @@ export async function POST(request: NextRequest) {
               email,
               custom: { user_id: userId },
             },
-            checkout_options: {
-              redirect_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing?success=true`,
-            },
           },
           relationships: {
             store: {
-              data: { type: 'stores', id: process.env.LEMONSQUEEZY_STORE_ID },
+              data: { type: 'stores', id: String(process.env.LEMONSQUEEZY_STORE_ID) },
             },
             variant: {
               data: { type: 'variants', id: String(variantId) },
@@ -36,6 +33,8 @@ export async function POST(request: NextRequest) {
     })
 
     const data = await response.json()
+
+    console.log('LS response:', JSON.stringify(data))
 
     const checkoutUrl = data?.data?.attributes?.url
 
