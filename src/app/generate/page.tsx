@@ -30,10 +30,8 @@ const MODULES_FREE = [
       { id: "negociation", label: "Négociation Salariale", desc: "Scripts et stratégies" },
       { id: "presentation", label: "Présentation 10 min", desc: "Structure chronométrée" },
     ]},
-
 ]
 
-// Modules exclusifs payants (Standard, Pro, Premium)
 const MODULES_PREMIUM = [
   { id: "dev", icon: "⟁", label: "Développement", color: "#A47CFF", desc: "Code, SaaS, debug, agents IA", premium: true,
     cases: [
@@ -78,12 +76,13 @@ const MODULES_PREMIUM = [
 ]
 
 const MODULES = [...MODULES_FREE, ...MODULES_PREMIUM]
-
 const LS_KEY = 'pa_saved_prompts'
+const FREE_LIMIT = 5
 
 export default function GeneratePage() {
   const { user } = useAuth()
   const [userPlan, setUserPlan] = useState<string>('free')
+  const [creditsUsed, setCreditsUsed] = useState<number>(0)
   const [selectedModule, setSelectedModule] = useState<string | null>(null)
   const [selectedCase, setSelectedCase] = useState<{ id: string; label: string; desc: string } | null>(null)
   const [input, setInput] = useState('')
@@ -92,8 +91,13 @@ export default function GeneratePage() {
   const [copied, setCopied] = useState(false)
   const [justSaved, setJustSaved] = useState(false)
   const [savedCount, setSavedCount] = useState(0)
+  const [bannerDismissed, setBannerDismissed] = useState(false)
 
   const currentModule = MODULES.find(m => m.id === selectedModule)
+
+  // Bannière visible si Free + au moins 3 générations utilisées + pas fermée
+  const showUpgradeBanner = user && userPlan === 'free' && creditsUsed >= 3 && !bannerDismissed
+  const creditsLeft = Math.max(0, FREE_LIMIT - creditsUsed)
 
   useEffect(() => {
     if (!user) {
@@ -102,9 +106,13 @@ export default function GeneratePage() {
         setSavedCount(raw ? JSON.parse(raw).length : 0)
       } catch { setSavedCount(0) }
     } else {
-      // Charger le plan de l'utilisateur
-      supabase.from('profiles').select('plan').eq('id', user.id).single()
-        .then(({ data }) => { if (data) setUserPlan(data.plan) })
+      supabase.from('profiles').select('plan, credits_used').eq('id', user.id).single()
+        .then(({ data }) => {
+          if (data) {
+            setUserPlan(data.plan)
+            setCreditsUsed(data.credits_used ?? 0)
+          }
+        })
     }
   }, [user])
 
@@ -137,10 +145,10 @@ export default function GeneratePage() {
         }
 
         if (user) {
-          // Connecté → Supabase
           await supabase.from('saved_prompts').insert({ ...promptData, user_id: user.id })
+          // Mettre à jour le compteur local
+          setCreditsUsed(prev => prev + 1)
         } else {
-          // Non connecté → localStorage
           const existing = JSON.parse(localStorage.getItem(LS_KEY) || '[]')
           const newEntry = { ...promptData, id: Date.now().toString(), savedAt: new Date().toISOString() }
           const updated = [newEntry, ...existing].slice(0, 50)
@@ -192,6 +200,12 @@ export default function GeneratePage() {
           </div>
           {user ? (
             <div style={{ display: 'flex', gap: 8 }}>
+              {/* Compteur crédits Free */}
+              {userPlan === 'free' && (
+                <div style={{ fontSize: 11, border: creditsLeft <= 1 ? '1px solid #FF4D4D40' : '1px solid #151C25', padding: '6px 12px', color: creditsLeft <= 1 ? '#FF4D4D' : '#4A5568', background: creditsLeft <= 1 ? '#FF4D4D08' : 'transparent' }}>
+                  {creditsLeft}/{FREE_LIMIT} restants
+                </div>
+              )}
               <a href="/my-prompts" style={{ fontSize: 11, textDecoration: 'none', border: '1px solid #D4FF5740', padding: '6px 12px', color: '#D4FF57', background: '#D4FF5708' }}>
                 ◈ Mes prompts
               </a>
@@ -212,7 +226,7 @@ export default function GeneratePage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 800, margin: '0 auto', padding: '40px 24px' }}>
+      <div style={{ maxWidth: 800, margin: '0 auto', padding: '40px 24px', paddingBottom: showUpgradeBanner ? '120px' : '40px' }}>
 
         {/* ÉTAPE 1 */}
         {!selectedModule && (
@@ -364,7 +378,6 @@ export default function GeneratePage() {
               </button>
             </div>
 
-            {/* Badge sauvegarde */}
             {justSaved && (
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', background: '#D4FF5710', border: '1px solid #D4FF5730', marginBottom: 16, fontSize: 12 }}>
                 <span style={{ color: '#D4FF57' }}>✓</span>
@@ -407,6 +420,48 @@ export default function GeneratePage() {
         )}
 
       </div>
+
+      {/* BANNIÈRE UPGRADE — visible si Free + 3+ générations utilisées */}
+      {showUpgradeBanner && (
+        <div style={{
+          position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200,
+          background: '#0D1118', borderTop: '1px solid #D4FF5730',
+          padding: '14px 24px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16,
+          backdropFilter: 'blur(12px)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <div style={{ width: 6, height: 6, background: creditsLeft === 0 ? '#FF4D4D' : '#D4FF57', borderRadius: '50%', flexShrink: 0 }} />
+            <div>
+              <span style={{ fontSize: 12, fontWeight: 900, color: 'white' }}>
+                {creditsLeft === 0
+                  ? '⚠ Tu as atteint ta limite Free — '
+                  : `⚡ Il te reste ${creditsLeft} génération${creditsLeft > 1 ? 's' : ''} ce mois — `
+                }
+              </span>
+              <span style={{ fontSize: 12, color: '#4A5568' }}>
+                {creditsLeft === 0 ? 'Upgrade pour continuer.' : 'Upgrade pour en avoir plus.'}
+              </span>
+            </div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+            <a href="/pricing" style={{
+              background: '#D4FF57', color: '#07090C', padding: '8px 18px',
+              fontSize: 11, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.06em',
+              whiteSpace: 'nowrap',
+            }}>
+              ✦ VOIR LES PLANS
+            </a>
+            <button onClick={() => setBannerDismissed(true)} style={{
+              background: 'transparent', border: 'none', color: '#4A5568',
+              cursor: 'pointer', fontSize: 16, padding: '4px 8px', lineHeight: 1,
+            }}>
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }
