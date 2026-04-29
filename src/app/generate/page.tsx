@@ -209,16 +209,16 @@ export default function GeneratePage() {
               <a href="/my-prompts" style={{ fontSize: 11, textDecoration: 'none', border: '1px solid #D4FF5740', padding: '6px 12px', color: '#D4FF57', background: '#D4FF5708' }}>
                 ◈ Mes prompts
               </a>
-              <a href="/profile" style={{ fontSize: 11, textDecoration: 'none', border: '1px solid #151C25', padding: '6px 12px', color: '#4A5568' }}>
+              <a href="/profile" style={{ fontSize: 11, textDecoration: 'none', border: '1px solid #151C25', padding: '6px 12px', color: '#FFFFFF' }}>
                 ◎ Profil
               </a>
             </div>
           ) : (
             <div style={{ display: 'flex', gap: 8 }}>
-              <a href="/login" style={{ fontSize: 11, color: '#4A5568', textDecoration: 'none', border: '1px solid #151C25', padding: '6px 12px' }}>
+              <a href="/login" style={{ fontSize: 11, color: '#FFFFFF', textDecoration: 'none', border: '1px solid #151C25', padding: '6px 12px' }}>
                 Connexion
               </a>
-              <a href="/my-prompts" style={{ fontSize: 11, textDecoration: 'none', border: '1px solid #151C25', padding: '6px 12px', color: '#4A5568', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <a href="/my-prompts" style={{ fontSize: 11, textDecoration: 'none', border: '1px solid #151C25', padding: '6px 12px', color: '#FFFFFF', display: 'flex', alignItems: 'center', gap: 6 }}>
                 ◈ Mes prompts {savedCount > 0 && <span style={{ background: '#D4FF57', color: '#07090C', fontSize: 9, fontWeight: 900, padding: '1px 5px' }}>{savedCount}</span>}
               </a>
             </div>
