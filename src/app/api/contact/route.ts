@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         from: 'Prompt Architect <contact@prompt-architect.io>',
-        to: ['mandjouh@yahoo.fr'],
+        to: ['support@prompt-architect.io'],
         reply_to: email,
         subject: `[Contact] ${subject || 'Nouveau message'} — ${name}`,
         html: `
