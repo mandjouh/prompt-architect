@@ -30,25 +30,16 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Accès refusé' }, { status: 403 })
   }
 
-  const { data, error, count } = await supabaseAdmin
+  const { data, error } = await supabaseAdmin
     .from('profiles')
-    .select('*', { count: 'exact' })
+    .select('*')
     .order('created_at', { ascending: false })
 
   if (error) {
-    return NextResponse.json({ error: error.message, debug: 'query_error' }, { status: 500 })
+    return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  return NextResponse.json({
-    users: data,
-    debug: {
-      count,
-      rows: data?.length,
-      ids: data?.map(u => u.id),
-      service_role_present: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
-      url_present: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-    }
-  })
+  return NextResponse.json({ users: data })
 }
 
 export async function PATCH(req: NextRequest) {
