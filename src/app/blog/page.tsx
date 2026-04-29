@@ -24,8 +24,9 @@ export default function BlogPage() {
           <span style={{ fontWeight: 900, fontSize: 16, color: 'white', letterSpacing: '-0.02em' }}>Prompt Architect</span>
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-          <Link href="/library" style={{ color: '#4A5568', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>BIBLIOTHÈQUE</Link>
-          <Link href="/pricing" style={{ color: '#4A5568', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>PRICING</Link>
+          <Link href="/library" style={{ color: '#FFFFFF', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>BIBLIOTHÈQUE</Link>
+          <Link href="/pricing" style={{ color: '#FFFFFF', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>PRICING</Link>
+          <Link href="/contact" style={{ color: '#FFFFFF', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>CONTACT</Link>
           <Link href="/generate" style={{ background: '#D4FF57', color: '#07090C', padding: '9px 22px', fontSize: 11, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em' }}>
             ✦ COMMENCER
           </Link>
@@ -53,7 +54,7 @@ export default function BlogPage() {
             <span style={{ fontSize: 10, color: '#2D3748' }}>{frArticles.length} articles</span>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 1, background: '#151C25', border: '1px solid #151C25' }}>
-            {frArticles.map((article, i) => (
+            {frArticles.map((article) => (
               <Link key={article.slug} href={`/blog/${article.slug}`} style={{ textDecoration: 'none', background: '#07090C', padding: 28, display: 'block', position: 'relative', overflow: 'hidden' }}
                 onMouseEnter={e => (e.currentTarget.style.background = '#0B0E13')}
                 onMouseLeave={e => (e.currentTarget.style.background = '#07090C')}
@@ -64,15 +65,9 @@ export default function BlogPage() {
                   <span style={{ color: '#151C25' }}>·</span>
                   <span style={{ fontSize: 9, color: '#2D3748' }}>{article.readTime} min de lecture</span>
                 </div>
-                <h2 style={{ fontSize: 15, fontWeight: 900, color: 'white', lineHeight: 1.3, marginBottom: 12, letterSpacing: '-0.02em' }}>
-                  {article.title}
-                </h2>
-                <p style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.6, marginBottom: 16 }}>
-                  {article.metaDescription}
-                </p>
-                <div style={{ fontSize: 11, color: '#D4FF57', letterSpacing: '0.04em' }}>
-                  Lire l'article →
-                </div>
+                <h2 style={{ fontSize: 15, fontWeight: 900, color: 'white', lineHeight: 1.3, marginBottom: 12, letterSpacing: '-0.02em' }}>{article.title}</h2>
+                <p style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.6, marginBottom: 16 }}>{article.metaDescription}</p>
+                <div style={{ fontSize: 11, color: '#D4FF57', letterSpacing: '0.04em' }}>Lire l'article →</div>
               </Link>
             ))}
           </div>
@@ -97,15 +92,9 @@ export default function BlogPage() {
                   <span style={{ color: '#151C25' }}>·</span>
                   <span style={{ fontSize: 9, color: '#2D3748' }}>{article.readTime} min read</span>
                 </div>
-                <h2 style={{ fontSize: 15, fontWeight: 900, color: 'white', lineHeight: 1.3, marginBottom: 12, letterSpacing: '-0.02em' }}>
-                  {article.title}
-                </h2>
-                <p style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.6, marginBottom: 16 }}>
-                  {article.metaDescription}
-                </p>
-                <div style={{ fontSize: 11, color: '#FF7A3D', letterSpacing: '0.04em' }}>
-                  Read article →
-                </div>
+                <h2 style={{ fontSize: 15, fontWeight: 900, color: 'white', lineHeight: 1.3, marginBottom: 12, letterSpacing: '-0.02em' }}>{article.title}</h2>
+                <p style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.6, marginBottom: 16 }}>{article.metaDescription}</p>
+                <div style={{ fontSize: 11, color: '#FF7A3D', letterSpacing: '0.04em' }}>Read article →</div>
               </Link>
             ))}
           </div>
@@ -132,10 +121,11 @@ export default function BlogPage() {
           <span style={{ fontWeight: 700, fontSize: 12, color: '#4A5568' }}>Prompt Architect © 2026</span>
         </div>
         <div style={{ display: 'flex', gap: 28 }}>
-          <Link href="/generate" style={{ color: '#2D3748', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>GÉNÉRATEUR</Link>
-          <Link href="/library" style={{ color: '#2D3748', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>BIBLIOTHÈQUE</Link>
-          <Link href="/blog" style={{ color: '#2D3748', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>BLOG</Link>
-          <Link href="/pricing" style={{ color: '#2D3748', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>PRICING</Link>
+          <Link href="/generate" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>GÉNÉRATEUR</Link>
+          <Link href="/library" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>BIBLIOTHÈQUE</Link>
+          <Link href="/blog" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>BLOG</Link>
+          <Link href="/pricing" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>PRICING</Link>
+          <Link href="/contact" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>CONTACT</Link>
         </div>
       </footer>
     </div>

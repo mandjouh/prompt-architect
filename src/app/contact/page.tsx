@@ -56,9 +56,10 @@ export default function ContactPage() {
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-            <Link href="/library" style={{ color: '#4A5568', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>BIBLIOTHÈQUE</Link>
-            <Link href="/pricing" style={{ color: '#4A5568', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>PRICING</Link>
-            <Link href="/blog" style={{ color: '#4A5568', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>BLOG</Link>
+            <Link href="/library" style={{ color: '#FFFFFF', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>BIBLIOTHÈQUE</Link>
+            <Link href="/pricing" style={{ color: '#FFFFFF', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>PRICING</Link>
+            <Link href="/blog" style={{ color: '#FFFFFF', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>BLOG</Link>
+            <Link href="/contact" style={{ color: '#D4FF57', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>CONTACT</Link>
           </div>
           <Link href="/generate" style={{ background: '#D4FF57', color: '#07090C', padding: '9px 18px', fontSize: 11, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em' }}>
             ✦ COMMENCER
@@ -125,33 +126,17 @@ export default function ContactPage() {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                   <div>
                     <div style={{ fontSize: 10, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 8 }}>NOM *</div>
-                    <input
-                      type="text"
-                      placeholder="Ton nom"
-                      value={formData.name}
-                      onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
-                      style={inputStyle}
-                    />
+                    <input type="text" placeholder="Ton nom" value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} style={inputStyle} />
                   </div>
                   <div>
                     <div style={{ fontSize: 10, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 8 }}>EMAIL *</div>
-                    <input
-                      type="email"
-                      placeholder="ton@email.com"
-                      value={formData.email}
-                      onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
-                      style={inputStyle}
-                    />
+                    <input type="email" placeholder="ton@email.com" value={formData.email} onChange={e => setFormData(p => ({ ...p, email: e.target.value }))} style={inputStyle} />
                   </div>
                 </div>
 
                 <div>
                   <div style={{ fontSize: 10, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 8 }}>SUJET</div>
-                  <select
-                    value={formData.subject}
-                    onChange={e => setFormData(p => ({ ...p, subject: e.target.value }))}
-                    style={{ ...inputStyle, cursor: 'pointer' }}
-                  >
+                  <select value={formData.subject} onChange={e => setFormData(p => ({ ...p, subject: e.target.value }))} style={{ ...inputStyle, cursor: 'pointer' }}>
                     <option value="" style={{ background: '#0B0E13' }}>Sélectionne un sujet...</option>
                     <option value="Support technique" style={{ background: '#0B0E13' }}>Support technique</option>
                     <option value="Feedback / Suggestion" style={{ background: '#0B0E13' }}>Feedback / Suggestion</option>
@@ -164,13 +149,7 @@ export default function ContactPage() {
 
                 <div>
                   <div style={{ fontSize: 10, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 8 }}>MESSAGE *</div>
-                  <textarea
-                    rows={6}
-                    placeholder="Décris ton besoin, question ou problème..."
-                    value={formData.message}
-                    onChange={e => setFormData(p => ({ ...p, message: e.target.value }))}
-                    style={{ ...inputStyle, resize: 'vertical' }}
-                  />
+                  <textarea rows={6} placeholder="Décris ton besoin, question ou problème..." value={formData.message} onChange={e => setFormData(p => ({ ...p, message: e.target.value }))} style={{ ...inputStyle, resize: 'vertical' }} />
                 </div>
 
                 {status === 'error' && (
@@ -193,7 +172,6 @@ export default function ContactPage() {
                 >
                   {status === 'sending' ? '⟳ ENVOI EN COURS...' : '✦ ENVOYER LE MESSAGE'}
                 </button>
-
               </div>
             )}
           </div>
@@ -207,10 +185,10 @@ export default function ContactPage() {
           <span style={{ fontWeight: 700, fontSize: 12, color: '#4A5568' }}>Prompt Architect © 2026</span>
         </div>
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
-          <Link href="/generate" style={{ color: '#2D3748', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>GÉNÉRATEUR</Link>
-          <Link href="/library" style={{ color: '#2D3748', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>BIBLIOTHÈQUE</Link>
-          <Link href="/pricing" style={{ color: '#2D3748', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>PRICING</Link>
-          <Link href="/blog" style={{ color: '#2D3748', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>BLOG</Link>
+          <Link href="/generate" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>GÉNÉRATEUR</Link>
+          <Link href="/library" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>BIBLIOTHÈQUE</Link>
+          <Link href="/pricing" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>PRICING</Link>
+          <Link href="/blog" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>BLOG</Link>
           <Link href="/contact" style={{ color: '#D4FF57', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>CONTACT</Link>
         </div>
       </footer>

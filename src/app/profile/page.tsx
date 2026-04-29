@@ -113,9 +113,9 @@ export default function ProfilePage() {
           <span style={{ fontWeight: 900, fontSize: 15, color: 'white' }}>Prompt Architect</span>
         </a>
         <div style={{ display: 'flex', gap: 12 }}>
-          <a href="/generate" style={{ fontSize: 11, color: '#4A5568', textDecoration: 'none', border: '1px solid #151C25', padding: '7px 14px' }}>✦ Générateur</a>
-          <a href="/my-prompts" style={{ fontSize: 11, color: '#4A5568', textDecoration: 'none', border: '1px solid #151C25', padding: '7px 14px' }}>◈ Mes prompts</a>
-          <button onClick={handleSignOut} style={{ background: 'transparent', border: '1px solid #151C25', color: '#4A5568', padding: '7px 14px', fontSize: 11, cursor: 'pointer', fontFamily: 'monospace' }}>Déconnexion</button>
+          <a href="/generate" style={{ fontSize: 11, color: '#FFFFFF', textDecoration: 'none', border: '1px solid #151C25', padding: '7px 14px' }}>✦ Générateur</a>
+          <a href="/my-prompts" style={{ fontSize: 11, color: '#FFFFFF', textDecoration: 'none', border: '1px solid #151C25', padding: '7px 14px' }}>◈ Mes prompts</a>
+          <button onClick={handleSignOut} style={{ background: 'transparent', border: '1px solid #151C25', color: '#FFFFFF', padding: '7px 14px', fontSize: 11, cursor: 'pointer', fontFamily: 'monospace' }}>Déconnexion</button>
         </div>
       </div>
 
@@ -162,7 +162,6 @@ export default function ProfilePage() {
             )}
           </div>
 
-          {/* Barre progression */}
           <div style={{ marginBottom: 8 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
               <span style={{ fontSize: 10, color: '#2D3748', letterSpacing: '0.08em' }}>GÉNÉRATIONS CE MOIS</span>
