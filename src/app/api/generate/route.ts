@@ -18,6 +18,26 @@ const PLAN_LIMITS: Record<string, number> = {
   premium: 250,
 }
 
+// Rate limiting en mémoire par IP (reset toutes les heures)
+const ipRateLimit = new Map<string, { count: number; resetAt: number }>()
+const IP_LIMIT = 10        // max 10 requêtes par heure par IP pour les non-connectés
+const IP_WINDOW_MS = 60 * 60 * 1000  // 1 heure
+
+function checkIpRateLimit(ip: string): boolean {
+  const now = Date.now()
+  const entry = ipRateLimit.get(ip)
+
+  if (!entry || now > entry.resetAt) {
+    ipRateLimit.set(ip, { count: 1, resetAt: now + IP_WINDOW_MS })
+    return true
+  }
+
+  if (entry.count >= IP_LIMIT) return false
+
+  entry.count++
+  return true
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { module, caseType, userInput, userId } = await request.json()
@@ -26,7 +46,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Input manquant' }, { status: 400 })
     }
 
-    // Vérifier les limites si utilisateur connecté
+    // Rate limiting par IP pour les utilisateurs non connectés
+    if (!userId) {
+      const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+        || request.headers.get('x-real-ip')
+        || 'unknown'
+
+      if (!checkIpRateLimit(ip)) {
+        return NextResponse.json({
+          error: 'LIMIT_REACHED',
+          message: 'Trop de requêtes. Connecte-toi pour continuer.',
+        }, { status: 429 })
+      }
+    }
+
+    // Vérification et incrément des crédits si utilisateur connecté
     if (userId) {
       const { data: profile } = await supabase
         .from('profiles')
@@ -35,7 +69,8 @@ export async function POST(request: NextRequest) {
         .single()
 
       if (profile) {
-        const limit = PLAN_LIMITS[profile.plan] || 10
+        const limit = PLAN_LIMITS[profile.plan] || 5
+
         if (profile.credits_used >= limit) {
           return NextResponse.json({
             error: 'LIMIT_REACHED',
@@ -45,11 +80,16 @@ export async function POST(request: NextRequest) {
           }, { status: 403 })
         }
 
-        // Incrémenter le compteur
-        await supabase
+        // Incrément atomique côté serveur — le frontend ne contrôle plus rien
+        const { error: updateError } = await supabase
           .from('profiles')
           .update({ credits_used: profile.credits_used + 1 })
           .eq('id', userId)
+          .eq('credits_used', profile.credits_used) // optimistic lock
+
+        if (updateError) {
+          return NextResponse.json({ error: 'Erreur mise à jour crédits' }, { status: 500 })
+        }
       }
     }
 
