@@ -79,6 +79,16 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // ── subscription_expired (paiement échoué) ──
+    if (eventName === 'subscription_expired') {
+      if (userId) {
+        await supabase
+          .from('profiles')
+          .update({ plan: 'free' })
+          .eq('id', userId)
+      }
+    }
+
     // ── subscription_cancelled ──
     if (eventName === 'subscription_cancelled') {
       if (userId) {
