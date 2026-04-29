@@ -1,8 +1,29 @@
-'use client'
-
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import { ARTICLES } from '../../lib/blog'
+import type { Metadata } from 'next'
+
+// Génération des métadonnées dynamiques par article
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const article = ARTICLES.find(a => a.slug === params.slug)
+  if (!article) return { title: 'Article introuvable' }
+  return {
+    title: `${article.title} — Prompt Architect`,
+    description: article.metaDescription,
+    alternates: { canonical: `https://www.prompt-architect.io/blog/${article.slug}` },
+    openGraph: {
+      title: article.title,
+      description: article.metaDescription,
+      url: `https://www.prompt-architect.io/blog/${article.slug}`,
+      images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+    },
+  }
+}
+
+// Pré-génération des routes statiques
+export async function generateStaticParams() {
+  return ARTICLES.map(a => ({ slug: a.slug }))
+}
 
 function renderContent(content: string) {
   const lines = content.split('\n')
@@ -75,28 +96,54 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Viral Content': '#FF7A3D',
 }
 
-export default function ArticlePage() {
-  const params = useParams()
-  const slug = params?.slug as string
-  const article = ARTICLES.find(a => a.slug === slug)
-
-  if (!article) {
-    return (
-      <div style={{ minHeight: '100vh', background: '#07090C', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'monospace' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 48, color: '#0F1520', marginBottom: 16 }}>404</div>
-          <p style={{ color: '#4A5568', marginBottom: 24 }}>Article non trouvé</p>
-          <Link href="/blog" style={{ color: '#D4FF57', textDecoration: 'none' }}>← Retour au blog</Link>
-        </div>
-      </div>
-    )
-  }
+export default function ArticlePage({ params }: { params: { slug: string } }) {
+  const article = ARTICLES.find(a => a.slug === params.slug)
+  if (!article) notFound()
 
   const relatedArticles = ARTICLES.filter(a => a.slug !== article.slug && a.lang === article.lang).slice(0, 3)
   const color = CATEGORY_COLORS[article.category] || '#D4FF57'
 
+  // JSON-LD Schema.org pour les rich snippets Google
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.metaDescription,
+    author: {
+      '@type': 'Organization',
+      name: 'Prompt Architect',
+      url: 'https://www.prompt-architect.io',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Prompt Architect',
+      url: 'https://www.prompt-architect.io',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://www.prompt-architect.io/og-image.png',
+      },
+    },
+    datePublished: article.publishedAt,
+    dateModified: article.publishedAt,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://www.prompt-architect.io/blog/${article.slug}`,
+    },
+    image: 'https://www.prompt-architect.io/og-image.png',
+    url: `https://www.prompt-architect.io/blog/${article.slug}`,
+    inLanguage: article.lang === 'fr' ? 'fr-FR' : 'en-US',
+    timeRequired: `PT${article.readTime}M`,
+    keywords: article.category,
+  }
+
   return (
     <div style={{ minHeight: '100vh', background: '#07090C', color: 'white', fontFamily: 'monospace' }}>
+
+      {/* JSON-LD — lu par Google pour les rich snippets */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* HEADER */}
       <nav style={{ borderBottom: '1px solid #151C25', padding: '16px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, background: '#07090CF0', backdropFilter: 'blur(16px)', zIndex: 100 }}>
@@ -105,7 +152,9 @@ export default function ArticlePage() {
           <span style={{ fontWeight: 900, fontSize: 16, color: 'white', letterSpacing: '-0.02em' }}>Prompt Architect</span>
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-          <Link href="/blog" style={{ color: '#4A5568', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>BLOG</Link>
+          <Link href="/blog" style={{ color: '#FFFFFF', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>BLOG</Link>
+          <Link href="/pricing" style={{ color: '#FFFFFF', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>PRICING</Link>
+          <Link href="/contact" style={{ color: '#FFFFFF', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>CONTACT</Link>
           <Link href="/generate" style={{ background: '#D4FF57', color: '#07090C', padding: '9px 22px', fontSize: 11, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em' }}>
             ✦ COMMENCER
           </Link>
@@ -191,10 +240,14 @@ export default function ArticlePage() {
           <div style={{ width: 20, height: 20, background: '#D4FF57', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, fontWeight: 900, color: '#07090C' }}>PA</div>
           <span style={{ fontWeight: 700, fontSize: 12, color: '#4A5568' }}>Prompt Architect © 2026</span>
         </div>
-        <div style={{ display: 'flex', gap: 28 }}>
-          <Link href="/generate" style={{ color: '#2D3748', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>GÉNÉRATEUR</Link>
-          <Link href="/blog" style={{ color: '#2D3748', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>BLOG</Link>
-          <Link href="/pricing" style={{ color: '#2D3748', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>PRICING</Link>
+        <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+          <Link href="/generate" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>GÉNÉRATEUR</Link>
+          <Link href="/blog" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>BLOG</Link>
+          <Link href="/pricing" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>PRICING</Link>
+          <Link href="/contact" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>CONTACT</Link>
+          <Link href="/legal" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>MENTIONS LÉGALES</Link>
+          <Link href="/cgv" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>CGV</Link>
+          <Link href="/remboursement" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>REMBOURSEMENT</Link>
         </div>
       </footer>
     </div>
