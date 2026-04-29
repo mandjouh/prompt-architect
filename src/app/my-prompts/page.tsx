@@ -132,7 +132,7 @@ export default function MyPromptsPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <span style={{ fontSize: 10, color: '#2D3748' }}>{user.email}</span>
           {prompts.length > 0 && (
-            <button onClick={() => setConfirmClear(true)} style={{ background: 'transparent', border: '1px solid #2A1A1A', color: '#4A2A2A', padding: '6px 12px', fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>
+            <button onClick={() => setConfirmClear(true)} style={{ background: '#FF4D4D08', border: '1px solid #FF4D4D40', color: '#FF4D4D', padding: '6px 12px', fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>
               ✕ TOUT EFFACER
             </button>
           )}
@@ -142,8 +142,8 @@ export default function MyPromptsPage() {
           <a href="/generate" style={{ background: '#D4FF57', color: '#07090C', padding: '8px 18px', fontSize: 11, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.06em' }}>
             ✦ NOUVEAU PROMPT
           </a>
-          <a href="/profile" style={{ fontSize: 11, color: '#4A5568', textDecoration: 'none', border: '1px solid #151C25', padding: '7px 14px' }}>◎ Profil</a>
-          <button onClick={handleSignOut} style={{ background: 'transparent', border: '1px solid #151C25', color: '#4A5568', padding: '8px 12px', fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>
+          <a href="/profile" style={{ fontSize: 11, color: '#FFFFFF', textDecoration: 'none', border: '1px solid #151C25', padding: '7px 14px' }}>◎ Profil</a>
+          <button onClick={handleSignOut} style={{ background: 'transparent', border: '1px solid #151C25', color: '#FFFFFF', padding: '8px 12px', fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>
             Déconnexion
           </button>
         </div>
@@ -168,7 +168,7 @@ export default function MyPromptsPage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1, minWidth: 200 }}>
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                <span style={{ fontSize: 10, color: '#2D3748', letterSpacing: '0.1em' }}>GÉNÉRATIONS CE MOIS</span>
+                <span style={{ fontSize: 10, color: '#FFFFFF', letterSpacing: '0.1em' }}>GÉNÉRATIONS CE MOIS</span>
                 <span style={{ fontSize: 10, color: isAtLimit ? '#FF5A5A' : isNearLimit ? '#FF7A3D' : '#4A5568' }}>
                   {creditsUsed} / {creditsLimit}
                 </span>
