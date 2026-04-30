@@ -73,7 +73,7 @@ export default function Home() {
             <span style={{ color: '#1A2535' }}>— en un prompt.</span>
           </h1>
 
-          <p style={{ fontSize: 16, color: '#4A5568', maxWidth: 500, margin: '0 auto 36px', lineHeight: 1.75 }}>
+          <p style={{ fontSize: 16, color: '#94A3B8', maxWidth: 500, margin: '0 auto 36px', lineHeight: 1.75 }}>
             Transforme ta demande simple en prompt expert, structuré et optimisé. Sans connaître le prompt engineering.
           </p>
 
@@ -96,7 +96,7 @@ export default function Home() {
             ].map((s, i) => (
               <div key={i} style={{ padding: '20px 12px', borderRight: i < 3 ? '1px solid #151C25' : 'none', textAlign: 'center' }}>
                 <div style={{ fontSize: 24, fontWeight: 900, color: 'white', letterSpacing: '-0.03em', marginBottom: 4 }}>{s.value}</div>
-                <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{s.label}</div>
+                <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -114,7 +114,7 @@ export default function Home() {
               </h2>
             </div>
             <div>
-              <p style={{ color: '#4A5568', fontSize: 15, lineHeight: 1.85, marginBottom: 36 }}>
+              <p style={{ color: '#94A3B8', fontSize: 15, lineHeight: 1.85, marginBottom: 36 }}>
                 Pas parce que l&apos;IA est mauvaise. Mais parce qu&apos;ils ne savent pas comment lui parler.
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -127,7 +127,7 @@ export default function Home() {
                     <div style={{ fontSize: 13, color: '#D4FF57', minWidth: 20, marginTop: 1 }}>{item.icon}</div>
                     <div>
                       <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 4, color: 'white' }}>{item.title}</div>
-                      <div style={{ fontSize: 13, color: '#4A5568', lineHeight: 1.6 }}>{item.desc}</div>
+                      <div style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.6 }}>{item.desc}</div>
                     </div>
                   </div>
                 ))}
@@ -147,7 +147,7 @@ export default function Home() {
                 8 modules.<br />40 cas d&apos;usage.
               </h2>
             </div>
-            <Link href="/generate" style={{ fontSize: 11, color: '#4A5568', textDecoration: 'none', letterSpacing: '0.06em', borderBottom: '1px solid #151C25', paddingBottom: 4 }}>
+            <Link href="/generate" style={{ fontSize: 11, color: '#94A3B8', textDecoration: 'none', letterSpacing: '0.06em', borderBottom: '1px solid #151C25', paddingBottom: 4 }}>
               ACCÉDER AU GÉNÉRATEUR →
             </Link>
           </div>
@@ -171,7 +171,7 @@ export default function Home() {
                   <span style={{ fontSize: 18, color: m.color }}>{m.icon}</span>
                   <span style={{ fontWeight: 900, fontSize: 15, letterSpacing: '-0.02em' }}>{m.label}</span>
                 </div>
-                <p style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.6 }}>{m.desc}</p>
+                <p style={{ fontSize: 12, color: '#94A3B8', lineHeight: 1.6 }}>{m.desc}</p>
               </div>
             ))}
           </div>
@@ -194,7 +194,7 @@ export default function Home() {
               <div key={i} style={{ padding: '32px 24px', borderRight: i < 2 ? '1px solid #151C25' : 'none', borderBottom: '1px solid #151C25' }}>
                 <div style={{ fontSize: 56, fontWeight: 900, color: '#0F1520', lineHeight: 1, marginBottom: 20, letterSpacing: '-0.05em' }}>{item.step}</div>
                 <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 8, color: 'white' }}>{item.title}</div>
-                <div style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.75 }}>{item.desc}</div>
+                <div style={{ fontSize: 12, color: '#94A3B8', lineHeight: 1.75 }}>{item.desc}</div>
               </div>
             ))}
           </div>
@@ -223,7 +223,7 @@ export default function Home() {
       <footer style={{ borderTop: '1px solid #151C25', padding: '24px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div style={{ width: 20, height: 20, background: '#D4FF57', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, fontWeight: 900, color: '#07090C' }}>PA</div>
-          <span style={{ fontWeight: 700, fontSize: 12, color: '#4A5568' }}>Prompt Architect © 2026</span>
+          <span style={{ fontWeight: 700, fontSize: 12, color: '#94A3B8' }}>Prompt Architect © 2026</span>
         </div>
         <div className="footer-links" style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
           <Link href="/generate" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>GÉNÉRATEUR</Link>
