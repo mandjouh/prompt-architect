@@ -19,7 +19,8 @@ export default function LibraryPage() {
 
   const filtered = PREMIUM_PROMPTS.filter(p => {
     const okMod = mod === 'Tous' || p.module === mod
-    const okSearch = search === '' || p.title.toLowerCase().includes(search.toLowerCase()) || p.module.toLowerCase().includes(search.toLowerCase())
+    const q = search.toLowerCase()
+    const okSearch = q === '' || p.title.toLowerCase().includes(q) || p.module.toLowerCase().includes(q) || (p.category || '').toLowerCase().includes(q) || (p.difficulty || '').toLowerCase().includes(q)
     return okMod && okSearch
   })
 
@@ -60,7 +61,7 @@ export default function LibraryPage() {
           {/* Search */}
           <div style={{ padding: '0 16px 20px', borderBottom: '1px solid #0F1520' }}>
             <div style={{ position: 'relative' }}>
-              <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', fontSize: 12, color: '#2D3748' }}>⌕</span>
+              <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', fontSize: 12, color: '#94A3B8' }}>⌕</span>
               <input
                 type="text"
                 placeholder="Rechercher..."
@@ -73,7 +74,7 @@ export default function LibraryPage() {
 
           {/* Filtres module */}
           <div style={{ padding: '20px 16px 8px' }}>
-            <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.12em', marginBottom: 10 }}>MODULES</div>
+            <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.12em', marginBottom: 10 }}>MODULES</div>
             {modules.map(m => {
               const color = MODULE_COLORS[m] || '#D4FF57'
               const icon = MODULE_ICONS[m] || '◈'
@@ -86,16 +87,16 @@ export default function LibraryPage() {
                     width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                     padding: '9px 10px', marginBottom: 2, background: isActive ? '#0F1520' : 'transparent',
                     border: isActive ? `1px solid ${color}25` : '1px solid transparent',
-                    color: isActive ? 'white' : '#4A5568', cursor: 'pointer', textAlign: 'left', fontFamily: 'monospace',
+                    color: isActive ? 'white' : '#94A3B8', cursor: 'pointer', textAlign: 'left', fontFamily: 'monospace',
                     fontSize: 12, transition: 'all 0.1s',
                   }}
                 >
                   <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    {m !== 'Tous' && <span style={{ color: isActive ? color : '#2D3748', fontSize: 11 }}>{icon}</span>}
-                    {m === 'Tous' && <span style={{ color: isActive ? '#D4FF57' : '#2D3748', fontSize: 11 }}>◌</span>}
-                    <span style={{ color: isActive ? (m === 'Tous' ? '#D4FF57' : color) : '#4A5568' }}>{m}</span>
+                    {m !== 'Tous' && <span style={{ color: isActive ? color : '#94A3B8', fontSize: 11 }}>{icon}</span>}
+                    {m === 'Tous' && <span style={{ color: isActive ? '#D4FF57' : '#94A3B8', fontSize: 11 }}>◌</span>}
+                    <span style={{ color: isActive ? (m === 'Tous' ? '#D4FF57' : color) : '#94A3B8' }}>{m}</span>
                   </span>
-                  <span style={{ fontSize: 10, color: '#2D3748', background: '#0B0E13', padding: '1px 6px', border: '1px solid #151C25' }}>
+                  <span style={{ fontSize: 10, color: '#94A3B8', background: '#0B0E13', padding: '1px 6px', border: '1px solid #151C25' }}>
                     {moduleCount(m)}
                   </span>
                 </button>
@@ -107,7 +108,7 @@ export default function LibraryPage() {
         {/* LISTE CENTRALE */}
         <div style={{ flex: 1, overflowY: 'auto', borderRight: '1px solid #151C25', maxHeight: 'calc(100vh - 57px)', position: 'sticky', top: 57 }}>
           {filtered.length === 0 ? (
-            <div style={{ padding: 48, textAlign: 'center', color: '#2D3748', fontSize: 13 }}>
+            <div style={{ padding: 48, textAlign: 'center', color: '#94A3B8', fontSize: 13 }}>
               Aucun prompt trouvé pour &quot;{search}&quot;
             </div>
           ) : filtered.map((p, idx) => {
@@ -133,12 +134,12 @@ export default function LibraryPage() {
                     <span>{MODULE_ICONS[p.module] || '◈'}</span>
                     {p.module.toUpperCase()}
                   </span>
-                  <span style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.06em' }}>#{String(idx + 1).padStart(2, '0')}</span>
+                  <span style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.06em' }}>#{String(idx + 1).padStart(2, '0')}</span>
                 </div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: isSelected ? 'white' : '#8A9AAA', marginBottom: 4, letterSpacing: '-0.01em' }}>
                   {p.title}
                 </div>
-                <div style={{ fontSize: 10, color: '#2D3748', letterSpacing: '0.04em' }}>{p.difficulty || p.category}</div>
+                <div style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.04em' }}>{p.difficulty || p.category}</div>
               </button>
             )
           })}
@@ -155,7 +156,7 @@ export default function LibraryPage() {
                     {MODULE_ICONS[sel.module]} {sel.module}
                   </span>
                   <span style={{ color: '#151C25' }}>·</span>
-                  <span style={{ fontSize: 11, color: '#2D3748' }}>{sel.category}</span>
+                  <span style={{ fontSize: 11, color: '#94A3B8' }}>{sel.category}</span>
                 </div>
                 <h2 style={{ fontSize: 18, fontWeight: 900, color: 'white', lineHeight: 1.2, letterSpacing: '-0.02em', margin: 0 }}>
                   {sel.title}
@@ -164,7 +165,7 @@ export default function LibraryPage() {
 
               {/* Prompt content */}
               <div style={{ flex: 1, overflowY: 'auto', padding: '24px 28px' }}>
-                <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.12em', marginBottom: 14 }}>PROMPT</div>
+                <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.12em', marginBottom: 14 }}>PROMPT</div>
                 <div style={{ fontSize: 12, lineHeight: 1.85, color: '#6A7A8A', whiteSpace: 'pre-wrap' }}>
                   {sel.prompt}
                 </div>
@@ -186,7 +187,7 @@ export default function LibraryPage() {
                 </button>
                 <a
                   href="/generate"
-                  style={{ padding: '12px 16px', fontSize: 11, fontWeight: 900, letterSpacing: '0.06em', border: '1px solid #151C25', color: '#4A5568', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+                  style={{ padding: '12px 16px', fontSize: 11, fontWeight: 900, letterSpacing: '0.06em', border: '1px solid #151C25', color: '#94A3B8', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
                 >
                   ✦
                 </a>
@@ -195,7 +196,7 @@ export default function LibraryPage() {
           ) : (
             <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 40, textAlign: 'center' }}>
               <div style={{ fontSize: 32, color: '#0F1520', marginBottom: 16 }}>◈</div>
-              <p style={{ color: '#2D3748', fontSize: 12, lineHeight: 1.7, maxWidth: 220 }}>
+              <p style={{ color: '#94A3B8', fontSize: 12, lineHeight: 1.7, maxWidth: 220 }}>
                 Sélectionne un prompt pour voir son contenu complet
               </p>
             </div>
@@ -208,7 +209,7 @@ export default function LibraryPage() {
       <footer style={{ borderTop: '1px solid #151C25', padding: '20px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div style={{ width: 20, height: 20, background: '#D4FF57', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, fontWeight: 900, color: '#07090C' }}>PA</div>
-          <span style={{ fontWeight: 700, fontSize: 12, color: '#4A5568' }}>Prompt Architect © 2026</span>
+          <span style={{ fontWeight: 700, fontSize: 12, color: '#94A3B8' }}>Prompt Architect © 2026</span>
         </div>
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
           <a href="/generate" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>GÉNÉRATEUR</a>
