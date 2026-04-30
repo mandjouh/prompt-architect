@@ -60,6 +60,7 @@ export default function Home() {
 
       {/* HERO */}
       <section className="hero-padding" style={{ maxWidth: 960, margin: '0 auto', padding: '100px 24px 80px', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'radial-gradient(ellipse 80% 60% at 50% 0%, #D4FF5712 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: 'linear-gradient(#151C2520 1px, transparent 1px), linear-gradient(90deg, #151C2520 1px, transparent 1px)', backgroundSize: '60px 60px', pointerEvents: 'none' }} />
         <div style={{ position: 'relative', textAlign: 'center' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', border: '1px solid #D4FF5740', background: '#D4FF5708', marginBottom: 32 }}>
