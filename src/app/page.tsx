@@ -138,6 +138,92 @@ export default function Home() {
         </div>
       </section>
 
+      {/* AVANT / APRÈS */}
+      <section className="section-padding" style={{ borderTop: '1px solid #151C25', padding: '88px 24px', background: '#07090C' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto' }}>
+          <div style={{ marginBottom: 48 }}>
+            <div style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 14 }}>// DÉMONSTRATION</div>
+            <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 42px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.03em' }}>
+              Vois la différence.
+            </h2>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1, background: '#151C25' }}>
+
+            {/* AVANT */}
+            <div style={{ background: '#07090C', padding: 32 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#FF4D4D' }} />
+                <span style={{ fontSize: 10, color: '#FF4D4D', letterSpacing: '0.12em', fontWeight: 700 }}>SANS PROMPT ARCHITECT</span>
+              </div>
+              <div style={{ background: '#0B0E13', border: '1px solid #1A1A2E', padding: '16px 20px', marginBottom: 20 }}>
+                <div style={{ fontSize: 9, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 10 }}>PROMPT ENVOYÉ À L&apos;IA</div>
+                <p style={{ fontSize: 13, color: '#4A5568', lineHeight: 1.7, fontStyle: 'italic' }}>
+                  &quot;Écris-moi un business plan pour une agence de marketing.&quot;
+                </p>
+              </div>
+              <div style={{ background: '#0D0A0A', border: '1px solid #2A1A1A', padding: '16px 20px' }}>
+                <div style={{ fontSize: 9, color: '#FF4D4D60', letterSpacing: '0.1em', marginBottom: 10 }}>RÉSULTAT OBTENU</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {[
+                    '1. Introduction — description générique de l\'agence',
+                    '2. Services proposés — liste vague sans différenciation',
+                    '3. Objectifs — "devenir leader du marché"',
+                  ].map((line, i) => (
+                    <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                      <span style={{ color: '#FF4D4D40', fontSize: 12, flexShrink: 0, marginTop: 1 }}>✕</span>
+                      <span style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.6 }}>{line}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ marginTop: 16, padding: '8px 12px', background: '#FF4D4D08', border: '1px solid #FF4D4D20', fontSize: 11, color: '#FF4D4D60' }}>
+                  Générique — inutilisable en l&apos;état
+                </div>
+              </div>
+            </div>
+
+            {/* APRÈS */}
+            <div style={{ background: '#070C07', padding: 32 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#D4FF57' }} />
+                <span style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.12em', fontWeight: 700 }}>AVEC PROMPT ARCHITECT</span>
+              </div>
+              <div style={{ background: '#0B0E13', border: '1px solid #1A2E1A', padding: '16px 20px', marginBottom: 20 }}>
+                <div style={{ fontSize: 9, color: '#D4FF5780', letterSpacing: '0.1em', marginBottom: 10 }}>PROMPT GÉNÉRÉ EN 2 MIN</div>
+                <p style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.7 }}>
+                  &quot;Tu es un consultant McKinsey spécialisé en agences digitales. Génère un business plan complet pour une agence de marketing B2B ciblant les PME tech en France. Inclus : [analyse SWOT, projection 3 ans, stratégie d&apos;acquisition, tarification par paliers].&quot;
+                </p>
+              </div>
+              <div style={{ background: '#070C07', border: '1px solid #1A2E1A', padding: '16px 20px' }}>
+                <div style={{ fontSize: 9, color: '#D4FF5760', letterSpacing: '0.1em', marginBottom: 10 }}>RÉSULTAT OBTENU</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {[
+                    'Analyse SWOT détaillée avec données sectorielles',
+                    'Projection financière sur 3 ans avec hypothèses',
+                    'Plan d\'acquisition clients avec CAC cible estimé',
+                  ].map((line, i) => (
+                    <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                      <span style={{ color: '#D4FF57', fontSize: 12, flexShrink: 0, marginTop: 1 }}>✦</span>
+                      <span style={{ fontSize: 12, color: '#94A3B8', lineHeight: 1.6 }}>{line}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ marginTop: 16, padding: '8px 12px', background: '#D4FF5708', border: '1px solid #D4FF5730', fontSize: 11, color: '#D4FF57' }}>
+                  Structuré, actionnable — prêt à utiliser
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div style={{ marginTop: 32, textAlign: 'center' }}>
+            <Link href="/generate" style={{ background: '#D4FF57', color: '#07090C', padding: '13px 28px', fontSize: 12, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              ✦ GÉNÉRER MON PREMIER PROMPT
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* MODULES */}
       <section className="section-padding" style={{ borderTop: '1px solid #151C25', padding: '88px 24px', background: '#0B0E13' }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
