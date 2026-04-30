@@ -1,6 +1,3 @@
-// À ajouter dans app/faq/page.tsx si vous le convertissez en Server Component
-// OU dans un fichier app/faq/metadata.ts séparé
-
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -19,3 +16,7 @@ export const metadata: Metadata = {
     canonical: "https://prompt-architect.io/faq",
   },
 };
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
+}
