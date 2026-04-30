@@ -15,7 +15,6 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title: article.title,
       description: article.metaDescription,
       url: `https://www.prompt-architect.io/blog/${article.slug}`,
-      images: [{ url: '/og-image.png', width: 1200, height: 630 }],
     },
   }
 }
@@ -164,8 +163,8 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '56px 24px' }}>
 
         {/* BREADCRUMB */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 32, fontSize: 11, color: '#2D3748' }}>
-          <Link href="/blog" style={{ color: '#2D3748', textDecoration: 'none' }}>Blog</Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 32, fontSize: 11, color: '#94A3B8' }}>
+          <Link href="/blog" style={{ color: '#94A3B8', textDecoration: 'none' }}>Blog</Link>
           <span>→</span>
           <span style={{ color }}>{article.category}</span>
         </div>
@@ -176,16 +175,16 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
             <span style={{ fontSize: 10, color, border: `1px solid ${color}30`, background: `${color}10`, padding: '3px 10px', letterSpacing: '0.1em' }}>
               {article.category.toUpperCase()}
             </span>
-            <span style={{ fontSize: 10, color: '#2D3748' }}>{article.readTime} min de lecture</span>
+            <span style={{ fontSize: 10, color: '#94A3B8' }}>{article.readTime} min de lecture</span>
             <span style={{ color: '#151C25' }}>·</span>
-            <span style={{ fontSize: 10, color: '#2D3748' }}>
+            <span style={{ fontSize: 10, color: '#94A3B8' }}>
               {new Date(article.publishedAt).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}
             </span>
           </div>
           <h1 style={{ fontSize: 'clamp(24px, 4vw, 40px)', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-0.03em', marginBottom: 20, color: 'white' }}>
             {article.title}
           </h1>
-          <p style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.75 }}>
+          <p style={{ fontSize: 16, color: '#94A3B8', lineHeight: 1.75 }}>
             {article.metaDescription}
           </p>
         </div>
@@ -207,7 +206,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
         <div style={{ border: '1px solid #151C25', background: '#0B0E13', padding: 32, marginBottom: 64, textAlign: 'center' }}>
           <div style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 12 }}>// PASSE À L&apos;ACTION</div>
           <h3 style={{ fontSize: 22, fontWeight: 900, marginBottom: 12, letterSpacing: '-0.02em' }}>Arrête de perdre du temps à écrire tes prompts</h3>
-          <p style={{ fontSize: 14, color: '#4A5568', lineHeight: 1.7, marginBottom: 24, maxWidth: 400, margin: '0 auto 24px' }}>
+          <p style={{ fontSize: 14, color: '#94A3B8', lineHeight: 1.7, marginBottom: 24, maxWidth: 400, margin: '0 auto 24px' }}>
             Prompt Architect génère des prompts experts en 2 minutes. 5 générations gratuites par mois.
           </p>
           <Link href="/generate" style={{ display: 'inline-block', background: '#D4FF57', color: '#07090C', padding: '14px 36px', fontSize: 12, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em' }}>
@@ -218,7 +217,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
         {/* ARTICLES LIÉS */}
         {relatedArticles.length > 0 && (
           <div>
-            <div style={{ fontSize: 10, color: '#2D3748', letterSpacing: '0.12em', marginBottom: 24 }}>ARTICLES SIMILAIRES</div>
+            <div style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.12em', marginBottom: 24 }}>ARTICLES SIMILAIRES</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: '#151C25', border: '1px solid #151C25' }}>
               {relatedArticles.map(related => (
                 <Link key={related.slug} href={`/blog/${related.slug}`} style={{ textDecoration: 'none', background: '#07090C', padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
@@ -226,7 +225,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
                     <div style={{ fontSize: 9, color: CATEGORY_COLORS[related.category] || '#D4FF57', letterSpacing: '0.1em', marginBottom: 6 }}>{related.category.toUpperCase()}</div>
                     <div style={{ fontSize: 13, fontWeight: 700, color: 'white' }}>{related.title}</div>
                   </div>
-                  <span style={{ color: '#2D3748', fontSize: 16, flexShrink: 0 }}>→</span>
+                  <span style={{ color: '#94A3B8', fontSize: 16, flexShrink: 0 }}>→</span>
                 </Link>
               ))}
             </div>
@@ -238,7 +237,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
       <footer style={{ borderTop: '1px solid #151C25', padding: '28px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{ width: 20, height: 20, background: '#D4FF57', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, fontWeight: 900, color: '#07090C' }}>PA</div>
-          <span style={{ fontWeight: 700, fontSize: 12, color: '#4A5568' }}>Prompt Architect © 2026</span>
+          <span style={{ fontWeight: 700, fontSize: 12, color: '#94A3B8' }}>Prompt Architect © 2026</span>
         </div>
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
           <Link href="/generate" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>GÉNÉRATEUR</Link>
