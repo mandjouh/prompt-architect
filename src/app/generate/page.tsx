@@ -77,6 +77,7 @@ const MODULES_PREMIUM = [
 
 const MODULES = [...MODULES_FREE, ...MODULES_PREMIUM]
 const LS_KEY = 'pa_saved_prompts'
+const ANON_COUNT_KEY = 'pa_anon_count'
 const FREE_LIMIT = 5
 
 export default function GeneratePage() {
@@ -92,6 +93,8 @@ export default function GeneratePage() {
   const [justSaved, setJustSaved] = useState(false)
   const [savedCount, setSavedCount] = useState(0)
   const [bannerDismissed, setBannerDismissed] = useState(false)
+  const [anonCount, setAnonCount] = useState(0)
+  const [showRegisterModal, setShowRegisterModal] = useState(false)
 
   const currentModule = MODULES.find(m => m.id === selectedModule)
 
@@ -104,6 +107,8 @@ export default function GeneratePage() {
       try {
         const raw = localStorage.getItem(LS_KEY)
         setSavedCount(raw ? JSON.parse(raw).length : 0)
+        const count = parseInt(localStorage.getItem(ANON_COUNT_KEY) || '0')
+        setAnonCount(count)
       } catch { setSavedCount(0) }
     } else {
       supabase.from('profiles').select('plan, credits_used').eq('id', user.id).single()
@@ -154,6 +159,9 @@ export default function GeneratePage() {
           const updated = [newEntry, ...existing].slice(0, 50)
           localStorage.setItem(LS_KEY, JSON.stringify(updated))
           setSavedCount(updated.length)
+          const newCount = anonCount + 1
+          localStorage.setItem(ANON_COUNT_KEY, newCount.toString())
+          setAnonCount(newCount)
         }
 
         setJustSaved(true)
@@ -173,6 +181,20 @@ export default function GeneratePage() {
   }
 
   const reset = () => {
+    if (!user && anonCount >= 1) {
+      setShowRegisterModal(true)
+      return
+    }
+    setSelectedModule(null)
+    setSelectedCase(null)
+    setInput('')
+    setResult('')
+    setCopied(false)
+    setJustSaved(false)
+  }
+
+  const resetAfterModal = () => {
+    setShowRegisterModal(false)
     setSelectedModule(null)
     setSelectedCase(null)
     setInput('')
@@ -458,6 +480,34 @@ export default function GeneratePage() {
             }}>
               ×
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL INSCRIPTION — 2ème prompt pour utilisateur non connecté */}
+      {showRegisterModal && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
+          <div style={{ position: 'absolute', inset: 0, background: '#07090CEE', backdropFilter: 'blur(8px)' }} onClick={() => setShowRegisterModal(false)} />
+          <div style={{ position: 'relative', background: '#0B0E13', border: '1px solid #D4FF5730', maxWidth: 440, width: '100%', padding: '40px 36px', textAlign: 'center' }}>
+            <div style={{ width: 40, height: 40, background: '#D4FF57', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 900, color: '#07090C', margin: '0 auto 24px' }}>PA</div>
+            <div style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 12 }}>✦ TON PROMPT EST PRÊT</div>
+            <h2 style={{ fontSize: 22, fontWeight: 900, lineHeight: 1.2, marginBottom: 12, letterSpacing: '-0.02em' }}>
+              Continue à générer<br />des prompts experts
+            </h2>
+            <p style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.7, marginBottom: 32 }}>
+              Crée un compte gratuit pour continuer.<br />Aucune carte bancaire requise.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <a href="/login?signup=true" style={{ background: '#D4FF57', color: '#07090C', padding: '13px 24px', fontSize: 12, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em', display: 'block' }}>
+                ✦ CRÉER MON COMPTE GRATUIT
+              </a>
+              <a href="/login" style={{ border: '1px solid #151C25', color: '#94A3B8', padding: '13px 24px', fontSize: 12, fontWeight: 700, textDecoration: 'none', letterSpacing: '0.06em', display: 'block' }}>
+                Me connecter
+              </a>
+              <button onClick={resetAfterModal} style={{ background: 'transparent', border: 'none', color: '#4A5568', fontSize: 12, cursor: 'pointer', padding: '8px', fontFamily: 'monospace', marginTop: 4 }}>
+                Continuer sans compte →
+              </button>
+            </div>
           </div>
         </div>
       )}
