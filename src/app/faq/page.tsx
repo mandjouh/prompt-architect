@@ -66,49 +66,20 @@ const faqs = [
   },
 ];
 
-function AccordionItem({
-  q,
-  a,
-  isOpen,
-  onToggle,
-}: {
-  q: string;
-  a: string;
-  isOpen: boolean;
-  onToggle: () => void;
-}) {
+function AccordionItem({ q, a, isOpen, onToggle }: { q: string; a: string; isOpen: boolean; onToggle: () => void }) {
   return (
-    <div className="border-b border-gray-100 last:border-0">
+    <div style={{ borderBottom: '1px solid #0F1520' }}>
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-5 text-left group"
+        style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 0', background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left', gap: 16 }}
       >
-        <span className="text-gray-900 font-medium pr-8 group-hover:text-black transition-colors">
-          {q}
-        </span>
-        <span
-          className={`flex-shrink-0 w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center transition-all duration-200 ${
-            isOpen ? "bg-black border-black rotate-45" : "group-hover:border-gray-500"
-          }`}
-        >
-          <svg
-            width="10"
-            height="10"
-            viewBox="0 0 10 10"
-            fill="none"
-            className={isOpen ? "text-white" : "text-gray-500"}
-          >
-            <line x1="5" y1="1" x2="5" y2="9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="1" y1="5" x2="9" y2="5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
+        <span style={{ color: 'white', fontSize: 14, fontWeight: 600, fontFamily: 'monospace', lineHeight: 1.5 }}>{q}</span>
+        <span style={{ flexShrink: 0, width: 22, height: 22, border: `1px solid ${isOpen ? '#D4FF57' : '#151C25'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', background: isOpen ? '#D4FF57' : 'transparent', transition: 'all 0.2s' }}>
+          <span style={{ color: isOpen ? '#07090C' : '#94A3B8', fontSize: 14, lineHeight: 1, fontWeight: 300 }}>{isOpen ? '−' : '+'}</span>
         </span>
       </button>
-      <div
-        className={`overflow-hidden transition-all duration-300 ease-in-out ${
-          isOpen ? "max-h-96 pb-5" : "max-h-0"
-        }`}
-      >
-        <p className="text-gray-600 leading-relaxed">{a}</p>
+      <div style={{ overflow: 'hidden', maxHeight: isOpen ? 300 : 0, transition: 'max-height 0.3s ease', paddingBottom: isOpen ? 20 : 0 }}>
+        <p style={{ color: '#94A3B8', fontSize: 13, lineHeight: 1.8, fontFamily: 'monospace' }}>{a}</p>
       </div>
     </div>
   );
@@ -122,110 +93,92 @@ export default function FAQPage() {
   };
 
   return (
-    <>
-      {/* Navbar blanche */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href="/" className="font-semibold text-gray-900 text-lg">
-            Prompt Architect
+    <div style={{ minHeight: '100vh', background: '#07090C', color: 'white', fontFamily: 'monospace' }}>
+
+      {/* NAVBAR */}
+      <nav style={{ borderBottom: '1px solid #151C25', padding: '16px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, background: '#07090CF0', backdropFilter: 'blur(16px)', zIndex: 100 }}>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+          <div style={{ width: 28, height: 28, background: '#D4FF57', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 900, color: '#07090C' }}>PA</div>
+          <span style={{ fontWeight: 900, fontSize: 15, color: 'white', letterSpacing: '-0.02em' }}>Prompt Architect</span>
+        </Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+          <Link href="/library" style={{ color: '#FFFFFF', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>BIBLIOTHÈQUE</Link>
+          <Link href="/pricing" style={{ color: '#FFFFFF', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>PRICING</Link>
+          <Link href="/blog" style={{ color: '#FFFFFF', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>BLOG</Link>
+          <Link href="/contact" style={{ color: '#FFFFFF', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>CONTACT</Link>
+          <Link href="/generate" style={{ background: '#D4FF57', color: '#07090C', padding: '9px 18px', fontSize: 11, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em' }}>
+            ✦ COMMENCER
           </Link>
-          <div className="flex items-center gap-6 text-sm text-gray-600">
-            <Link href="/generate" className="hover:text-gray-900 transition-colors">
-              Générer
-            </Link>
-            <Link href="/pricing" className="hover:text-gray-900 transition-colors">
-              Tarifs
-            </Link>
-            <Link href="/blog" className="hover:text-gray-900 transition-colors">
-              Blog
-            </Link>
-            <Link href="/contact" className="hover:text-gray-900 transition-colors">
-              Contact
-            </Link>
-            <Link
-              href="/generate"
-              className="bg-black text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-800 transition-colors"
-            >
-              Commencer
-            </Link>
-          </div>
         </div>
       </nav>
 
-      <main className="min-h-screen bg-white pt-16">
-        {/* Hero */}
-        <div className="max-w-3xl mx-auto px-6 pt-20 pb-16 text-center">
-          <span className="inline-block text-xs font-medium text-gray-500 tracking-widest uppercase mb-6">
-            Aide
-          </span>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
-            Questions fréquentes
-          </h1>
-          <p className="text-lg text-gray-500 max-w-xl mx-auto">
-            Tout ce que vous devez savoir sur Prompt Architect. Vous ne trouvez pas votre réponse ?{" "}
-            <Link href="/contact" className="text-gray-900 underline underline-offset-2 hover:no-underline">
-              Contactez-nous
-            </Link>
-            .
-          </p>
-        </div>
+      {/* HERO */}
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '72px 24px 56px', textAlign: 'center' }}>
+        <div style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 16 }}>// AIDE</div>
+        <h1 style={{ fontSize: 'clamp(28px, 5vw, 52px)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.05, marginBottom: 16 }}>
+          Questions fréquentes
+        </h1>
+        <p style={{ fontSize: 15, color: '#94A3B8', maxWidth: 500, margin: '0 auto', lineHeight: 1.75 }}>
+          Tout ce que vous devez savoir sur Prompt Architect. Vous ne trouvez pas votre réponse ?{' '}
+          <Link href="/contact" style={{ color: '#D4FF57', textDecoration: 'underline' }}>Contactez-nous</Link>.
+        </p>
+      </div>
 
-        {/* FAQ par catégories */}
-        <div className="max-w-3xl mx-auto px-6 pb-24">
-          <div className="space-y-14">
-            {faqs.map((section) => (
-              <div key={section.category}>
-                <h2 className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-6">
-                  {section.category}
-                </h2>
-                <div className="bg-white rounded-2xl border border-gray-100 px-6 shadow-sm">
-                  {section.items.map((item, i) => {
-                    const key = `${section.category}-${i}`;
-                    return (
-                      <AccordionItem
-                        key={key}
-                        q={item.q}
-                        a={item.a}
-                        isOpen={!!openItems[key]}
-                        onToggle={() => toggle(key)}
-                      />
-                    );
-                  })}
-                </div>
+      {/* FAQ SECTIONS */}
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 24px 96px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
+          {faqs.map((section) => (
+            <div key={section.category}>
+              <div style={{ fontSize: 9, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 16 }}>
+                // {section.category.toUpperCase()}
               </div>
-            ))}
-          </div>
-
-          {/* CTA bas de page */}
-          <div className="mt-20 text-center bg-gray-50 rounded-2xl p-10 border border-gray-100">
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              Vous avez une autre question ?
-            </h3>
-            <p className="text-gray-500 mb-6">
-              Notre équipe répond généralement en moins de 24h.
-            </p>
-            <Link
-              href="/contact"
-              className="inline-block bg-black text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
-            >
-              Nous contacter
-            </Link>
-          </div>
+              <div style={{ border: '1px solid #151C25', background: '#0B0E13', padding: '0 24px' }}>
+                {section.items.map((item, i) => {
+                  const key = `${section.category}-${i}`;
+                  return (
+                    <AccordionItem
+                      key={key}
+                      q={item.q}
+                      a={item.a}
+                      isOpen={!!openItems[key]}
+                      onToggle={() => toggle(key)}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Footer */}
-        <footer className="border-t border-gray-100 bg-white">
-          <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-400">
-            <p>© 2026 Prompt Architect. Tous droits réservés.</p>
-            <div className="flex items-center gap-6">
-              <Link href="/legal" className="hover:text-gray-600 transition-colors">Mentions légales</Link>
-              <Link href="/cgv" className="hover:text-gray-600 transition-colors">CGV</Link>
-              <Link href="/remboursement" className="hover:text-gray-600 transition-colors">Remboursement</Link>
-              <Link href="/contact" className="hover:text-gray-600 transition-colors">Contact</Link>
-            </div>
-          </div>
-        </footer>
-      </main>
-    </>
+        {/* CTA */}
+        <div style={{ marginTop: 64, padding: '40px 32px', background: '#0B0E13', border: '1px solid #151C25', textAlign: 'center' }}>
+          <div style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 12 }}>// UNE AUTRE QUESTION ?</div>
+          <h3 style={{ fontSize: 20, fontWeight: 900, marginBottom: 8, letterSpacing: '-0.02em' }}>Notre équipe répond en moins de 24h.</h3>
+          <p style={{ color: '#94A3B8', fontSize: 13, marginBottom: 24, lineHeight: 1.6 }}>Du lundi au vendredi.</p>
+          <Link href="/contact" style={{ background: '#D4FF57', color: '#07090C', padding: '12px 28px', fontSize: 12, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em', display: 'inline-block' }}>
+            ✦ NOUS CONTACTER
+          </Link>
+        </div>
+      </div>
+
+      {/* FOOTER */}
+      <footer style={{ borderTop: '1px solid #151C25', padding: '24px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ width: 20, height: 20, background: '#D4FF57', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, fontWeight: 900, color: '#07090C' }}>PA</div>
+          <span style={{ fontWeight: 700, fontSize: 12, color: '#94A3B8' }}>Prompt Architect © 2026</span>
+        </div>
+        <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+          <Link href="/generate" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>GÉNÉRATEUR</Link>
+          <Link href="/library" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>BIBLIOTHÈQUE</Link>
+          <Link href="/pricing" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>PRICING</Link>
+          <Link href="/blog" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>BLOG</Link>
+          <Link href="/contact" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>CONTACT</Link>
+          <Link href="/legal" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>MENTIONS LÉGALES</Link>
+          <Link href="/cgv" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>CGV</Link>
+          <Link href="/remboursement" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>REMBOURSEMENT</Link>
+        </div>
+      </footer>
+
+    </div>
   );
 }
