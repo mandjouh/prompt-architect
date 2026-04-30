@@ -69,7 +69,7 @@ export default function LoginPage() {
             <h1 style={{ fontSize: 26, fontWeight: 900, letterSpacing: '-0.03em', marginBottom: 8 }}>
               {mode === 'login' ? 'Bon retour.' : 'Rejoins Prompt Architect.'}
             </h1>
-            <p style={{ fontSize: 13, color: '#4A5568', lineHeight: 1.6 }}>
+            <p style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.6 }}>
               {mode === 'login'
                 ? 'Connecte-toi pour retrouver tes prompts sauvegardés.'
                 : 'Crée ton compte pour sauvegarder tes prompts en cloud.'}
@@ -86,7 +86,7 @@ export default function LoginPage() {
                   flex: 1, padding: '10px 0', fontSize: 11, fontFamily: 'monospace',
                   fontWeight: 900, letterSpacing: '0.06em', cursor: 'pointer', border: 'none',
                   background: mode === m ? '#D4FF57' : 'transparent',
-                  color: mode === m ? '#07090C' : '#4A5568',
+                  color: mode === m ? '#07090C' : '#94A3B8',
                 }}
               >
                 {m === 'login' ? 'CONNEXION' : 'INSCRIPTION'}
@@ -97,7 +97,7 @@ export default function LoginPage() {
           {/* Champs */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 20 }}>
             <div>
-              <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.1em', marginBottom: 6 }}>EMAIL</div>
+              <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 6 }}>EMAIL</div>
               <input
                 type="email"
                 value={email}
@@ -108,7 +108,7 @@ export default function LoginPage() {
               />
             </div>
             <div>
-              <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.1em', marginBottom: 6 }}>MOT DE PASSE</div>
+              <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 6 }}>MOT DE PASSE</div>
               <input
                 type="password"
                 value={password}
@@ -141,7 +141,7 @@ export default function LoginPage() {
               fontFamily: 'monospace', letterSpacing: '0.08em', border: 'none',
               cursor: loading ? 'not-allowed' : 'pointer',
               background: loading ? '#151C25' : '#D4FF57',
-              color: loading ? '#4A5568' : '#07090C',
+              color: loading ? '#94A3B8' : '#07090C',
             }}
           >
             {loading ? '⟳ CHARGEMENT...' : mode === 'login' ? '→ SE CONNECTER' : '✦ CRÉER MON COMPTE'}
@@ -150,14 +150,14 @@ export default function LoginPage() {
           {/* Lien mot de passe oublié */}
           {mode === 'login' && (
             <div style={{ textAlign: 'center', marginTop: 16 }}>
-              <a href="/reset-password" style={{ fontSize: 11, color: '#2D3748', textDecoration: 'none' }}>
+              <a href="/reset-password" style={{ fontSize: 11, color: '#94A3B8', textDecoration: 'none' }}>
                 Mot de passe oublié ?
               </a>
             </div>
           )}
 
           {/* Info */}
-          <div style={{ marginTop: 28, padding: '12px 14px', background: '#0B0E13', border: '1px solid #0F1520', fontSize: 11, color: '#2D3748', lineHeight: 1.6 }}>
+          <div style={{ marginTop: 28, padding: '12px 14px', background: '#0B0E13', border: '1px solid #0F1520', fontSize: 11, color: '#94A3B8', lineHeight: 1.6 }}>
             <span style={{ color: '#1A2535' }}>◎ </span>
             {mode === 'register'
               ? 'Tes prompts localStorage existants seront automatiquement associés à ton compte.'

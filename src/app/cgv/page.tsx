@@ -21,7 +21,7 @@ export default function CGVPage() {
         <div style={{ marginBottom: 48 }}>
           <div style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 14 }}>// LÉGAL</div>
           <h1 style={{ fontSize: 32, fontWeight: 900, letterSpacing: '-0.03em', marginBottom: 8 }}>Conditions Générales de Vente</h1>
-          <p style={{ fontSize: 12, color: '#2D3748' }}>Dernière mise à jour : 29 avril 2026</p>
+          <p style={{ fontSize: 12, color: '#94A3B8' }}>Dernière mise à jour : 29 avril 2026</p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
           {[
@@ -43,12 +43,12 @@ export default function CGVPage() {
             <h2 style={{ fontSize: 14, fontWeight: 900, color: '#D4FF57', letterSpacing: '0.1em', marginBottom: 16 }}>2. SERVICES ET TARIFS</h2>
             <div style={{ background: '#0B0E13', border: '1px solid #151C25', overflow: 'hidden', marginBottom: 12 }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', borderBottom: '1px solid #151C25', padding: '12px 20px' }}>
-                <span style={{ fontSize: 10, color: '#2D3748', letterSpacing: '0.1em' }}>PLAN</span>
-                <span style={{ fontSize: 10, color: '#2D3748', letterSpacing: '0.1em' }}>GÉNÉRATIONS/MOIS</span>
-                <span style={{ fontSize: 10, color: '#2D3748', letterSpacing: '0.1em' }}>PRIX</span>
+                <span style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.1em' }}>PLAN</span>
+                <span style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.1em' }}>GÉNÉRATIONS/MOIS</span>
+                <span style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.1em' }}>PRIX</span>
               </div>
               {[
-                { plan: 'Free', gen: '5', prix: '0 $', color: '#4A5568' },
+                { plan: 'Free', gen: '5', prix: '0 $', color: '#94A3B8' },
                 { plan: 'Standard', gen: '50', prix: '5 $/mois', color: '#38C4FF' },
                 { plan: 'Pro', gen: '100', prix: '10 $/mois', color: '#D4FF57' },
                 { plan: 'Premium', gen: '250', prix: '20 $/mois', color: '#A47CFF' },
@@ -60,16 +60,16 @@ export default function CGVPage() {
                 </div>
               ))}
             </div>
-            <p style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.7 }}>Tous les prix sont en USD. Les tarifs peuvent être modifiés avec un préavis de 30 jours.</p>
+            <p style={{ fontSize: 12, color: '#94A3B8', lineHeight: 1.7 }}>Tous les prix sont en USD. Les tarifs peuvent être modifiés avec un préavis de 30 jours.</p>
           </section>
         </div>
         <div style={{ marginTop: 48, display: 'flex', gap: 24, flexWrap: 'wrap' }}>
-          <Link href="/legal" style={{ fontSize: 12, color: '#4A5568', textDecoration: 'none', letterSpacing: '0.06em' }}>MENTIONS LÉGALES →</Link>
-          <Link href="/remboursement" style={{ fontSize: 12, color: '#4A5568', textDecoration: 'none', letterSpacing: '0.06em' }}>POLITIQUE DE REMBOURSEMENT →</Link>
+          <Link href="/legal" style={{ fontSize: 12, color: '#94A3B8', textDecoration: 'none', letterSpacing: '0.06em' }}>MENTIONS LÉGALES →</Link>
+          <Link href="/remboursement" style={{ fontSize: 12, color: '#94A3B8', textDecoration: 'none', letterSpacing: '0.06em' }}>POLITIQUE DE REMBOURSEMENT →</Link>
         </div>
       </div>
       <footer style={{ borderTop: '1px solid #151C25', padding: '24px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
-        <span style={{ fontWeight: 700, fontSize: 12, color: '#4A5568' }}>Prompt Architect © 2026</span>
+        <span style={{ fontWeight: 700, fontSize: 12, color: '#94A3B8' }}>Prompt Architect © 2026</span>
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
           <Link href="/legal" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>MENTIONS LÉGALES</Link>
           <Link href="/cgv" style={{ color: '#D4FF57', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>CGV</Link>

@@ -17,7 +17,7 @@ type UserProfile = {
 }
 
 const PLAN_CONFIG = {
-  free:     { label: 'Free',     color: '#4A5568', limit: 5 },
+  free:     { label: 'Free',     color: '#94A3B8', limit: 5 },
   standard: { label: 'Standard', color: '#38C4FF', limit: 50 },
   pro:      { label: 'Pro',      color: '#D4FF57', limit: 100 },
   premium:  { label: 'Premium',  color: '#A47CFF', limit: 250 },
@@ -114,7 +114,7 @@ export default function AdminPage() {
   if (loading || fetching) {
     return (
       <div style={{ minHeight: '100vh', background: '#07090C', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'monospace' }}>
-        <div style={{ color: '#2D3748', fontSize: 13 }}>⟳ Chargement...</div>
+        <div style={{ color: '#94A3B8', fontSize: 13 }}>⟳ Chargement...</div>
       </div>
     )
   }
@@ -132,8 +132,8 @@ export default function AdminPage() {
           <span style={{ fontSize: 9, color: '#D4FF57', letterSpacing: '0.12em', border: '1px solid #D4FF5740', padding: '2px 8px', marginLeft: 4 }}>ADMIN</span>
         </a>
         <div style={{ display: 'flex', gap: 12 }}>
-          <a href="/generate" style={{ fontSize: 11, color: '#4A5568', textDecoration: 'none', border: '1px solid #151C25', padding: '7px 14px' }}>✦ Générateur</a>
-          <a href="/profile" style={{ fontSize: 11, color: '#4A5568', textDecoration: 'none', border: '1px solid #151C25', padding: '7px 14px' }}>◎ Profil</a>
+          <a href="/generate" style={{ fontSize: 11, color: '#94A3B8', textDecoration: 'none', border: '1px solid #151C25', padding: '7px 14px' }}>✦ Générateur</a>
+          <a href="/profile" style={{ fontSize: 11, color: '#94A3B8', textDecoration: 'none', border: '1px solid #151C25', padding: '7px 14px' }}>◎ Profil</a>
         </div>
       </div>
 
@@ -143,7 +143,7 @@ export default function AdminPage() {
         <div style={{ marginBottom: 40 }}>
           <div style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 12 }}>// ADMIN</div>
           <h1 style={{ fontSize: 28, fontWeight: 900, letterSpacing: '-0.03em', marginBottom: 6 }}>Gestion des utilisateurs</h1>
-          <p style={{ fontSize: 12, color: '#2D3748' }}>Modifier les plans et accès de tes utilisateurs</p>
+          <p style={{ fontSize: 12, color: '#94A3B8' }}>Modifier les plans et accès de tes utilisateurs</p>
         </div>
 
         {/* ERREUR */}
@@ -157,14 +157,14 @@ export default function AdminPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 1, background: '#151C25', border: '1px solid #151C25', marginBottom: 32 }}>
           {[
             { label: 'TOTAL', value: stats.total, color: 'white' },
-            { label: 'FREE', value: stats.free, color: '#4A5568' },
+            { label: 'FREE', value: stats.free, color: '#94A3B8' },
             { label: 'STANDARD', value: stats.standard, color: '#38C4FF' },
             { label: 'PRO', value: stats.pro, color: '#D4FF57' },
             { label: 'PREMIUM', value: stats.premium, color: '#A47CFF' },
           ].map((stat, i) => (
             <div key={i} style={{ background: '#07090C', padding: '20px', textAlign: 'center' }}>
               <div style={{ fontSize: 28, fontWeight: 900, color: stat.color, letterSpacing: '-0.03em', marginBottom: 4 }}>{stat.value}</div>
-              <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.1em' }}>{stat.label}</div>
+              <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.1em' }}>{stat.label}</div>
             </div>
           ))}
         </div>
@@ -181,14 +181,14 @@ export default function AdminPage() {
           <div style={{ display: 'flex', gap: 1, background: '#151C25' }}>
             {['all', 'free', 'standard', 'pro', 'premium'].map(p => (
               <button key={p} onClick={() => setFilterPlan(p)}
-                style={{ padding: '10px 14px', fontSize: 10, fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.06em', border: 'none', cursor: 'pointer', background: filterPlan === p ? '#D4FF57' : '#07090C', color: filterPlan === p ? '#07090C' : '#4A5568', transition: 'all 0.15s' }}>
+                style={{ padding: '10px 14px', fontSize: 10, fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.06em', border: 'none', cursor: 'pointer', background: filterPlan === p ? '#D4FF57' : '#07090C', color: filterPlan === p ? '#07090C' : '#94A3B8', transition: 'all 0.15s' }}>
                 {p.toUpperCase()}
               </button>
             ))}
           </div>
           <button
             onClick={() => session?.access_token && fetchUsers(session.access_token)}
-            style={{ padding: '10px 16px', fontSize: 11, fontFamily: 'monospace', background: 'transparent', border: '1px solid #151C25', color: '#4A5568', cursor: 'pointer' }}>
+            style={{ padding: '10px 16px', fontSize: 11, fontFamily: 'monospace', background: 'transparent', border: '1px solid #151C25', color: '#94A3B8', cursor: 'pointer' }}>
             ↻ Rafraîchir
           </button>
         </div>
@@ -199,13 +199,13 @@ export default function AdminPage() {
           {/* EN-TÊTES */}
           <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1.5fr', background: '#0B0E13', borderBottom: '1px solid #151C25', padding: '12px 20px', gap: 16 }}>
             {['EMAIL / NOM', 'PLAN', 'CRÉDITS', 'MEMBRE DEPUIS', 'CHANGER PLAN'].map((h, i) => (
-              <div key={i} style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.12em' }}>{h}</div>
+              <div key={i} style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.12em' }}>{h}</div>
             ))}
           </div>
 
           {/* LIGNES */}
           {filteredUsers.length === 0 ? (
-            <div style={{ padding: '40px', textAlign: 'center', color: '#2D3748', fontSize: 13 }}>
+            <div style={{ padding: '40px', textAlign: 'center', color: '#94A3B8', fontSize: 13 }}>
               Aucun utilisateur trouvé
             </div>
           ) : (
@@ -219,7 +219,7 @@ export default function AdminPage() {
                   {/* Email / Nom */}
                   <div>
                     <div style={{ fontSize: 12, color: 'white', marginBottom: 3 }}>{u.email}</div>
-                    {u.name && <div style={{ fontSize: 10, color: '#4A5568' }}>{u.name}</div>}
+                    {u.name && <div style={{ fontSize: 10, color: '#94A3B8' }}>{u.name}</div>}
                   </div>
 
                   {/* Plan */}
@@ -229,12 +229,12 @@ export default function AdminPage() {
                   </div>
 
                   {/* Crédits */}
-                  <div style={{ fontSize: 12, color: '#4A5568' }}>
+                  <div style={{ fontSize: 12, color: '#94A3B8' }}>
                     {u.credits_used} / {planConf.limit}
                   </div>
 
                   {/* Date */}
-                  <div style={{ fontSize: 11, color: '#2D3748' }}>
+                  <div style={{ fontSize: 11, color: '#94A3B8' }}>
                     {new Date(u.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: '2-digit' })}
                   </div>
 
@@ -243,7 +243,7 @@ export default function AdminPage() {
                     {isUpdated ? (
                       <span style={{ fontSize: 10, color: '#D4FF57', fontWeight: 700 }}>✓ Mis à jour</span>
                     ) : isUpdating ? (
-                      <span style={{ fontSize: 10, color: '#4A5568' }}>⟳ Mise à jour...</span>
+                      <span style={{ fontSize: 10, color: '#94A3B8' }}>⟳ Mise à jour...</span>
                     ) : (
                       (['free', 'standard', 'pro', 'premium'] as const).filter(p => p !== u.plan).map(p => (
                         <button key={p} onClick={() => handleChangePlan(u.id, p)}
@@ -262,7 +262,7 @@ export default function AdminPage() {
           )}
         </div>
 
-        <div style={{ marginTop: 16, fontSize: 11, color: '#2D3748', textAlign: 'right' }}>
+        <div style={{ marginTop: 16, fontSize: 11, color: '#94A3B8', textAlign: 'right' }}>
           {filteredUsers.length} utilisateur{filteredUsers.length > 1 ? 's' : ''} affiché{filteredUsers.length > 1 ? 's' : ''}
         </div>
 

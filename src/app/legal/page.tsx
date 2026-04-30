@@ -27,7 +27,7 @@ export default function LegalPage() {
         <div style={{ marginBottom: 48 }}>
           <div style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 14 }}>// LÉGAL</div>
           <h1 style={{ fontSize: 32, fontWeight: 900, letterSpacing: '-0.03em', marginBottom: 8 }}>Mentions légales</h1>
-          <p style={{ fontSize: 12, color: '#2D3748' }}>Dernière mise à jour : 29 avril 2026</p>
+          <p style={{ fontSize: 12, color: '#94A3B8' }}>Dernière mise à jour : 29 avril 2026</p>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
@@ -35,19 +35,19 @@ export default function LegalPage() {
           <section>
             <h2 style={{ fontSize: 14, fontWeight: 900, color: '#D4FF57', letterSpacing: '0.1em', marginBottom: 16 }}>1. ÉDITEUR DU SITE</h2>
             <div style={{ background: '#0B0E13', border: '1px solid #151C25', padding: 24, fontSize: 13, color: '#8A9AAA', lineHeight: 2 }}>
-              <div><span style={{ color: '#4A5568' }}>Site :</span> Prompt Architect</div>
-              <div><span style={{ color: '#4A5568' }}>URL :</span> https://www.prompt-architect.io</div>
-              <div><span style={{ color: '#4A5568' }}>Email :</span> support@prompt-architect.io</div>
-              <div><span style={{ color: '#4A5568' }}>Responsable de publication :</span> Mandjouh</div>
+              <div><span style={{ color: '#94A3B8' }}>Site :</span> Prompt Architect</div>
+              <div><span style={{ color: '#94A3B8' }}>URL :</span> https://www.prompt-architect.io</div>
+              <div><span style={{ color: '#94A3B8' }}>Email :</span> support@prompt-architect.io</div>
+              <div><span style={{ color: '#94A3B8' }}>Responsable de publication :</span> Mandjouh</div>
             </div>
           </section>
 
           <section>
             <h2 style={{ fontSize: 14, fontWeight: 900, color: '#D4FF57', letterSpacing: '0.1em', marginBottom: 16 }}>2. HÉBERGEMENT</h2>
             <div style={{ background: '#0B0E13', border: '1px solid #151C25', padding: 24, fontSize: 13, color: '#8A9AAA', lineHeight: 2 }}>
-              <div><span style={{ color: '#4A5568' }}>Hébergeur :</span> Vercel Inc.</div>
-              <div><span style={{ color: '#4A5568' }}>Adresse :</span> 340 Pine Street, Suite 701, San Francisco, CA 94104, États-Unis</div>
-              <div><span style={{ color: '#4A5568' }}>Site :</span> https://vercel.com</div>
+              <div><span style={{ color: '#94A3B8' }}>Hébergeur :</span> Vercel Inc.</div>
+              <div><span style={{ color: '#94A3B8' }}>Adresse :</span> 340 Pine Street, Suite 701, San Francisco, CA 94104, États-Unis</div>
+              <div><span style={{ color: '#94A3B8' }}>Site :</span> https://vercel.com</div>
             </div>
           </section>
 
@@ -89,15 +89,15 @@ export default function LegalPage() {
         </div>
 
         <div style={{ marginTop: 48, display: 'flex', gap: 24, flexWrap: 'wrap' }}>
-          <Link href="/cgv" style={{ fontSize: 12, color: '#4A5568', textDecoration: 'none', letterSpacing: '0.06em' }}>CONDITIONS GÉNÉRALES DE VENTE →</Link>
-          <Link href="/remboursement" style={{ fontSize: 12, color: '#4A5568', textDecoration: 'none', letterSpacing: '0.06em' }}>POLITIQUE DE REMBOURSEMENT →</Link>
+          <Link href="/cgv" style={{ fontSize: 12, color: '#94A3B8', textDecoration: 'none', letterSpacing: '0.06em' }}>CONDITIONS GÉNÉRALES DE VENTE →</Link>
+          <Link href="/remboursement" style={{ fontSize: 12, color: '#94A3B8', textDecoration: 'none', letterSpacing: '0.06em' }}>POLITIQUE DE REMBOURSEMENT →</Link>
         </div>
 
       </div>
 
       {/* FOOTER */}
       <footer style={{ borderTop: '1px solid #151C25', padding: '24px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
-        <span style={{ fontWeight: 700, fontSize: 12, color: '#4A5568' }}>Prompt Architect © 2026</span>
+        <span style={{ fontWeight: 700, fontSize: 12, color: '#94A3B8' }}>Prompt Architect © 2026</span>
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
           <Link href="/legal" style={{ color: '#D4FF57', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>MENTIONS LÉGALES</Link>
           <Link href="/cgv" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>CGV</Link>

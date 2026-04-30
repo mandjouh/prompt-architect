@@ -14,7 +14,7 @@ type Profile = {
 }
 
 const PLAN_CONFIG = {
-  free:     { label: 'Free',     limit: 5,  color: '#4A5568', price: '0$' },
+  free:     { label: 'Free',     limit: 5,  color: '#94A3B8', price: '0$' },
   standard: { label: 'Standard', limit: 50,  color: '#38C4FF', price: '5$/mois' },
   pro:      { label: 'Pro',      limit: 100, color: '#D4FF57', price: '10$/mois' },
   premium:  { label: 'Premium',  limit: 250, color: '#A47CFF', price: '20$/mois' },
@@ -91,7 +91,7 @@ export default function ProfilePage() {
   if (loading || fetching) {
     return (
       <div style={{ minHeight: '100vh', background: '#07090C', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'monospace' }}>
-        <div style={{ color: '#2D3748', fontSize: 13 }}>⟳ Chargement...</div>
+        <div style={{ color: '#94A3B8', fontSize: 13 }}>⟳ Chargement...</div>
       </div>
     )
   }
@@ -127,7 +127,7 @@ export default function ProfilePage() {
           <h1 style={{ fontSize: 28, fontWeight: 900, letterSpacing: '-0.03em', marginBottom: 6 }}>
             {profile.name || user.email?.split('@')[0]}
           </h1>
-          <p style={{ fontSize: 12, color: '#2D3748' }}>Membre depuis {memberSince}</p>
+          <p style={{ fontSize: 12, color: '#94A3B8' }}>Membre depuis {memberSince}</p>
         </div>
 
         {/* PLAN + STATS */}
@@ -139,7 +139,7 @@ export default function ProfilePage() {
           ].map((stat, i) => (
             <div key={i} style={{ background: '#07090C', padding: '24px 20px', textAlign: 'center' }}>
               <div style={{ fontSize: 28, fontWeight: 900, color: stat.color, letterSpacing: '-0.03em', marginBottom: 6 }}>{stat.value}</div>
-              <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.1em' }}>{stat.label}</div>
+              <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.1em' }}>{stat.label}</div>
             </div>
           ))}
         </div>
@@ -148,11 +148,11 @@ export default function ProfilePage() {
         <div style={{ border: '1px solid #151C25', background: '#0B0E13', padding: 24, marginBottom: 24 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
             <div>
-              <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.12em', marginBottom: 8 }}>ABONNEMENT</div>
+              <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.12em', marginBottom: 8 }}>ABONNEMENT</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div style={{ width: 8, height: 8, borderRadius: '50%', background: planConfig.color }} />
                 <span style={{ fontSize: 16, fontWeight: 900, color: planConfig.color }}>{planConfig.label}</span>
-                <span style={{ fontSize: 12, color: '#2D3748' }}>— {planConfig.price}</span>
+                <span style={{ fontSize: 12, color: '#94A3B8' }}>— {planConfig.price}</span>
               </div>
             </div>
             {profile.plan !== 'premium' && (
@@ -164,8 +164,8 @@ export default function ProfilePage() {
 
           <div style={{ marginBottom: 8 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-              <span style={{ fontSize: 10, color: '#2D3748', letterSpacing: '0.08em' }}>GÉNÉRATIONS CE MOIS</span>
-              <span style={{ fontSize: 10, color: '#4A5568' }}>{profile.credits_used} / {planConfig.limit}</span>
+              <span style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.08em' }}>GÉNÉRATIONS CE MOIS</span>
+              <span style={{ fontSize: 10, color: '#94A3B8' }}>{profile.credits_used} / {planConfig.limit}</span>
             </div>
             <div style={{ height: 6, background: '#151C25', borderRadius: 3 }}>
               <div style={{ height: '100%', width: `${progressPercent}%`, background: progressPercent >= 100 ? '#FF5A5A' : progressPercent >= 80 ? '#FF7A3D' : planConfig.color, borderRadius: 3, transition: 'width 0.3s' }} />
@@ -175,17 +175,17 @@ export default function ProfilePage() {
 
         {/* INFOS PERSONNELLES */}
         <div style={{ border: '1px solid #151C25', background: '#0B0E13', padding: 24, marginBottom: 24 }}>
-          <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.12em', marginBottom: 20 }}>INFORMATIONS PERSONNELLES</div>
+          <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.12em', marginBottom: 20 }}>INFORMATIONS PERSONNELLES</div>
 
           <div style={{ marginBottom: 16 }}>
-            <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.1em', marginBottom: 6 }}>EMAIL</div>
-            <div style={{ padding: '12px 14px', background: '#07090C', border: '1px solid #0F1520', fontSize: 13, color: '#4A5568' }}>
+            <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 6 }}>EMAIL</div>
+            <div style={{ padding: '12px 14px', background: '#07090C', border: '1px solid #0F1520', fontSize: 13, color: '#94A3B8' }}>
               {user.email}
             </div>
           </div>
 
           <div style={{ marginBottom: 16 }}>
-            <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.1em', marginBottom: 6 }}>NOM D'AFFICHAGE</div>
+            <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 6 }}>NOM D'AFFICHAGE</div>
             <div style={{ display: 'flex', gap: 10 }}>
               <input
                 type="text"
@@ -207,11 +207,11 @@ export default function ProfilePage() {
 
         {/* CHANGER MOT DE PASSE */}
         <div style={{ border: '1px solid #151C25', background: '#0B0E13', padding: 24, marginBottom: 24 }}>
-          <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.12em', marginBottom: 20 }}>CHANGER MOT DE PASSE</div>
+          <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.12em', marginBottom: 20 }}>CHANGER MOT DE PASSE</div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 16 }}>
             <div>
-              <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.1em', marginBottom: 6 }}>NOUVEAU MOT DE PASSE</div>
+              <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 6 }}>NOUVEAU MOT DE PASSE</div>
               <input
                 type="password"
                 value={newPassword}
@@ -221,7 +221,7 @@ export default function ProfilePage() {
               />
             </div>
             <div>
-              <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.1em', marginBottom: 6 }}>CONFIRMER</div>
+              <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 6 }}>CONFIRMER</div>
               <input
                 type="password"
                 value={confirmPassword}
@@ -241,7 +241,7 @@ export default function ProfilePage() {
           <button
             onClick={handleChangePassword}
             disabled={savingPassword}
-            style={{ padding: '11px 24px', fontSize: 11, fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.06em', border: 'none', cursor: 'pointer', background: passwordSaved ? '#1A3A1A' : '#151C25', color: passwordSaved ? '#5EDD5E' : '#4A5568', transition: 'all 0.2s' }}
+            style={{ padding: '11px 24px', fontSize: 11, fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.06em', border: 'none', cursor: 'pointer', background: passwordSaved ? '#1A3A1A' : '#151C25', color: passwordSaved ? '#5EDD5E' : '#94A3B8', transition: 'all 0.2s' }}
           >
             {passwordSaved ? '✓ MOT DE PASSE MIS À JOUR' : savingPassword ? '⟳ MISE À JOUR...' : '→ CHANGER MON MOT DE PASSE'}
           </button>
@@ -253,7 +253,7 @@ export default function ProfilePage() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
             <div>
               <div style={{ fontSize: 13, fontWeight: 700, color: 'white', marginBottom: 4 }}>Se déconnecter</div>
-              <div style={{ fontSize: 12, color: '#4A5568' }}>Tu seras redirigé vers la page d'accueil.</div>
+              <div style={{ fontSize: 12, color: '#94A3B8' }}>Tu seras redirigé vers la page d'accueil.</div>
             </div>
             <button onClick={handleSignOut} style={{ background: 'transparent', border: '1px solid #5A1A1A', color: '#FF5A5A', padding: '9px 18px', fontSize: 11, cursor: 'pointer', fontFamily: 'monospace', letterSpacing: '0.06em' }}>
               DÉCONNEXION

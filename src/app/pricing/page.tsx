@@ -10,7 +10,7 @@ const PLANS = [
     name: 'Free',
     price: 0,
     generations: 5,
-    color: '#4A5568',
+    color: '#94A3B8',
     features: ['5 générations / mois', 'Accès aux 3 modules gratuits', 'Sauvegarde locale', 'Bibliothèque 50 prompts'],
     cta: 'Commencer gratuitement',
     variantId: null,
@@ -95,9 +95,9 @@ export default function PricingPage() {
         </a>
         <div style={{ display: 'flex', gap: 8 }}>
           {user ? (
-            <a href="/my-prompts" style={{ fontSize: 11, color: '#4A5568', textDecoration: 'none', border: '1px solid #151C25', padding: '6px 10px' }}>◈</a>
+            <a href="/my-prompts" style={{ fontSize: 11, color: '#94A3B8', textDecoration: 'none', border: '1px solid #151C25', padding: '6px 10px' }}>◈</a>
           ) : (
-            <a href="/login" style={{ fontSize: 11, color: '#4A5568', textDecoration: 'none', border: '1px solid #151C25', padding: '6px 10px' }}>Connexion</a>
+            <a href="/login" style={{ fontSize: 11, color: '#94A3B8', textDecoration: 'none', border: '1px solid #151C25', padding: '6px 10px' }}>Connexion</a>
           )}
           <a href="/generate" style={{ background: '#D4FF57', color: '#07090C', padding: '8px 14px', fontSize: 11, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.06em' }}>
             ✦ GÉNÉRATEUR
@@ -114,7 +114,7 @@ export default function PricingPage() {
             Simple. Transparent.<br />
             <span style={{ color: '#D4FF57' }}>Sans surprise.</span>
           </h1>
-          <p style={{ color: '#4A5568', fontSize: 14, lineHeight: 1.7, maxWidth: 400, margin: '0 auto' }}>
+          <p style={{ color: '#94A3B8', fontSize: 14, lineHeight: 1.7, maxWidth: 400, margin: '0 auto' }}>
             Commence gratuitement. Upgrade quand tu es prêt. Annule à tout moment.
           </p>
         </div>
@@ -142,9 +142,9 @@ export default function PricingPage() {
                   <span style={{ fontSize: 32, fontWeight: 900, color: 'white', letterSpacing: '-0.04em', lineHeight: 1 }}>
                     {plan.price === 0 ? 'Gratuit' : `$${plan.price}`}
                   </span>
-                  {plan.price > 0 && <span style={{ fontSize: 12, color: '#4A5568' }}>/mois</span>}
+                  {plan.price > 0 && <span style={{ fontSize: 12, color: '#94A3B8' }}>/mois</span>}
                 </div>
-                <div style={{ fontSize: 11, color: '#4A5568', marginTop: 6 }}>
+                <div style={{ fontSize: 11, color: '#94A3B8', marginTop: 6 }}>
                   {plan.generations} générations/mois
                 </div>
               </div>
@@ -167,7 +167,7 @@ export default function PricingPage() {
                   cursor: loading === plan.id ? 'not-allowed' : 'pointer',
                   border: plan.popular ? 'none' : '1px solid #2A3545',
                   background: plan.popular ? '#D4FF57' : 'transparent',
-                  color: plan.popular ? '#07090C' : '#4A5568',
+                  color: plan.popular ? '#07090C' : '#94A3B8',
                   transition: 'all 0.15s',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
@@ -192,7 +192,7 @@ export default function PricingPage() {
             ].map((item, i) => (
               <div key={i} style={{ padding: '20px 0', borderBottom: '1px solid #0F1520' }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: 'white', marginBottom: 8 }}>{item.q}</div>
-                <div style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.7 }}>{item.r}</div>
+                <div style={{ fontSize: 12, color: '#94A3B8', lineHeight: 1.7 }}>{item.r}</div>
               </div>
             ))}
           </div>
@@ -202,7 +202,7 @@ export default function PricingPage() {
 
       {/* FOOTER */}
       <footer style={{ borderTop: '1px solid #151C25', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-        <span style={{ fontWeight: 700, fontSize: 12, color: '#4A5568' }}>Prompt Architect © 2026</span>
+        <span style={{ fontWeight: 700, fontSize: 12, color: '#94A3B8' }}>Prompt Architect © 2026</span>
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
           <a href="/generate" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>GÉNÉRATEUR</a>
           <a href="/blog" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>BLOG</a>

@@ -23,7 +23,7 @@ type Profile = {
 }
 
 const PLAN_CONFIG = {
-  free:     { label: 'Free',     limit: 5,  color: '#4A5568', nextPlan: 'standard' },
+  free:     { label: 'Free',     limit: 5,  color: '#94A3B8', nextPlan: 'standard' },
   standard: { label: 'Standard', limit: 50,  color: '#38C4FF', nextPlan: 'pro' },
   pro:      { label: 'Pro',      limit: 100, color: '#D4FF57', nextPlan: 'premium' },
   premium:  { label: 'Premium',  limit: 250, color: '#A47CFF', nextPlan: null },
@@ -105,7 +105,7 @@ export default function MyPromptsPage() {
   if (loading || fetching) {
     return (
       <div style={{ minHeight: '100vh', background: '#07090C', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'monospace' }}>
-        <div style={{ color: '#2D3748', fontSize: 13 }}>⟳ Chargement...</div>
+        <div style={{ color: '#94A3B8', fontSize: 13 }}>⟳ Chargement...</div>
       </div>
     )
   }
@@ -130,7 +130,7 @@ export default function MyPromptsPage() {
           <span style={{ fontWeight: 900, fontSize: 15, color: 'white' }}>Prompt Architect</span>
         </a>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{ fontSize: 10, color: '#2D3748' }}>{user.email}</span>
+          <span style={{ fontSize: 10, color: '#94A3B8' }}>{user.email}</span>
           {prompts.length > 0 && (
             <button onClick={() => setConfirmClear(true)} style={{ background: '#FF4D4D08', border: '1px solid #FF4D4D40', color: '#FF4D4D', padding: '6px 12px', fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>
               ✕ TOUT EFFACER
@@ -156,7 +156,7 @@ export default function MyPromptsPage() {
           {/* Plan actuel */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{ width: 8, height: 8, borderRadius: '50%', background: planConfig.color }} />
-            <span style={{ fontSize: 10, color: '#2D3748', letterSpacing: '0.1em' }}>PLAN</span>
+            <span style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.1em' }}>PLAN</span>
             <span style={{ fontSize: 12, fontWeight: 900, color: planConfig.color, letterSpacing: '0.06em' }}>
               {planConfig.label.toUpperCase()}
             </span>
@@ -169,7 +169,7 @@ export default function MyPromptsPage() {
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
                 <span style={{ fontSize: 10, color: '#FFFFFF', letterSpacing: '0.1em' }}>GÉNÉRATIONS CE MOIS</span>
-                <span style={{ fontSize: 10, color: isAtLimit ? '#FF5A5A' : isNearLimit ? '#FF7A3D' : '#4A5568' }}>
+                <span style={{ fontSize: 10, color: isAtLimit ? '#FF5A5A' : isNearLimit ? '#FF7A3D' : '#94A3B8' }}>
                   {creditsUsed} / {creditsLimit}
                 </span>
               </div>
@@ -183,7 +183,7 @@ export default function MyPromptsPage() {
                 }} />
               </div>
             </div>
-            <span style={{ fontSize: 11, color: isAtLimit ? '#FF5A5A' : '#4A5568', whiteSpace: 'nowrap' }}>
+            <span style={{ fontSize: 11, color: isAtLimit ? '#FF5A5A' : '#94A3B8', whiteSpace: 'nowrap' }}>
               {isAtLimit ? '⚠ Limite atteinte' : `${creditsLeft} restantes`}
             </span>
           </div>
@@ -197,7 +197,7 @@ export default function MyPromptsPage() {
               style={{
                 fontSize: 10, fontWeight: 900, letterSpacing: '0.08em', textDecoration: 'none',
                 padding: '6px 14px', border: `1px solid ${isAtLimit ? '#D4FF5740' : '#151C25'}`,
-                color: isAtLimit ? '#D4FF57' : '#4A5568',
+                color: isAtLimit ? '#D4FF57' : '#94A3B8',
                 background: isAtLimit ? '#D4FF5710' : 'transparent',
                 display: 'flex', alignItems: 'center', gap: 6,
               }}
@@ -242,14 +242,14 @@ export default function MyPromptsPage() {
           <div style={{ background: '#0B0E13', border: '1px solid #2A1A1A', padding: 32, maxWidth: 360, width: '90%' }}>
             <div style={{ fontSize: 11, color: '#FF5A5A', letterSpacing: '0.1em', marginBottom: 12 }}>ATTENTION</div>
             <p style={{ fontSize: 14, color: 'white', fontWeight: 700, marginBottom: 8 }}>Effacer tous les prompts ?</p>
-            <p style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.6, marginBottom: 24 }}>
+            <p style={{ fontSize: 12, color: '#94A3B8', lineHeight: 1.6, marginBottom: 24 }}>
               {prompts.length} prompts seront définitivement supprimés du cloud.
             </p>
             <div style={{ display: 'flex', gap: 10 }}>
               <button onClick={handleClearAll} style={{ flex: 1, background: '#2A0A0A', border: '1px solid #5A1A1A', color: '#FF5A5A', padding: '10px 0', fontSize: 11, fontWeight: 900, fontFamily: 'monospace', cursor: 'pointer' }}>
                 ✕ OUI, TOUT EFFACER
               </button>
-              <button onClick={() => setConfirmClear(false)} style={{ flex: 1, background: 'transparent', border: '1px solid #151C25', color: '#4A5568', padding: '10px 0', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer' }}>
+              <button onClick={() => setConfirmClear(false)} style={{ flex: 1, background: 'transparent', border: '1px solid #151C25', color: '#94A3B8', padding: '10px 0', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer' }}>
                 Annuler
               </button>
             </div>
@@ -262,7 +262,7 @@ export default function MyPromptsPage() {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 40, textAlign: 'center' }}>
           <div style={{ fontSize: 48, color: '#0F1520', marginBottom: 24 }}>◈</div>
           <h2 style={{ fontSize: 20, fontWeight: 900, marginBottom: 12 }}>Aucun prompt sauvegardé</h2>
-          <p style={{ color: '#4A5568', fontSize: 13, lineHeight: 1.7, maxWidth: 300, marginBottom: 32 }}>
+          <p style={{ color: '#94A3B8', fontSize: 13, lineHeight: 1.7, maxWidth: 300, marginBottom: 32 }}>
             Génère ton premier prompt et il sera automatiquement sauvegardé dans ton compte.
           </p>
           <a href="/generate" style={{ background: '#D4FF57', color: '#07090C', padding: '13px 32px', fontSize: 12, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em' }}>
@@ -275,7 +275,7 @@ export default function MyPromptsPage() {
           {/* SIDEBAR */}
           <div style={{ width: 300, borderRight: '1px solid #151C25', display: 'flex', flexDirection: 'column', position: 'sticky', top: 57, height: 'calc(100vh - 57px)', overflowY: 'auto' }}>
             <div style={{ padding: '16px', borderBottom: '1px solid #0F1520' }}>
-              <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.12em', marginBottom: 10 }}>FILTRER PAR MODULE</div>
+              <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.12em', marginBottom: 10 }}>FILTRER PAR MODULE</div>
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                 {modules.map(m => (
                   <button key={m} onClick={() => setFilterModule(m)} style={{
@@ -283,7 +283,7 @@ export default function MyPromptsPage() {
                     border: '1px solid', letterSpacing: '0.04em',
                     borderColor: filterModule === m ? '#D4FF5740' : '#151C25',
                     background: filterModule === m ? '#D4FF5710' : 'transparent',
-                    color: filterModule === m ? '#D4FF57' : '#4A5568',
+                    color: filterModule === m ? '#D4FF57' : '#94A3B8',
                   }}>
                     {m}
                   </button>
@@ -306,7 +306,7 @@ export default function MyPromptsPage() {
                     </span>
                     <button
                       onClick={e => { e.stopPropagation(); handleDelete(p.id) }}
-                      style={{ background: 'transparent', border: 'none', color: deleting === p.id ? '#FF5A5A' : '#2D3748', cursor: 'pointer', fontSize: 11, padding: '0 4px' }}
+                      style={{ background: 'transparent', border: 'none', color: deleting === p.id ? '#FF5A5A' : '#94A3B8', cursor: 'pointer', fontSize: 11, padding: '0 4px' }}
                     >
                       {deleting === p.id ? '⟳' : '✕'}
                     </button>
@@ -314,7 +314,7 @@ export default function MyPromptsPage() {
                   <div style={{ fontSize: 12, fontWeight: 700, color: selected?.id === p.id ? 'white' : '#8A9AAA', marginBottom: 4 }}>
                     {p.case_label}
                   </div>
-                  <div style={{ fontSize: 10, color: '#2D3748', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <div style={{ fontSize: 10, color: '#94A3B8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {p.user_input}
                   </div>
                   <div style={{ fontSize: 9, color: '#1A2535', marginTop: 6 }}>{formatDate(p.created_at)}</div>
@@ -331,18 +331,18 @@ export default function MyPromptsPage() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
                     <span style={{ fontSize: 11, color: selected.module_color }}>{selected.module_icon} {selected.module_label}</span>
                     <span style={{ color: '#151C25' }}>·</span>
-                    <span style={{ fontSize: 11, color: '#2D3748' }}>{selected.case_label}</span>
+                    <span style={{ fontSize: 11, color: '#94A3B8' }}>{selected.case_label}</span>
                     <span style={{ color: '#151C25' }}>·</span>
                     <span style={{ fontSize: 10, color: '#1A2535' }}>{formatDate(selected.created_at)}</span>
                   </div>
                   <h2 style={{ fontSize: 16, fontWeight: 900, marginBottom: 10, letterSpacing: '-0.02em' }}>{selected.case_label}</h2>
-                  <div style={{ background: '#0B0E13', border: '1px solid #0F1520', padding: '10px 14px', fontSize: 11, color: '#4A5568', lineHeight: 1.6 }}>
-                    <span style={{ color: '#2D3748', fontSize: 9, letterSpacing: '0.1em', display: 'block', marginBottom: 4 }}>TON BESOIN</span>
+                  <div style={{ background: '#0B0E13', border: '1px solid #0F1520', padding: '10px 14px', fontSize: 11, color: '#94A3B8', lineHeight: 1.6 }}>
+                    <span style={{ color: '#94A3B8', fontSize: 9, letterSpacing: '0.1em', display: 'block', marginBottom: 4 }}>TON BESOIN</span>
                     {selected.user_input}
                   </div>
                 </div>
                 <div style={{ flex: 1, padding: '24px 32px', overflowY: 'auto' }}>
-                  <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.12em', marginBottom: 14 }}>PROMPT GÉNÉRÉ</div>
+                  <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.12em', marginBottom: 14 }}>PROMPT GÉNÉRÉ</div>
                   <div style={{ fontSize: 12, lineHeight: 1.85, color: '#6A7A8A', whiteSpace: 'pre-wrap' }}>{selected.prompt}</div>
                 </div>
                 <div style={{ padding: '20px 32px', borderTop: '1px solid #151C25', display: 'flex', gap: 10 }}>
@@ -354,7 +354,7 @@ export default function MyPromptsPage() {
                   }}>
                     {copied ? '✓ COPIÉ !' : '⎘ COPIER LE PROMPT'}
                   </button>
-                  <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" style={{ padding: '12px 20px', fontSize: 11, border: '1px solid #151C25', color: '#4A5568', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+                  <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" style={{ padding: '12px 20px', fontSize: 11, border: '1px solid #151C25', color: '#94A3B8', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
                     Tester dans Claude
                   </a>
                   <button onClick={() => handleDelete(selected.id)} style={{ padding: '12px 16px', fontSize: 11, border: '1px solid #2A1A1A', color: '#4A2A2A', background: 'transparent', cursor: 'pointer', fontFamily: 'monospace' }}>
@@ -363,7 +363,7 @@ export default function MyPromptsPage() {
                 </div>
               </>
             ) : (
-              <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2D3748', fontSize: 13 }}>
+              <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94A3B8', fontSize: 13 }}>
                 Sélectionne un prompt
               </div>
             )}

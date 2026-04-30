@@ -45,7 +45,7 @@ export default function ContactPage() {
           .nav-links { display: none !important; }
         }
         input:focus, textarea:focus, select:focus { border-color: #D4FF5760 !important; }
-        input::placeholder, textarea::placeholder { color: #2D3748; }
+        input::placeholder, textarea::placeholder { color: #94A3B8; }
       `}</style>
 
       {/* HEADER */}
@@ -76,7 +76,7 @@ export default function ContactPage() {
             Une question ?<br />
             <span style={{ color: '#D4FF57' }}>On te répond.</span>
           </h1>
-          <p style={{ color: '#4A5568', fontSize: 14, lineHeight: 1.7, maxWidth: 400 }}>
+          <p style={{ color: '#94A3B8', fontSize: 14, lineHeight: 1.7, maxWidth: 400 }}>
             Support, partenariats, suggestions ou bugs — écris-nous et on reviendra vers toi sous 24h.
           </p>
         </div>
@@ -95,14 +95,14 @@ export default function ContactPage() {
                   <span style={{ color: '#D4FF57', fontSize: 14 }}>{item.icon}</span>
                   <span style={{ fontWeight: 700, fontSize: 13, color: 'white' }}>{item.title}</span>
                 </div>
-                <p style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.7 }}>{item.desc}</p>
+                <p style={{ fontSize: 12, color: '#94A3B8', lineHeight: 1.7 }}>{item.desc}</p>
               </div>
             ))}
 
             <div style={{ marginTop: 24, padding: '16px', background: '#0B0E13', border: '1px solid #151C25' }}>
-              <div style={{ fontSize: 10, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 8 }}>DÉLAI DE RÉPONSE</div>
+              <div style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 8 }}>DÉLAI DE RÉPONSE</div>
               <div style={{ fontSize: 13, color: 'white', fontWeight: 700 }}>⚡ Moins de 24h</div>
-              <div style={{ fontSize: 11, color: '#4A5568', marginTop: 4 }}>Du lundi au vendredi</div>
+              <div style={{ fontSize: 11, color: '#94A3B8', marginTop: 4 }}>Du lundi au vendredi</div>
             </div>
           </div>
 
@@ -113,7 +113,7 @@ export default function ContactPage() {
               <div style={{ textAlign: 'center', padding: '48px 24px' }}>
                 <div style={{ fontSize: 32, marginBottom: 16 }}>✦</div>
                 <div style={{ fontSize: 16, fontWeight: 900, color: '#D4FF57', marginBottom: 8 }}>Message envoyé !</div>
-                <div style={{ fontSize: 13, color: '#4A5568', lineHeight: 1.7 }}>
+                <div style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.7 }}>
                   On reviendra vers toi sous 24h.<br />En attendant, teste le générateur !
                 </div>
                 <Link href="/generate" style={{ display: 'inline-block', marginTop: 24, background: '#D4FF57', color: '#07090C', padding: '10px 20px', fontSize: 11, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.06em' }}>
@@ -125,17 +125,17 @@ export default function ContactPage() {
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                   <div>
-                    <div style={{ fontSize: 10, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 8 }}>NOM *</div>
+                    <div style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 8 }}>NOM *</div>
                     <input type="text" placeholder="Ton nom" value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} style={inputStyle} />
                   </div>
                   <div>
-                    <div style={{ fontSize: 10, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 8 }}>EMAIL *</div>
+                    <div style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 8 }}>EMAIL *</div>
                     <input type="email" placeholder="ton@email.com" value={formData.email} onChange={e => setFormData(p => ({ ...p, email: e.target.value }))} style={inputStyle} />
                   </div>
                 </div>
 
                 <div>
-                  <div style={{ fontSize: 10, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 8 }}>SUJET</div>
+                  <div style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 8 }}>SUJET</div>
                   <select value={formData.subject} onChange={e => setFormData(p => ({ ...p, subject: e.target.value }))} style={{ ...inputStyle, cursor: 'pointer' }}>
                     <option value="" style={{ background: '#0B0E13' }}>Sélectionne un sujet...</option>
                     <option value="Support technique" style={{ background: '#0B0E13' }}>Support technique</option>
@@ -148,7 +148,7 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <div style={{ fontSize: 10, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 8 }}>MESSAGE *</div>
+                  <div style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 8 }}>MESSAGE *</div>
                   <textarea rows={6} placeholder="Décris ton besoin, question ou problème..." value={formData.message} onChange={e => setFormData(p => ({ ...p, message: e.target.value }))} style={{ ...inputStyle, resize: 'vertical' }} />
                 </div>
 
@@ -163,7 +163,7 @@ export default function ContactPage() {
                   disabled={!formData.name || !formData.email || !formData.message || status === 'sending'}
                   style={{
                     background: !formData.name || !formData.email || !formData.message || status === 'sending' ? '#151C25' : '#D4FF57',
-                    color: !formData.name || !formData.email || !formData.message || status === 'sending' ? '#4A5568' : '#07090C',
+                    color: !formData.name || !formData.email || !formData.message || status === 'sending' ? '#94A3B8' : '#07090C',
                     border: 'none', padding: '14px 24px', fontSize: 12, fontWeight: 900,
                     fontFamily: 'monospace', letterSpacing: '0.06em',
                     cursor: !formData.name || !formData.email || !formData.message || status === 'sending' ? 'not-allowed' : 'pointer',
@@ -182,7 +182,7 @@ export default function ContactPage() {
       <footer style={{ borderTop: '1px solid #151C25', padding: '24px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div style={{ width: 20, height: 20, background: '#D4FF57', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, fontWeight: 900, color: '#07090C' }}>PA</div>
-          <span style={{ fontWeight: 700, fontSize: 12, color: '#4A5568' }}>Prompt Architect © 2026</span>
+          <span style={{ fontWeight: 700, fontSize: 12, color: '#94A3B8' }}>Prompt Architect © 2026</span>
         </div>
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
           <Link href="/generate" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>GÉNÉRATEUR</Link>

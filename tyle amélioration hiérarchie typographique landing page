@@ -1,0 +1,77 @@
+warning: in the working copy of 'src/app/page.tsx', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/src/app/page.tsx b/src/app/page.tsx[m
+[1mindex d283c58..cd32f49 100644[m
+[1m--- a/src/app/page.tsx[m
+[1m+++ b/src/app/page.tsx[m
+[36m@@ -73,7 +73,7 @@[m [mexport default function Home() {[m
+             <span style={{ color: '#1A2535' }}>— en un prompt.</span>[m
+           </h1>[m
+ [m
+[31m-          <p style={{ fontSize: 16, color: '#4A5568', maxWidth: 500, margin: '0 auto 36px', lineHeight: 1.75 }}>[m
+[32m+[m[32m          <p style={{ fontSize: 16, color: '#94A3B8', maxWidth: 500, margin: '0 auto 36px', lineHeight: 1.75 }}>[m
+             Transforme ta demande simple en prompt expert, structuré et optimisé. Sans connaître le prompt engineering.[m
+           </p>[m
+ [m
+[36m@@ -96,7 +96,7 @@[m [mexport default function Home() {[m
+             ].map((s, i) => ([m
+               <div key={i} style={{ padding: '20px 12px', borderRight: i < 3 ? '1px solid #151C25' : 'none', textAlign: 'center' }}>[m
+                 <div style={{ fontSize: 24, fontWeight: 900, color: 'white', letterSpacing: '-0.03em', marginBottom: 4 }}>{s.value}</div>[m
+[31m-                <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{s.label}</div>[m
+[32m+[m[32m                <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{s.label}</div>[m
+               </div>[m
+             ))}[m
+           </div>[m
+[36m@@ -114,7 +114,7 @@[m [mexport default function Home() {[m
+               </h2>[m
+             </div>[m
+             <div>[m
+[31m-              <p style={{ color: '#4A5568', fontSize: 15, lineHeight: 1.85, marginBottom: 36 }}>[m
+[32m+[m[32m              <p style={{ color: '#94A3B8', fontSize: 15, lineHeight: 1.85, marginBottom: 36 }}>[m
+                 Pas parce que l&apos;IA est mauvaise. Mais parce qu&apos;ils ne savent pas comment lui parler.[m
+               </p>[m
+               <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>[m
+[36m@@ -127,7 +127,7 @@[m [mexport default function Home() {[m
+                     <div style={{ fontSize: 13, color: '#D4FF57', minWidth: 20, marginTop: 1 }}>{item.icon}</div>[m
+                     <div>[m
+                       <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 4, color: 'white' }}>{item.title}</div>[m
+[31m-                      <div style={{ fontSize: 13, color: '#4A5568', lineHeight: 1.6 }}>{item.desc}</div>[m
+[32m+[m[32m                      <div style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.6 }}>{item.desc}</div>[m
+                     </div>[m
+                   </div>[m
+                 ))}[m
+[36m@@ -147,7 +147,7 @@[m [mexport default function Home() {[m
+                 8 modules.<br />40 cas d&apos;usage.[m
+               </h2>[m
+             </div>[m
+[31m-            <Link href="/generate" style={{ fontSize: 11, color: '#4A5568', textDecoration: 'none', letterSpacing: '0.06em', borderBottom: '1px solid #151C25', paddingBottom: 4 }}>[m
+[32m+[m[32m            <Link href="/generate" style={{ fontSize: 11, color: '#94A3B8', textDecoration: 'none', letterSpacing: '0.06em', borderBottom: '1px solid #151C25', paddingBottom: 4 }}>[m
+               ACCÉDER AU GÉNÉRATEUR →[m
+             </Link>[m
+           </div>[m
+[36m@@ -171,7 +171,7 @@[m [mexport default function Home() {[m
+                   <span style={{ fontSize: 18, color: m.color }}>{m.icon}</span>[m
+                   <span style={{ fontWeight: 900, fontSize: 15, letterSpacing: '-0.02em' }}>{m.label}</span>[m
+                 </div>[m
+[31m-                <p style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.6 }}>{m.desc}</p>[m
+[32m+[m[32m                <p style={{ fontSize: 12, color: '#94A3B8', lineHeight: 1.6 }}>{m.desc}</p>[m
+               </div>[m
+             ))}[m
+           </div>[m
+[36m@@ -194,7 +194,7 @@[m [mexport default function Home() {[m
+               <div key={i} style={{ padding: '32px 24px', borderRight: i < 2 ? '1px solid #151C25' : 'none', borderBottom: '1px solid #151C25' }}>[m
+                 <div style={{ fontSize: 56, fontWeight: 900, color: '#0F1520', lineHeight: 1, marginBottom: 20, letterSpacing: '-0.05em' }}>{item.step}</div>[m
+                 <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 8, color: 'white' }}>{item.title}</div>[m
+[31m-                <div style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.75 }}>{item.desc}</div>[m
+[32m+[m[32m                <div style={{ fontSize: 12, color: '#94A3B8', lineHeight: 1.75 }}>{item.desc}</div>[m
+               </div>[m
+             ))}[m
+           </div>[m
+[36m@@ -223,7 +223,7 @@[m [mexport default function Home() {[m
+       <footer style={{ borderTop: '1px solid #151C25', padding: '24px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>[m
+         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>[m
+           <div style={{ width: 20, height: 20, background: '#D4FF57', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, fontWeight: 900, color: '#07090C' }}>PA</div>[m
+[31m-          <span style={{ fontWeight: 700, fontSize: 12, color: '#4A5568' }}>Prompt Architect © 2026</span>[m
+[32m+[m[32m          <span style={{ fontWeight: 700, fontSize: 12, color: '#94A3B8' }}>Prompt Architect © 2026</span>[m
+         </div>[m
+         <div className="footer-links" style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>[m
+           <Link href="/generate" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>GÉNÉRATEUR</Link>[m

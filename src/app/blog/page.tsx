@@ -41,7 +41,7 @@ export default function BlogPage() {
           <h1 style={{ fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 0.95, marginBottom: 20 }}>
             Maîtrise le<br /><span style={{ color: '#D4FF57' }}>Prompt Engineering.</span>
           </h1>
-          <p style={{ fontSize: 16, color: '#4A5568', lineHeight: 1.75, maxWidth: 500 }}>
+          <p style={{ fontSize: 16, color: '#94A3B8', lineHeight: 1.75, maxWidth: 500 }}>
             Guides pratiques, stratégies de contenu viral et tutoriels pour tirer le maximum de l'IA.
           </p>
         </div>
@@ -49,9 +49,9 @@ export default function BlogPage() {
         {/* ARTICLES FRANÇAIS */}
         <div style={{ marginBottom: 64 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 32 }}>
-            <div style={{ fontSize: 10, color: '#2D3748', letterSpacing: '0.12em' }}>ARTICLES EN FRANÇAIS</div>
+            <div style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.12em' }}>ARTICLES EN FRANÇAIS</div>
             <div style={{ flex: 1, height: 1, background: '#151C25' }} />
-            <span style={{ fontSize: 10, color: '#2D3748' }}>{frArticles.length} articles</span>
+            <span style={{ fontSize: 10, color: '#94A3B8' }}>{frArticles.length} articles</span>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 1, background: '#151C25', border: '1px solid #151C25' }}>
             {frArticles.map((article) => (
@@ -63,10 +63,10 @@ export default function BlogPage() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
                   <span style={{ fontSize: 9, color: CATEGORY_COLORS[article.category] || '#D4FF57', letterSpacing: '0.1em' }}>{article.category.toUpperCase()}</span>
                   <span style={{ color: '#151C25' }}>·</span>
-                  <span style={{ fontSize: 9, color: '#2D3748' }}>{article.readTime} min de lecture</span>
+                  <span style={{ fontSize: 9, color: '#94A3B8' }}>{article.readTime} min de lecture</span>
                 </div>
                 <h2 style={{ fontSize: 15, fontWeight: 900, color: 'white', lineHeight: 1.3, marginBottom: 12, letterSpacing: '-0.02em' }}>{article.title}</h2>
-                <p style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.6, marginBottom: 16 }}>{article.metaDescription}</p>
+                <p style={{ fontSize: 12, color: '#94A3B8', lineHeight: 1.6, marginBottom: 16 }}>{article.metaDescription}</p>
                 <div style={{ fontSize: 11, color: '#D4FF57', letterSpacing: '0.04em' }}>Lire l'article →</div>
               </Link>
             ))}
@@ -76,9 +76,9 @@ export default function BlogPage() {
         {/* ARTICLES ANGLAIS */}
         <div style={{ marginBottom: 64 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 32 }}>
-            <div style={{ fontSize: 10, color: '#2D3748', letterSpacing: '0.12em' }}>ARTICLES IN ENGLISH</div>
+            <div style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.12em' }}>ARTICLES IN ENGLISH</div>
             <div style={{ flex: 1, height: 1, background: '#151C25' }} />
-            <span style={{ fontSize: 10, color: '#2D3748' }}>{enArticles.length} articles</span>
+            <span style={{ fontSize: 10, color: '#94A3B8' }}>{enArticles.length} articles</span>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 1, background: '#151C25', border: '1px solid #151C25' }}>
             {enArticles.map((article) => (
@@ -90,10 +90,10 @@ export default function BlogPage() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
                   <span style={{ fontSize: 9, color: CATEGORY_COLORS[article.category] || '#FF7A3D', letterSpacing: '0.1em' }}>{article.category.toUpperCase()}</span>
                   <span style={{ color: '#151C25' }}>·</span>
-                  <span style={{ fontSize: 9, color: '#2D3748' }}>{article.readTime} min read</span>
+                  <span style={{ fontSize: 9, color: '#94A3B8' }}>{article.readTime} min read</span>
                 </div>
                 <h2 style={{ fontSize: 15, fontWeight: 900, color: 'white', lineHeight: 1.3, marginBottom: 12, letterSpacing: '-0.02em' }}>{article.title}</h2>
-                <p style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.6, marginBottom: 16 }}>{article.metaDescription}</p>
+                <p style={{ fontSize: 12, color: '#94A3B8', lineHeight: 1.6, marginBottom: 16 }}>{article.metaDescription}</p>
                 <div style={{ fontSize: 11, color: '#FF7A3D', letterSpacing: '0.04em' }}>Read article →</div>
               </Link>
             ))}
@@ -105,7 +105,7 @@ export default function BlogPage() {
           <div>
             <div style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 10 }}>// PASSE À L'ACTION</div>
             <h3 style={{ fontSize: 20, fontWeight: 900, letterSpacing: '-0.02em', marginBottom: 6 }}>Génère tes propres prompts experts</h3>
-            <p style={{ fontSize: 13, color: '#4A5568' }}>En 2 minutes, avec notre générateur IA.</p>
+            <p style={{ fontSize: 13, color: '#94A3B8' }}>En 2 minutes, avec notre générateur IA.</p>
           </div>
           <Link href="/generate" style={{ background: '#D4FF57', color: '#07090C', padding: '13px 32px', fontSize: 12, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>
             ✦ ESSAYER GRATUITEMENT
@@ -118,7 +118,7 @@ export default function BlogPage() {
       <footer style={{ borderTop: '1px solid #151C25', padding: '28px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{ width: 20, height: 20, background: '#D4FF57', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, fontWeight: 900, color: '#07090C' }}>PA</div>
-          <span style={{ fontWeight: 700, fontSize: 12, color: '#4A5568' }}>Prompt Architect © 2026</span>
+          <span style={{ fontWeight: 700, fontSize: 12, color: '#94A3B8' }}>Prompt Architect © 2026</span>
         </div>
         <div style={{ display: 'flex', gap: 28 }}>
           <Link href="/generate" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>GÉNÉRATEUR</Link>

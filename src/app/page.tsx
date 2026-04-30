@@ -157,8 +157,8 @@ export default function Home() {
                 <span style={{ fontSize: 10, color: '#FF4D4D', letterSpacing: '0.12em', fontWeight: 700 }}>SANS PROMPT ARCHITECT</span>
               </div>
               <div style={{ background: '#0B0E13', border: '1px solid #1A1A2E', padding: '16px 20px', marginBottom: 20 }}>
-                <div style={{ fontSize: 9, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 10 }}>PROMPT ENVOYÉ À L&apos;IA</div>
-                <p style={{ fontSize: 13, color: '#4A5568', lineHeight: 1.7, fontStyle: 'italic' }}>
+                <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 10 }}>PROMPT ENVOYÉ À L&apos;IA</div>
+                <p style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.7, fontStyle: 'italic' }}>
                   &quot;Écris-moi un business plan pour une agence de marketing.&quot;
                 </p>
               </div>
@@ -172,7 +172,7 @@ export default function Home() {
                   ].map((line, i) => (
                     <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                       <span style={{ color: '#FF4D4D40', fontSize: 12, flexShrink: 0, marginTop: 1 }}>✕</span>
-                      <span style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.6 }}>{line}</span>
+                      <span style={{ fontSize: 12, color: '#94A3B8', lineHeight: 1.6 }}>{line}</span>
                     </div>
                   ))}
                 </div>

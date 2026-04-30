@@ -44,7 +44,7 @@ export default function FAQSection() {
             <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 42px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.03em', color: 'white', margin: 0 }}>
               Questions fréquentes.
             </h2>
-            <Link href="/faq" style={{ fontSize: 11, color: '#4A5568', textDecoration: 'none', letterSpacing: '0.06em', borderBottom: '1px solid #151C25', paddingBottom: 4 }}>
+            <Link href="/faq" style={{ fontSize: 11, color: '#94A3B8', textDecoration: 'none', letterSpacing: '0.06em', borderBottom: '1px solid #151C25', paddingBottom: 4 }}>
               VOIR TOUTES LES QUESTIONS →
             </Link>
           </div>
@@ -80,7 +80,7 @@ export default function FAQSection() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: openIndex === i ? '#D4FF57' : '#4A5568',
+                  color: openIndex === i ? '#D4FF57' : '#94A3B8',
                   fontSize: 16,
                   lineHeight: 1,
                   transform: openIndex === i ? 'rotate(45deg)' : 'none',
@@ -95,7 +95,7 @@ export default function FAQSection() {
                 transition: 'max-height 0.3s ease',
                 paddingBottom: openIndex === i ? 20 : 0,
               }}>
-                <p style={{ fontSize: 12, color: '#4A5568', lineHeight: 1.75, margin: 0, fontFamily: 'monospace' }}>
+                <p style={{ fontSize: 12, color: '#94A3B8', lineHeight: 1.75, margin: 0, fontFamily: 'monospace' }}>
                   {item.a}
                 </p>
               </div>

@@ -56,7 +56,7 @@ export default function UpdatePasswordPage() {
   if (!ready) {
     return (
       <div style={{ minHeight: '100vh', background: '#07090C', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'monospace' }}>
-        <div style={{ color: '#2D3748', fontSize: 13 }}>⟳ Vérification...</div>
+        <div style={{ color: '#94A3B8', fontSize: 13 }}>⟳ Vérification...</div>
       </div>
     )
   }
@@ -82,14 +82,14 @@ export default function UpdatePasswordPage() {
                 <h1 style={{ fontSize: 26, fontWeight: 900, letterSpacing: '-0.03em', marginBottom: 8 }}>
                   Crée ton nouveau mot de passe
                 </h1>
-                <p style={{ fontSize: 13, color: '#4A5568', lineHeight: 1.6 }}>
+                <p style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.6 }}>
                   Choisis un mot de passe sécurisé d&apos;au moins 6 caractères.
                 </p>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 20 }}>
                 <div>
-                  <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.1em', marginBottom: 6 }}>NOUVEAU MOT DE PASSE</div>
+                  <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 6 }}>NOUVEAU MOT DE PASSE</div>
                   <input
                     type="password"
                     value={password}
@@ -99,7 +99,7 @@ export default function UpdatePasswordPage() {
                   />
                 </div>
                 <div>
-                  <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.1em', marginBottom: 6 }}>CONFIRMER LE MOT DE PASSE</div>
+                  <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 6 }}>CONFIRMER LE MOT DE PASSE</div>
                   <input
                     type="password"
                     value={confirm}
@@ -120,7 +120,7 @@ export default function UpdatePasswordPage() {
               <button
                 onClick={handleUpdate}
                 disabled={loading}
-                style={{ width: '100%', padding: '13px 0', fontSize: 12, fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.08em', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', background: loading ? '#151C25' : '#D4FF57', color: loading ? '#4A5568' : '#07090C' }}
+                style={{ width: '100%', padding: '13px 0', fontSize: 12, fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.08em', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', background: loading ? '#151C25' : '#D4FF57', color: loading ? '#94A3B8' : '#07090C' }}
               >
                 {loading ? '⟳ MISE À JOUR...' : '✓ METTRE À JOUR MON MOT DE PASSE'}
               </button>
@@ -131,7 +131,7 @@ export default function UpdatePasswordPage() {
               <h1 style={{ fontSize: 22, fontWeight: 900, marginBottom: 16, letterSpacing: '-0.02em' }}>
                 Mot de passe mis à jour !
               </h1>
-              <p style={{ fontSize: 13, color: '#4A5568', lineHeight: 1.7 }}>
+              <p style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.7 }}>
                 Redirection vers ton espace dans quelques secondes...
               </p>
             </div>

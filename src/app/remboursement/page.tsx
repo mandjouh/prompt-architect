@@ -21,7 +21,7 @@ export default function RemboursementPage() {
         <div style={{ marginBottom: 48 }}>
           <div style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 14 }}>// LÉGAL</div>
           <h1 style={{ fontSize: 32, fontWeight: 900, letterSpacing: '-0.03em', marginBottom: 8 }}>Politique de Remboursement</h1>
-          <p style={{ fontSize: 12, color: '#2D3748' }}>Dernière mise à jour : 29 avril 2026</p>
+          <p style={{ fontSize: 12, color: '#94A3B8' }}>Dernière mise à jour : 29 avril 2026</p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
 
@@ -98,12 +98,12 @@ export default function RemboursementPage() {
 
         </div>
         <div style={{ marginTop: 48, display: 'flex', gap: 24, flexWrap: 'wrap' }}>
-          <Link href="/legal" style={{ fontSize: 12, color: '#4A5568', textDecoration: 'none', letterSpacing: '0.06em' }}>MENTIONS LÉGALES →</Link>
-          <Link href="/cgv" style={{ fontSize: 12, color: '#4A5568', textDecoration: 'none', letterSpacing: '0.06em' }}>CGV →</Link>
+          <Link href="/legal" style={{ fontSize: 12, color: '#94A3B8', textDecoration: 'none', letterSpacing: '0.06em' }}>MENTIONS LÉGALES →</Link>
+          <Link href="/cgv" style={{ fontSize: 12, color: '#94A3B8', textDecoration: 'none', letterSpacing: '0.06em' }}>CGV →</Link>
         </div>
       </div>
       <footer style={{ borderTop: '1px solid #151C25', padding: '24px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
-        <span style={{ fontWeight: 700, fontSize: 12, color: '#4A5568' }}>Prompt Architect © 2026</span>
+        <span style={{ fontWeight: 700, fontSize: 12, color: '#94A3B8' }}>Prompt Architect © 2026</span>
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
           <Link href="/legal" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>MENTIONS LÉGALES</Link>
           <Link href="/cgv" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>CGV</Link>

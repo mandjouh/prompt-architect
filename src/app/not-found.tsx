@@ -34,7 +34,7 @@ export default function NotFound() {
           <h1 style={{ fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 900, letterSpacing: '-0.03em', marginBottom: 16, lineHeight: 1.1 }}>
             Cette page n&apos;existe pas.
           </h1>
-          <p style={{ fontSize: 14, color: '#4A5568', lineHeight: 1.75, maxWidth: 380, margin: '0 auto 40px' }}>
+          <p style={{ fontSize: 14, color: '#94A3B8', lineHeight: 1.75, maxWidth: 380, margin: '0 auto 40px' }}>
             Tu as suivi un lien cassé ou tapé une URL incorrecte. Retourne au générateur et crée ton prochain prompt expert.
           </p>
 
@@ -55,7 +55,7 @@ export default function NotFound() {
               { href: '/blog', label: 'BLOG' },
               { href: '/contact', label: 'CONTACT' },
             ].map((link, i) => (
-              <Link key={i} href={link.href} style={{ fontSize: 11, color: '#2D3748', textDecoration: 'none', letterSpacing: '0.08em' }}>
+              <Link key={i} href={link.href} style={{ fontSize: 11, color: '#94A3B8', textDecoration: 'none', letterSpacing: '0.08em' }}>
                 {link.label}
               </Link>
             ))}
@@ -65,7 +65,7 @@ export default function NotFound() {
 
       {/* FOOTER */}
       <footer style={{ borderTop: '1px solid #151C25', padding: '20px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-        <span style={{ fontWeight: 700, fontSize: 12, color: '#4A5568' }}>Prompt Architect © 2026</span>
+        <span style={{ fontWeight: 700, fontSize: 12, color: '#94A3B8' }}>Prompt Architect © 2026</span>
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
           <Link href="/legal" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>MENTIONS LÉGALES</Link>
           <Link href="/cgv" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>CGV</Link>

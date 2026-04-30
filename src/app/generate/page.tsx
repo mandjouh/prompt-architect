@@ -213,18 +213,18 @@ export default function GeneratePage() {
           <span style={{ fontWeight: 900, fontSize: 15, color: 'white' }}>Prompt Architect</span>
         </a>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11, color: '#4A5568' }}>
-            <span style={{ color: selectedModule ? '#D4FF57' : '#4A5568' }}>① Module</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11, color: '#94A3B8' }}>
+            <span style={{ color: selectedModule ? '#D4FF57' : '#94A3B8' }}>① Module</span>
             <span>→</span>
-            <span style={{ color: selectedCase ? '#D4FF57' : '#4A5568' }}>② Cas d&apos;usage</span>
+            <span style={{ color: selectedCase ? '#D4FF57' : '#94A3B8' }}>② Cas d&apos;usage</span>
             <span>→</span>
-            <span style={{ color: result ? '#D4FF57' : '#4A5568' }}>③ Prompt</span>
+            <span style={{ color: result ? '#D4FF57' : '#94A3B8' }}>③ Prompt</span>
           </div>
           {user ? (
             <div style={{ display: 'flex', gap: 8 }}>
               {/* Compteur crédits Free */}
               {userPlan === 'free' && (
-                <div style={{ fontSize: 11, border: creditsLeft <= 1 ? '1px solid #FF4D4D40' : '1px solid #151C25', padding: '6px 12px', color: creditsLeft <= 1 ? '#FF4D4D' : '#4A5568', background: creditsLeft <= 1 ? '#FF4D4D08' : 'transparent' }}>
+                <div style={{ fontSize: 11, border: creditsLeft <= 1 ? '1px solid #FF4D4D40' : '1px solid #151C25', padding: '6px 12px', color: creditsLeft <= 1 ? '#FF4D4D' : '#94A3B8', background: creditsLeft <= 1 ? '#FF4D4D08' : 'transparent' }}>
                   {creditsLeft}/{FREE_LIMIT} restants
                 </div>
               )}
@@ -254,13 +254,13 @@ export default function GeneratePage() {
         {!selectedModule && (
           <div>
             <div style={{ marginBottom: 32 }}>
-              <div style={{ fontSize: 11, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 8 }}>ÉTAPE 1 / 3</div>
+              <div style={{ fontSize: 11, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 8 }}>ÉTAPE 1 / 3</div>
               <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 8 }}>Choisis ton module</h1>
-              <p style={{ color: '#4A5568', fontSize: 14 }}>Sélectionne la catégorie qui correspond à ton besoin</p>
+              <p style={{ color: '#94A3B8', fontSize: 14 }}>Sélectionne la catégorie qui correspond à ton besoin</p>
             </div>
             {/* Modules gratuits */}
             <div style={{ marginBottom: 24 }}>
-              <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.12em', marginBottom: 12 }}>MODULES INCLUS</div>
+              <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.12em', marginBottom: 12 }}>MODULES INCLUS</div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
                 {MODULES_FREE.map(m => (
                   <button key={m.id} onClick={() => setSelectedModule(m.id)}
@@ -272,12 +272,12 @@ export default function GeneratePage() {
                       <span style={{ fontSize: 22, color: m.color }}>{m.icon}</span>
                       <span style={{ fontWeight: 900, fontSize: 16 }}>{m.label}</span>
                     </div>
-                    <p style={{ fontSize: 13, color: '#4A5568', marginBottom: 16, lineHeight: 1.5 }}>{m.desc}</p>
+                    <p style={{ fontSize: 13, color: '#94A3B8', marginBottom: 16, lineHeight: 1.5 }}>{m.desc}</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                       {m.cases.slice(0, 3).map(c => (
-                        <span key={c.id} style={{ fontSize: 10, padding: '2px 8px', border: '1px solid #151C25', color: '#2D3748' }}>{c.label}</span>
+                        <span key={c.id} style={{ fontSize: 10, padding: '2px 8px', border: '1px solid #151C25', color: '#94A3B8' }}>{c.label}</span>
                       ))}
-                      <span style={{ fontSize: 10, padding: '2px 8px', color: '#2D3748' }}>+{m.cases.length - 3}</span>
+                      <span style={{ fontSize: 10, padding: '2px 8px', color: '#94A3B8' }}>+{m.cases.length - 3}</span>
                     </div>
                   </button>
                 ))}
@@ -301,11 +301,11 @@ export default function GeneratePage() {
                         </div>
                       )}
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-                        <span style={{ fontSize: 22, color: isLocked ? '#2D3748' : m.color }}>{m.icon}</span>
-                        <span style={{ fontWeight: 900, fontSize: 16, color: isLocked ? '#4A5568' : 'white' }}>{m.label}</span>
+                        <span style={{ fontSize: 22, color: isLocked ? '#94A3B8' : m.color }}>{m.icon}</span>
+                        <span style={{ fontWeight: 900, fontSize: 16, color: isLocked ? '#94A3B8' : 'white' }}>{m.label}</span>
                         {isLocked && <span style={{ fontSize: 14 }}>🔒</span>}
                       </div>
-                      <p style={{ fontSize: 13, color: '#2D3748', marginBottom: 16, lineHeight: 1.5 }}>{m.desc}</p>
+                      <p style={{ fontSize: 13, color: '#94A3B8', marginBottom: 16, lineHeight: 1.5 }}>{m.desc}</p>
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                         {m.cases.slice(0, 3).map(c => (
                           <span key={c.id} style={{ fontSize: 10, padding: '2px 8px', border: '1px solid #0F1520', color: '#1A2535' }}>{c.label}</span>
@@ -328,16 +328,16 @@ export default function GeneratePage() {
         {/* ÉTAPE 2 */}
         {selectedModule && !selectedCase && (
           <div>
-            <button onClick={() => setSelectedModule(null)} style={{ background: 'transparent', border: 'none', color: '#4A5568', cursor: 'pointer', fontSize: 13, marginBottom: 24, padding: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <button onClick={() => setSelectedModule(null)} style={{ background: 'transparent', border: 'none', color: '#94A3B8', cursor: 'pointer', fontSize: 13, marginBottom: 24, padding: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
               ← Retour aux modules
             </button>
             <div style={{ marginBottom: 32 }}>
-              <div style={{ fontSize: 11, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 8 }}>ÉTAPE 2 / 3</div>
+              <div style={{ fontSize: 11, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 8 }}>ÉTAPE 2 / 3</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
                 <span style={{ fontSize: 20, color: currentModule?.color }}>{currentModule?.icon}</span>
                 <h1 style={{ fontSize: 28, fontWeight: 900 }}>{currentModule?.label}</h1>
               </div>
-              <p style={{ color: '#4A5568', fontSize: 14 }}>Sélectionne ton cas d&apos;usage</p>
+              <p style={{ color: '#94A3B8', fontSize: 14 }}>Sélectionne ton cas d&apos;usage</p>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {currentModule?.cases.map(c => (
@@ -348,9 +348,9 @@ export default function GeneratePage() {
                 >
                   <div>
                     <div style={{ fontWeight: 700, marginBottom: 4 }}>{c.label}</div>
-                    <div style={{ fontSize: 12, color: '#4A5568' }}>{c.desc}</div>
+                    <div style={{ fontSize: 12, color: '#94A3B8' }}>{c.desc}</div>
                   </div>
-                  <span style={{ color: '#4A5568', fontSize: 16 }}>→</span>
+                  <span style={{ color: '#94A3B8', fontSize: 16 }}>→</span>
                 </button>
               ))}
             </div>
@@ -360,16 +360,16 @@ export default function GeneratePage() {
         {/* ÉTAPE 3 */}
         {selectedModule && selectedCase && !result && (
           <div>
-            <button onClick={() => setSelectedCase(null)} style={{ background: 'transparent', border: 'none', color: '#4A5568', cursor: 'pointer', fontSize: 13, marginBottom: 24, padding: 0 }}>
+            <button onClick={() => setSelectedCase(null)} style={{ background: 'transparent', border: 'none', color: '#94A3B8', cursor: 'pointer', fontSize: 13, marginBottom: 24, padding: 0 }}>
               ← Retour
             </button>
             <div style={{ marginBottom: 32 }}>
-              <div style={{ fontSize: 11, color: '#4A5568', letterSpacing: '0.1em', marginBottom: 8 }}>ÉTAPE 3 / 3</div>
+              <div style={{ fontSize: 11, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 8 }}>ÉTAPE 3 / 3</div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 10px', border: '1px solid', borderColor: currentModule?.color + '30', background: currentModule?.color + '10', marginBottom: 12 }}>
                 <span style={{ fontSize: 10, color: currentModule?.color }}>{currentModule?.label} · {selectedCase.label}</span>
               </div>
               <h1 style={{ fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Décris ton besoin</h1>
-              <p style={{ color: '#4A5568', fontSize: 14 }}>Plus tu es précis, meilleur sera ton prompt.</p>
+              <p style={{ color: '#94A3B8', fontSize: 14 }}>Plus tu es précis, meilleur sera ton prompt.</p>
             </div>
             <textarea rows={6}
               placeholder={`Décris précisément ce que tu veux pour ton ${selectedCase.label}...`}
@@ -377,9 +377,9 @@ export default function GeneratePage() {
               style={{ width: '100%', background: '#0B0E13', border: '1px solid #151C25', color: 'white', padding: '16px', fontFamily: 'monospace', fontSize: 13, outline: 'none', resize: 'vertical', lineHeight: 1.7, boxSizing: 'border-box', marginBottom: 16 }}
             />
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: 12, color: '#2D3748' }}>{input.length} caractères</span>
+              <span style={{ fontSize: 12, color: '#94A3B8' }}>{input.length} caractères</span>
               <button onClick={handleGenerate} disabled={!input.trim() || generating}
-                style={{ background: !input.trim() || generating ? '#151C25' : currentModule?.color, color: !input.trim() || generating ? '#4A5568' : '#07090C', border: 'none', padding: '12px 28px', fontSize: 12, fontWeight: 900, fontFamily: 'monospace', cursor: !input.trim() || generating ? 'not-allowed' : 'pointer', letterSpacing: '0.06em' }}
+                style={{ background: !input.trim() || generating ? '#151C25' : currentModule?.color, color: !input.trim() || generating ? '#94A3B8' : '#07090C', border: 'none', padding: '12px 28px', fontSize: 12, fontWeight: 900, fontFamily: 'monospace', cursor: !input.trim() || generating ? 'not-allowed' : 'pointer', letterSpacing: '0.06em' }}
               >
                 {generating ? '⟳ GÉNÉRATION EN COURS...' : '✦ GÉNÉRER LE PROMPT'}
               </button>
@@ -395,7 +395,7 @@ export default function GeneratePage() {
                 <div style={{ fontSize: 11, color: '#D4FF57', letterSpacing: '0.1em', marginBottom: 6 }}>PROMPT GÉNÉRÉ</div>
                 <h1 style={{ fontSize: 24, fontWeight: 900 }}>Ton prompt expert ✦</h1>
               </div>
-              <button onClick={reset} style={{ background: 'transparent', border: '1px solid #151C25', color: '#4A5568', padding: '8px 16px', fontSize: 12, cursor: 'pointer', fontFamily: 'monospace' }}>
+              <button onClick={reset} style={{ background: 'transparent', border: '1px solid #151C25', color: '#94A3B8', padding: '8px 16px', fontSize: 12, cursor: 'pointer', fontFamily: 'monospace' }}>
                 ← Nouveau prompt
               </button>
             </div>
@@ -414,8 +414,8 @@ export default function GeneratePage() {
 
             <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
               <span style={{ fontSize: 10, padding: '4px 10px', border: '1px solid', color: currentModule?.color, borderColor: currentModule?.color + '30', background: currentModule?.color + '10' }}>{currentModule?.label}</span>
-              <span style={{ fontSize: 10, padding: '4px 10px', border: '1px solid #151C25', color: '#4A5568' }}>{selectedCase?.label}</span>
-              <span style={{ fontSize: 10, padding: '4px 10px', border: '1px solid #151C25', color: '#4A5568' }}>{result.length} caractères</span>
+              <span style={{ fontSize: 10, padding: '4px 10px', border: '1px solid #151C25', color: '#94A3B8' }}>{selectedCase?.label}</span>
+              <span style={{ fontSize: 10, padding: '4px 10px', border: '1px solid #151C25', color: '#94A3B8' }}>{result.length} caractères</span>
             </div>
 
             <div style={{ background: '#0B0E13', border: '1px solid #151C25', padding: 24, fontSize: 12, lineHeight: 1.8, color: '#8A9AAA', whiteSpace: 'pre-wrap', maxHeight: '50vh', overflowY: 'auto', marginBottom: 16 }}>
@@ -426,15 +426,15 @@ export default function GeneratePage() {
               <button onClick={handleCopy} style={{ background: copied ? '#1A3A1A' : '#D4FF57', color: copied ? '#5EDD5E' : '#07090C', border: copied ? '1px solid #2A5A2A' : 'none', padding: '12px 24px', fontSize: 12, fontWeight: 900, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.06em', transition: 'all 0.2s' }}>
                 {copied ? '✓ COPIÉ !' : '⎘ COPIER LE PROMPT'}
               </button>
-              <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" style={{ border: '1px solid #151C25', color: '#4A5568', padding: '12px 24px', fontSize: 12, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" style={{ border: '1px solid #151C25', color: '#94A3B8', padding: '12px 24px', fontSize: 12, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
                 Tester dans Claude
               </a>
-              <a href="/my-prompts" style={{ border: '1px solid #151C25', color: '#4A5568', padding: '12px 24px', fontSize: 12, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <a href="/my-prompts" style={{ border: '1px solid #151C25', color: '#94A3B8', padding: '12px 24px', fontSize: 12, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
                 ◈ Mes prompts
               </a>
             </div>
 
-            <div style={{ marginTop: 20, padding: '12px 16px', background: '#D4FF5710', border: '1px solid #D4FF5730', fontSize: 12, color: '#4A5568', lineHeight: 1.6 }}>
+            <div style={{ marginTop: 20, padding: '12px 16px', background: '#D4FF5710', border: '1px solid #D4FF5730', fontSize: 12, color: '#94A3B8', lineHeight: 1.6 }}>
               <span style={{ color: '#D4FF57', fontWeight: 700 }}>Tip : </span>
               Colle ce prompt dans Claude ou ChatGPT. Remplace les éléments entre crochets [comme ceci] par tes informations.
             </div>
@@ -461,7 +461,7 @@ export default function GeneratePage() {
                   : `⚡ Il te reste ${creditsLeft} génération${creditsLeft > 1 ? 's' : ''} ce mois — `
                 }
               </span>
-              <span style={{ fontSize: 12, color: '#4A5568' }}>
+              <span style={{ fontSize: 12, color: '#94A3B8' }}>
                 {creditsLeft === 0 ? 'Upgrade pour continuer.' : 'Upgrade pour en avoir plus.'}
               </span>
             </div>
@@ -475,7 +475,7 @@ export default function GeneratePage() {
               ✦ VOIR LES PLANS
             </a>
             <button onClick={() => setBannerDismissed(true)} style={{
-              background: 'transparent', border: 'none', color: '#4A5568',
+              background: 'transparent', border: 'none', color: '#94A3B8',
               cursor: 'pointer', fontSize: 16, padding: '4px 8px', lineHeight: 1,
             }}>
               ×
@@ -504,7 +504,7 @@ export default function GeneratePage() {
               <a href="/login" style={{ border: '1px solid #151C25', color: '#94A3B8', padding: '13px 24px', fontSize: 12, fontWeight: 700, textDecoration: 'none', letterSpacing: '0.06em', display: 'block' }}>
                 Me connecter
               </a>
-              <button onClick={resetAfterModal} style={{ background: 'transparent', border: 'none', color: '#4A5568', fontSize: 12, cursor: 'pointer', padding: '8px', fontFamily: 'monospace', marginTop: 4 }}>
+              <button onClick={resetAfterModal} style={{ background: 'transparent', border: 'none', color: '#94A3B8', fontSize: 12, cursor: 'pointer', padding: '8px', fontFamily: 'monospace', marginTop: 4 }}>
                 Continuer sans compte →
               </button>
             </div>

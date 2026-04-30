@@ -52,13 +52,13 @@ export default function ResetPasswordPage() {
                 <h1 style={{ fontSize: 26, fontWeight: 900, letterSpacing: '-0.03em', marginBottom: 8 }}>
                   Réinitialiser mon mot de passe
                 </h1>
-                <p style={{ fontSize: 13, color: '#4A5568', lineHeight: 1.6 }}>
+                <p style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.6 }}>
                   Entre ton email et on t&apos;envoie un lien pour créer un nouveau mot de passe.
                 </p>
               </div>
 
               <div style={{ marginBottom: 16 }}>
-                <div style={{ fontSize: 9, color: '#2D3748', letterSpacing: '0.1em', marginBottom: 6 }}>EMAIL</div>
+                <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 6 }}>EMAIL</div>
                 <input
                   type="email"
                   value={email}
@@ -78,13 +78,13 @@ export default function ResetPasswordPage() {
               <button
                 onClick={handleReset}
                 disabled={loading}
-                style={{ width: '100%', padding: '13px 0', fontSize: 12, fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.08em', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', background: loading ? '#151C25' : '#D4FF57', color: loading ? '#4A5568' : '#07090C' }}
+                style={{ width: '100%', padding: '13px 0', fontSize: 12, fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.08em', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', background: loading ? '#151C25' : '#D4FF57', color: loading ? '#94A3B8' : '#07090C' }}
               >
                 {loading ? '⟳ ENVOI EN COURS...' : '→ ENVOYER LE LIEN'}
               </button>
 
               <div style={{ textAlign: 'center', marginTop: 20 }}>
-                <a href="/login" style={{ fontSize: 11, color: '#2D3748', textDecoration: 'none' }}>
+                <a href="/login" style={{ fontSize: 11, color: '#94A3B8', textDecoration: 'none' }}>
                   ← Retour à la connexion
                 </a>
               </div>
@@ -96,16 +96,16 @@ export default function ResetPasswordPage() {
               <h1 style={{ fontSize: 22, fontWeight: 900, marginBottom: 16, letterSpacing: '-0.02em' }}>
                 Vérifie ta boîte mail
               </h1>
-              <p style={{ fontSize: 13, color: '#4A5568', lineHeight: 1.7, marginBottom: 32 }}>
+              <p style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.7, marginBottom: 32 }}>
                 On a envoyé un lien de réinitialisation à <span style={{ color: 'white' }}>{email}</span>. Le lien expire dans 1 heure.
               </p>
-              <div style={{ padding: '12px 14px', background: '#0B0E13', border: '1px solid #0F1520', fontSize: 11, color: '#2D3748', lineHeight: 1.6, marginBottom: 24 }}>
+              <div style={{ padding: '12px 14px', background: '#0B0E13', border: '1px solid #0F1520', fontSize: 11, color: '#94A3B8', lineHeight: 1.6, marginBottom: 24 }}>
                 Tu ne vois pas l&apos;email ? Vérifie tes spams ou{' '}
                 <button onClick={() => setSent(false)} style={{ background: 'none', border: 'none', color: '#D4FF57', cursor: 'pointer', fontSize: 11, fontFamily: 'monospace', padding: 0 }}>
                   réessaie avec un autre email
                 </button>.
               </div>
-              <a href="/login" style={{ fontSize: 12, color: '#4A5568', textDecoration: 'none', border: '1px solid #151C25', padding: '10px 24px', display: 'inline-block' }}>
+              <a href="/login" style={{ fontSize: 12, color: '#94A3B8', textDecoration: 'none', border: '1px solid #151C25', padding: '10px 24px', display: 'inline-block' }}>
                 ← Retour à la connexion
               </a>
             </div>
