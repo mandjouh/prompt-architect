@@ -15,13 +15,15 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Viral Content': '#FF7A3D',
 }
 
-export default async function Image({ params }: { params: { slug: string } }) {
-  const article = ARTICLES.find(a => a.slug === params.slug)
+export default async function Image({ params }: { params?: { slug?: string } }) {
+  const slug = params?.slug ?? ''
+  const article = ARTICLES.find(a => a.slug === slug)
 
-  const title = article?.title ?? params.slug
+  const title = article?.title ?? 'Prompt Architect'
   const category = article?.category ?? 'Guide'
   const color = CATEGORY_COLORS[category] ?? '#D4FF57'
-  const fontSize = title.length > 60 ? 44 : title.length > 40 ? 52 : 60
+  const len = title ? title.length : 0
+  const fontSize = len > 60 ? 44 : len > 40 ? 52 : 60
 
   return new ImageResponse(
     (
@@ -35,7 +37,6 @@ export default async function Image({ params }: { params: { slug: string } }) {
           padding: '64px 80px',
         }}
       >
-        {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '48px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             <div style={{ width: '40px', height: '40px', background: '#D4FF57', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: 900, color: '#07090C' }}>
@@ -50,17 +51,14 @@ export default async function Image({ params }: { params: { slug: string } }) {
           </div>
         </div>
 
-        {/* Label */}
         <div style={{ display: 'flex', fontSize: '11px', color, marginBottom: '20px' }}>
           // BLOG
         </div>
 
-        {/* Title */}
         <div style={{ display: 'flex', fontSize: `${fontSize}px`, fontWeight: 900, color: 'white', lineHeight: 1.05, flex: 1 }}>
           {title}
         </div>
 
-        {/* Footer */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '40px' }}>
           <div style={{ display: 'flex', fontSize: '14px', color: '#94A3B8' }}>
             prompt-architect.io
