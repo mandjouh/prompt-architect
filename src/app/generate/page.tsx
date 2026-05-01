@@ -75,6 +75,14 @@ const MODULES_PREMIUM = [
     ]},
 ]
 
+// Packs de crédits — liens Lemon Squeezy
+const CREDIT_PACKS = [
+  { name: 'Starter', credits: 10, price: 2, variantId: '1597503' },
+  { name: 'Standard', credits: 50, price: 8, variantId: '1597512' },
+  { name: 'Pro', credits: 120, price: 15, variantId: '1597513' },
+  { name: 'Premium', credits: 300, price: 30, variantId: '1597517' },
+]
+
 const MODULES = [...MODULES_FREE, ...MODULES_PREMIUM]
 const LS_KEY = 'pa_saved_prompts'
 const ANON_COUNT_KEY = 'pa_anon_count'
@@ -84,6 +92,7 @@ export default function GeneratePage() {
   const { user } = useAuth()
   const [userPlan, setUserPlan] = useState<string>('free')
   const [creditsUsed, setCreditsUsed] = useState<number>(0)
+  const [creditsBalance, setCreditsBalance] = useState<number>(0)
   const [selectedModule, setSelectedModule] = useState<string | null>(null)
   const [selectedCase, setSelectedCase] = useState<{ id: string; label: string; desc: string } | null>(null)
   const [input, setInput] = useState('')
@@ -95,15 +104,21 @@ export default function GeneratePage() {
   const [bannerDismissed, setBannerDismissed] = useState(false)
   const [anonCount, setAnonCount] = useState(0)
   const [showRegisterModal, setShowRegisterModal] = useState(false)
+  const [showBuyCreditsModal, setShowBuyCreditsModal] = useState(false)
   const [audience, setAudience] = useState('')
   const [tone, setTone] = useState('')
   const [outputFormat, setOutputFormat] = useState('')
 
   const currentModule = MODULES.find(m => m.id === selectedModule)
 
-  // Bannière visible si Free + au moins 3 générations utilisées + pas fermée
-  const showUpgradeBanner = user && userPlan === 'free' && creditsUsed >= 3 && !bannerDismissed
+  const showUpgradeBanner = user && userPlan === 'free' && creditsUsed >= 3 && creditsBalance === 0 && !bannerDismissed
   const creditsLeft = Math.max(0, FREE_LIMIT - creditsUsed)
+
+  // Vrai si l'utilisateur peut encore générer
+  const hasSubscriptionQuota = userPlan !== 'free' // abonné avec quota mensuel
+  const hasCreditBalance = creditsBalance > 0
+  const hasFreeQuota = userPlan === 'free' && creditsLeft > 0
+  const canGenerate = hasSubscriptionQuota || hasCreditBalance || hasFreeQuota
 
   useEffect(() => {
     if (!user) {
@@ -114,11 +129,18 @@ export default function GeneratePage() {
         setAnonCount(count)
       } catch { setSavedCount(0) }
     } else {
-      supabase.from('profiles').select('plan, credits_used').eq('id', user.id).single()
+      supabase
+        .from('profiles')
+        .select('plan, credits_used, credits_balance, credits_status')
+        .eq('id', user.id)
+        .single()
         .then(({ data }) => {
           if (data) {
             setUserPlan(data.plan)
             setCreditsUsed(data.credits_used ?? 0)
+            setCreditsBalance(
+              data.credits_status === 'expired' ? 0 : (data.credits_balance ?? 0)
+            )
           }
         })
     }
@@ -126,22 +148,59 @@ export default function GeneratePage() {
 
   const handleGenerate = async () => {
     if (!input.trim()) return
+
+    // Bloquer si aucune source de génération disponible
+    if (user && !canGenerate) {
+      setShowBuyCreditsModal(true)
+      return
+    }
+
     setGenerating(true)
     setResult('')
     setCopied(false)
     setJustSaved(false)
 
     try {
+      // Si l'utilisateur est connecté, sans quota abonnement et sans crédits free
+      // → déduire 1 crédit avant de générer
+      const useCredit = user && !hasSubscriptionQuota && !hasFreeQuota && hasCreditBalance
+
+      if (useCredit) {
+        const { data: deductResult, error: deductError } = await supabase
+          .rpc('deduct_credit', { p_user_id: user.id })
+
+        if (deductError || !deductResult?.success) {
+          const errMsg = deductResult?.error
+          if (errMsg === 'insufficient_credits') {
+            setShowBuyCreditsModal(true)
+            setGenerating(false)
+            return
+          }
+          setResult('Erreur lors de la vérification de vos crédits.')
+          setGenerating(false)
+          return
+        }
+
+        setCreditsBalance(deductResult.balance_after)
+      }
+
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            module: selectedModule,
-            caseType: selectedCase?.label,
-            userInput: input + (audience || tone || outputFormat ? `\n\n[Param\u00e8tres: ${[audience && `Public \u2014 ${audience}`, tone && `Ton \u2014 ${tone}`, outputFormat && `Format \u2014 ${outputFormat}`].filter(Boolean).join(' | ')}]` : ''),
-            userId: user?.id
-          }),
+          module: selectedModule,
+          caseType: selectedCase?.label,
+          userInput: input + (audience || tone || outputFormat
+            ? `\n\n[Paramètres: ${[
+                audience && `Public — ${audience}`,
+                tone && `Ton — ${tone}`,
+                outputFormat && `Format — ${outputFormat}`
+              ].filter(Boolean).join(' | ')}]`
+            : ''),
+          userId: user?.id
+        }),
       })
+
       const data = await response.json()
       const promptResult = data.prompt || 'Erreur lors de la génération.'
       setResult(promptResult)
@@ -159,8 +218,9 @@ export default function GeneratePage() {
 
         if (user) {
           await supabase.from('saved_prompts').insert({ ...promptData, user_id: user.id })
-          // Mettre à jour le compteur local
-          setCreditsUsed(prev => prev + 1)
+          if (!useCredit) {
+            setCreditsUsed(prev => prev + 1)
+          }
         } else {
           const existing = JSON.parse(localStorage.getItem(LS_KEY) || '[]')
           const newEntry = { ...promptData, id: Date.now().toString(), savedAt: new Date().toISOString() }
@@ -233,11 +293,29 @@ export default function GeneratePage() {
           </div>
           {user ? (
             <div style={{ display: 'flex', gap: 8 }}>
-              {/* Compteur crédits Free */}
-              {userPlan === 'free' && (
+              {/* Compteur Free */}
+              {userPlan === 'free' && creditsBalance === 0 && (
                 <div style={{ fontSize: 11, border: creditsLeft <= 1 ? '1px solid #FF4D4D40' : '1px solid #151C25', padding: '6px 12px', color: creditsLeft <= 1 ? '#FF4D4D' : '#94A3B8', background: creditsLeft <= 1 ? '#FF4D4D08' : 'transparent' }}>
                   {creditsLeft}/{FREE_LIMIT} restants
                 </div>
+              )}
+              {/* Solde crédits */}
+              {creditsBalance > 0 && (
+                <button
+                  onClick={() => setShowBuyCreditsModal(true)}
+                  style={{ fontSize: 11, border: '1px solid #D4FF5740', padding: '6px 12px', color: '#D4FF57', background: '#D4FF5708', cursor: 'pointer' }}
+                >
+                  ✦ {creditsBalance} crédit{creditsBalance > 1 ? 's' : ''}
+                </button>
+              )}
+              {/* Recharger si 0 crédits et free */}
+              {userPlan === 'free' && creditsBalance === 0 && creditsLeft === 0 && (
+                <button
+                  onClick={() => setShowBuyCreditsModal(true)}
+                  style={{ fontSize: 11, border: '1px solid #FF4D4D40', padding: '6px 12px', color: '#FF4D4D', background: '#FF4D4D08', cursor: 'pointer' }}
+                >
+                  + Recharger
+                </button>
               )}
               <a href="/my-prompts" style={{ fontSize: 11, textDecoration: 'none', border: '1px solid #D4FF5740', padding: '6px 12px', color: '#D4FF57', background: '#D4FF5708' }}>
                 ◈ Mes prompts
@@ -382,12 +460,13 @@ export default function GeneratePage() {
               <h1 style={{ fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Décris ton besoin</h1>
               <p style={{ color: '#94A3B8', fontSize: 14 }}>Plus tu es précis, meilleur sera ton prompt.</p>
             </div>
+
             {/* TONE OF VOICE */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 16 }}>
               {[
-                { label: 'PUBLIC CIBLE', value: audience, setter: setAudience, options: ['Grand public', 'Professionnels', 'Cadres', 'Entrepreneurs', '\u00c9tudiants'] },
-                { label: 'TON', value: tone, setter: setTone, options: ['Professionnel', 'Direct', 'Humour', 'Acad\u00e9mique', 'Inspirant'] },
-                { label: 'FORMAT', value: outputFormat, setter: setOutputFormat, options: ['Texte structur\u00e9', 'Liste \u00e0 puces', 'Tableau', 'Code', 'Paragraphes'] },
+                { label: 'PUBLIC CIBLE', value: audience, setter: setAudience, options: ['Grand public', 'Professionnels', 'Cadres', 'Entrepreneurs', 'Étudiants'] },
+                { label: 'TON', value: tone, setter: setTone, options: ['Professionnel', 'Direct', 'Humour', 'Académique', 'Inspirant'] },
+                { label: 'FORMAT', value: outputFormat, setter: setOutputFormat, options: ['Texte structuré', 'Liste à puces', 'Tableau', 'Code', 'Paragraphes'] },
               ].map((field, i) => (
                 <div key={i}>
                   <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.12em', marginBottom: 6 }}>{field.label}</div>
@@ -410,9 +489,22 @@ export default function GeneratePage() {
               value={input} onChange={e => setInput(e.target.value)}
               style={{ width: '100%', background: '#0B0E13', border: '1px solid #151C25', color: 'white', padding: '16px', fontFamily: 'monospace', fontSize: 13, outline: 'none', resize: 'vertical', lineHeight: 1.7, boxSizing: 'border-box', marginBottom: 16 }}
             />
+
+            {/* Indicateur de source de génération */}
+            {user && (
+              <div style={{ fontSize: 11, color: '#94A3B8', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+                {hasSubscriptionQuota && <><span style={{ color: '#D4FF57' }}>✦</span> Quota abonnement</>}
+                {!hasSubscriptionQuota && hasCreditBalance && <><span style={{ color: '#D4FF57' }}>✦</span> {creditsBalance} crédit{creditsBalance > 1 ? 's' : ''} disponible{creditsBalance > 1 ? 's' : ''} — 1 sera utilisé</>}
+                {!hasSubscriptionQuota && !hasCreditBalance && hasFreeQuota && <><span style={{ color: '#94A3B8' }}>◎</span> {creditsLeft} génération{creditsLeft > 1 ? 's' : ''} gratuite{creditsLeft > 1 ? 's' : ''} restante{creditsLeft > 1 ? 's' : ''}</>}
+                {!canGenerate && <><span style={{ color: '#FF4D4D' }}>⚠</span> <span style={{ color: '#FF4D4D' }}>Aucun crédit disponible</span></>}
+              </div>
+            )}
+
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: 12, color: '#94A3B8' }}>{input.length} caractères</span>
-              <button onClick={handleGenerate} disabled={!input.trim() || generating}
+              <button
+                onClick={handleGenerate}
+                disabled={!input.trim() || generating}
                 style={{ background: !input.trim() || generating ? '#151C25' : currentModule?.color, color: !input.trim() || generating ? '#94A3B8' : '#07090C', border: 'none', padding: '12px 28px', fontSize: 12, fontWeight: 900, fontFamily: 'monospace', cursor: !input.trim() || generating ? 'not-allowed' : 'pointer', letterSpacing: '0.06em' }}
               >
                 {generating ? '⟳ GÉNÉRATION EN COURS...' : '✦ GÉNÉRER LE PROMPT'}
@@ -477,48 +569,35 @@ export default function GeneratePage() {
 
       </div>
 
-      {/* BANNIÈRE UPGRADE — visible si Free + 3+ générations utilisées */}
+      {/* BANNIÈRE UPGRADE */}
       {showUpgradeBanner && (
-        <div style={{
-          position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200,
-          background: '#0D1118', borderTop: '1px solid #D4FF5730',
-          padding: '14px 24px',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16,
-          backdropFilter: 'blur(12px)',
-        }}>
+        <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200, background: '#0D1118', borderTop: '1px solid #D4FF5730', padding: '14px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, backdropFilter: 'blur(12px)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
             <div style={{ width: 6, height: 6, background: creditsLeft === 0 ? '#FF4D4D' : '#D4FF57', borderRadius: '50%', flexShrink: 0 }} />
             <div>
               <span style={{ fontSize: 12, fontWeight: 900, color: 'white' }}>
-                {creditsLeft === 0
-                  ? '⚠ Tu as atteint ta limite Free — '
-                  : `⚡ Il te reste ${creditsLeft} génération${creditsLeft > 1 ? 's' : ''} ce mois — `
-                }
+                {creditsLeft === 0 ? '⚠ Limite atteinte — ' : `⚡ ${creditsLeft} génération${creditsLeft > 1 ? 's' : ''} restante${creditsLeft > 1 ? 's' : ''} — `}
               </span>
               <span style={{ fontSize: 12, color: '#94A3B8' }}>
-                {creditsLeft === 0 ? 'Upgrade pour continuer.' : 'Upgrade pour en avoir plus.'}
+                {creditsLeft === 0 ? 'Recharge ou upgrade pour continuer.' : 'Upgrade pour en avoir plus.'}
               </span>
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-            <a href="/pricing" style={{
-              background: '#D4FF57', color: '#07090C', padding: '8px 18px',
-              fontSize: 11, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.06em',
-              whiteSpace: 'nowrap',
-            }}>
-              ✦ VOIR LES PLANS
+            <button onClick={() => setShowBuyCreditsModal(true)} style={{ background: '#D4FF57', color: '#07090C', padding: '8px 18px', fontSize: 11, fontWeight: 900, border: 'none', cursor: 'pointer', letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>
+              ✦ RECHARGER LES CRÉDITS
+            </button>
+            <a href="/pricing" style={{ color: '#94A3B8', padding: '8px 12px', fontSize: 11, textDecoration: 'none', border: '1px solid #151C25', whiteSpace: 'nowrap' }}>
+              Voir les plans
             </a>
-            <button onClick={() => setBannerDismissed(true)} style={{
-              background: 'transparent', border: 'none', color: '#94A3B8',
-              cursor: 'pointer', fontSize: 16, padding: '4px 8px', lineHeight: 1,
-            }}>
+            <button onClick={() => setBannerDismissed(true)} style={{ background: 'transparent', border: 'none', color: '#94A3B8', cursor: 'pointer', fontSize: 16, padding: '4px 8px', lineHeight: 1 }}>
               ×
             </button>
           </div>
         </div>
       )}
 
-      {/* MODAL INSCRIPTION — 2ème prompt pour utilisateur non connecté */}
+      {/* MODAL INSCRIPTION */}
       {showRegisterModal && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
           <div style={{ position: 'absolute', inset: 0, background: '#07090CEE', backdropFilter: 'blur(8px)' }} onClick={() => setShowRegisterModal(false)} />
@@ -541,6 +620,65 @@ export default function GeneratePage() {
               <button onClick={resetAfterModal} style={{ background: 'transparent', border: 'none', color: '#94A3B8', fontSize: 12, cursor: 'pointer', padding: '8px', fontFamily: 'monospace', marginTop: 4 }}>
                 Continuer sans compte →
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL ACHAT CRÉDITS */}
+      {showBuyCreditsModal && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
+          <div style={{ position: 'absolute', inset: 0, background: '#07090CEE', backdropFilter: 'blur(8px)' }} onClick={() => setShowBuyCreditsModal(false)} />
+          <div style={{ position: 'relative', background: '#0B0E13', border: '1px solid #D4FF5730', maxWidth: 480, width: '100%', padding: '40px 36px' }}>
+            <button onClick={() => setShowBuyCreditsModal(false)} style={{ position: 'absolute', top: 16, right: 16, background: 'transparent', border: 'none', color: '#94A3B8', cursor: 'pointer', fontSize: 18, lineHeight: 1 }}>×</button>
+
+            <div style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 12 }}>✦ RECHARGER LES CRÉDITS</div>
+            <h2 style={{ fontSize: 20, fontWeight: 900, marginBottom: 8 }}>Choisis ton pack</h2>
+            <p style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.6, marginBottom: 8 }}>
+              Valables <strong style={{ color: 'white' }}>60 à 365 jours</strong> après ta dernière génération.<br />
+              Paiement par carte, Wave, MTN Money ou Orange Money.
+            </p>
+            {creditsBalance > 0 && (
+              <div style={{ fontSize: 12, color: '#D4FF57', marginBottom: 24, padding: '8px 12px', border: '1px solid #D4FF5730', background: '#D4FF5708' }}>
+                Solde actuel : {creditsBalance} crédit{creditsBalance > 1 ? 's' : ''}
+              </div>
+            )}
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
+              {CREDIT_PACKS.map((pack, i) => {
+                const costPerCredit = (pack.price / pack.credits).toFixed(2)
+                const isPopular = i === 1
+                return (
+                  <a
+                    key={pack.variantId}
+                    href={`https://prompt-architect.lemonsqueezy.com/checkout/buy/${pack.variantId}?checkout[custom][user_id]=${user?.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: isPopular ? '1px solid #D4FF5760' : '1px solid #151C25', background: isPopular ? '#D4FF5708' : '#080B0F', padding: '14px 18px', textDecoration: 'none', color: 'white', cursor: 'pointer', position: 'relative' }}
+                  >
+                    {isPopular && (
+                      <div style={{ position: 'absolute', top: -1, right: 12, background: '#D4FF57', color: '#07090C', fontSize: 8, fontWeight: 900, padding: '2px 8px', letterSpacing: '0.08em' }}>
+                        POPULAIRE
+                      </div>
+                    )}
+                    <div>
+                      <div style={{ fontWeight: 900, fontSize: 14, marginBottom: 2 }}>{pack.name} — {pack.credits} crédits</div>
+                      <div style={{ fontSize: 11, color: '#94A3B8' }}>${costPerCredit} / crédit</div>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontWeight: 900, fontSize: 16, color: '#D4FF57' }}>${pack.price}</div>
+                      <div style={{ fontSize: 10, color: '#94A3B8' }}>one-time</div>
+                    </div>
+                  </a>
+                )
+              })}
+            </div>
+
+            <div style={{ borderTop: '1px solid #151C25', paddingTop: 16, fontSize: 12, color: '#94A3B8', lineHeight: 1.6 }}>
+              Tu préfères un abonnement mensuel ?{' '}
+              <a href="/pricing" style={{ color: '#D4FF57', textDecoration: 'underline' }}>
+                Voir les plans →
+              </a>
             </div>
           </div>
         </div>
