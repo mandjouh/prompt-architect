@@ -95,6 +95,9 @@ export default function GeneratePage() {
   const [bannerDismissed, setBannerDismissed] = useState(false)
   const [anonCount, setAnonCount] = useState(0)
   const [showRegisterModal, setShowRegisterModal] = useState(false)
+  const [audience, setAudience] = useState('')
+  const [tone, setTone] = useState('')
+  const [outputFormat, setOutputFormat] = useState('')
 
   const currentModule = MODULES.find(m => m.id === selectedModule)
 
@@ -132,7 +135,12 @@ export default function GeneratePage() {
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ module: selectedModule, caseType: selectedCase?.label, userInput: input, userId: user?.id }),
+        body: JSON.stringify({
+            module: selectedModule,
+            caseType: selectedCase?.label,
+            userInput: input + (audience || tone || outputFormat ? `\n\n[Param\u00e8tres: ${[audience && `Public \u2014 ${audience}`, tone && `Ton \u2014 ${tone}`, outputFormat && `Format \u2014 ${outputFormat}`].filter(Boolean).join(' | ')}]` : ''),
+            userId: user?.id
+          }),
       })
       const data = await response.json()
       const promptResult = data.prompt || 'Erreur lors de la génération.'
@@ -191,6 +199,9 @@ export default function GeneratePage() {
     setResult('')
     setCopied(false)
     setJustSaved(false)
+    setAudience('')
+    setTone('')
+    setOutputFormat('')
   }
 
   const resetAfterModal = () => {
@@ -371,6 +382,29 @@ export default function GeneratePage() {
               <h1 style={{ fontSize: 24, fontWeight: 900, marginBottom: 8 }}>Décris ton besoin</h1>
               <p style={{ color: '#94A3B8', fontSize: 14 }}>Plus tu es précis, meilleur sera ton prompt.</p>
             </div>
+            {/* TONE OF VOICE */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 16 }}>
+              {[
+                { label: 'PUBLIC CIBLE', value: audience, setter: setAudience, options: ['Grand public', 'Professionnels', 'Cadres', 'Entrepreneurs', '\u00c9tudiants'] },
+                { label: 'TON', value: tone, setter: setTone, options: ['Professionnel', 'Direct', 'Humour', 'Acad\u00e9mique', 'Inspirant'] },
+                { label: 'FORMAT', value: outputFormat, setter: setOutputFormat, options: ['Texte structur\u00e9', 'Liste \u00e0 puces', 'Tableau', 'Code', 'Paragraphes'] },
+              ].map((field, i) => (
+                <div key={i}>
+                  <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.12em', marginBottom: 6 }}>{field.label}</div>
+                  <select
+                    value={field.value}
+                    onChange={e => field.setter(e.target.value)}
+                    style={{ width: '100%', background: '#0B0E13', border: '1px solid #151C25', color: field.value ? 'white' : '#94A3B8', padding: '9px 10px', fontFamily: 'monospace', fontSize: 11, outline: 'none', cursor: 'pointer', appearance: 'none' as const }}
+                  >
+                    <option value=''>Optionnel...</option>
+                    {field.options.map(opt => (
+                      <option key={opt} value={opt} style={{ background: '#0B0E13' }}>{opt}</option>
+                    ))}
+                  </select>
+                </div>
+              ))}
+            </div>
+
             <textarea rows={6}
               placeholder={`Décris précisément ce que tu veux pour ton ${selectedCase.label}...`}
               value={input} onChange={e => setInput(e.target.value)}
