@@ -265,6 +265,39 @@ export default function Home() {
         </div>
       </section>
 
+
+      {/* PROPULSÉ PAR CLAUDE */}
+      <section style={{ borderTop: '1px solid #151C25', padding: '48px 24px', background: '#07090C' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{ width: 36, height: 36, background: '#CC785C', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" fill="white"/>
+                </svg>
+              </div>
+              <div>
+                <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.12em', marginBottom: 2 }}>MOTEUR IA</div>
+                <div style={{ fontSize: 14, fontWeight: 900, color: 'white', letterSpacing: '-0.01em' }}>Propulsé par Claude</div>
+              </div>
+            </div>
+            <div style={{ width: '1px', height: 32, background: '#151C25', flexShrink: 0 }} />
+            <div style={{ fontSize: 12, color: '#94A3B8', lineHeight: 1.7, maxWidth: 480 }}>
+              Chaque prompt est généré par <span style={{ color: 'white', fontWeight: 700 }}>Claude d&apos;Anthropic</span>, 
+              le modèle IA réputé pour la qualité de son raisonnement et la précision de ses réponses.
+            </div>
+          </div>
+          <a 
+            href="https://anthropic.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ fontSize: 11, color: '#94A3B8', textDecoration: 'none', letterSpacing: '0.06em', border: '1px solid #151C25', padding: '8px 16px', whiteSpace: 'nowrap', flexShrink: 0 }}
+          >
+            EN SAVOIR PLUS →
+          </a>
+        </div>
+      </section>
+
       {/* COMMENT ÇA MARCHE */}
       <section className="section-padding" style={{ borderTop: '1px solid #151C25', padding: '88px 24px' }}>
         <div style={{ maxWidth: 860, margin: '0 auto' }}>
