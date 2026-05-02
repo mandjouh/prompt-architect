@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '../lib/supabase'
 
@@ -12,6 +12,12 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [refCode, setRefCode] = useState<string | null>(null)
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    setRefCode(params.get('ref'))
+  }, [])
 
   const handleSubmit = async () => {
     if (!email.trim() || !password.trim()) {
@@ -28,8 +34,17 @@ export default function LoginPage() {
     setSuccess('')
 
     if (mode === 'register') {
-      const { error } = await supabase.auth.signUp({ email, password })
-      if (error) {
+      const { data: signUpData, error } = await supabase.auth.signUp({ email, password })
+      // Appliquer le code de parrainage si présent
+      if (!error && signUpData.user && refCode) {
+        await fetch('/api/referral', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ referralCode: refCode, newUserId: signUpData.user.id }),
+        })
+      }
+      const error2 = error
+      if (error || error2) {
         setError(error.message)
       } else {
         setSuccess('Compte créé ! Vérifie ton email pour confirmer ton inscription.')

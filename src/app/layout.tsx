@@ -3,6 +3,7 @@ import Script from 'next/script'
 import './globals.css'
 import { AuthProvider } from './context/AuthContext'
 import PlausibleTracker from './components/PlausibleTracker'
+import TawkTo from './components/TawkTo'
 import PWARegister from './components/PWARegister'
 
 const APP_URL = 'https://www.prompt-architect.io'
@@ -76,6 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           window.plausible.init();
         `}</Script>
         <PlausibleTracker />
+        <TawkTo />
         <AuthProvider>
           <PWARegister />
           {children}
