@@ -13,7 +13,16 @@ type UserProfile = {
   name: string
   plan: 'free' | 'standard' | 'pro' | 'premium'
   credits_used: number
+  credits_balance: number
+  credits_status: 'active' | 'frozen' | 'expired' | null
+  credits_last_used_at: string | null
   created_at: string
+}
+
+const CREDIT_STATUS_CONFIG = {
+  active:  { label: 'ACTIF',  color: '#D4FF57' },
+  frozen:  { label: 'GELÉ',   color: '#FF7A3D' },
+  expired: { label: 'EXPIRÉ', color: '#FF5A5A' },
 }
 
 const PLAN_CONFIG = {
@@ -33,6 +42,8 @@ export default function AdminPage() {
   const [updated, setUpdated] = useState<string | null>(null)
   const [filterPlan, setFilterPlan] = useState<string>('all')
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
+  const [creditInput, setCreditInput] = useState<Record<string, string>>({})
+  const [addingCredits, setAddingCredits] = useState<string | null>(null)
 
   useEffect(() => {
     if (!loading) {
@@ -94,6 +105,36 @@ export default function AdminPage() {
       setErrorMsg('Erreur réseau')
     }
     setUpdating(null)
+  }
+
+  const handleAddCredits = async (userId: string, amount: number) => {
+    if (!session?.access_token || isNaN(amount) || amount === 0) return
+    setAddingCredits(userId)
+    setErrorMsg(null)
+    try {
+      const res = await fetch('/api/admin/users', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ userId, creditAmount: amount }),
+      })
+      const json = await res.json()
+      if (!res.ok) {
+        setErrorMsg(json.error ?? 'Erreur crédits')
+      } else {
+        setUsers(prev => prev.map(u =>
+          u.id === userId
+            ? { ...u, credits_balance: json.newBalance, credits_status: 'active' as const }
+            : u
+        ))
+        setCreditInput(prev => ({ ...prev, [userId]: '' }))
+      }
+    } catch {
+      setErrorMsg('Erreur réseau')
+    }
+    setAddingCredits(null)
   }
 
   const filteredUsers = users.filter(u => {
@@ -197,8 +238,8 @@ export default function AdminPage() {
         <div style={{ border: '1px solid #151C25', overflow: 'hidden' }}>
 
           {/* EN-TÊTES */}
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1.5fr', background: '#0B0E13', borderBottom: '1px solid #151C25', padding: '12px 20px', gap: 16 }}>
-            {['EMAIL / NOM', 'PLAN', 'CRÉDITS', 'MEMBRE DEPUIS', 'CHANGER PLAN'].map((h, i) => (
+          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1.5fr 1.5fr', background: '#0B0E13', borderBottom: '1px solid #151C25', padding: '12px 20px', gap: 16 }}>
+            {['EMAIL / NOM', 'PLAN', 'GÉNÉRATIONS', 'CRÉDITS PAYG', 'MEMBRE DEPUIS', 'CHANGER PLAN', 'AJOUTER CRÉDITS'].map((h, i) => (
               <div key={i} style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.12em' }}>{h}</div>
             ))}
           </div>
@@ -214,7 +255,7 @@ export default function AdminPage() {
               const isUpdated = updated === u.id
               const isUpdating = updating === u.id
               return (
-                <div key={u.id} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1.5fr', padding: '16px 20px', gap: 16, borderBottom: i < filteredUsers.length - 1 ? '1px solid #0F1520' : 'none', background: isUpdated ? '#D4FF5708' : 'transparent', transition: 'background 0.3s', alignItems: 'center' }}>
+                <div key={u.id} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1.5fr 1.5fr', padding: '16px 20px', gap: 16, borderBottom: i < filteredUsers.length - 1 ? '1px solid #0F1520' : 'none', background: isUpdated ? '#D4FF5708' : 'transparent', transition: 'background 0.3s', alignItems: 'center' }}>
 
                   {/* Email / Nom */}
                   <div>
@@ -228,9 +269,21 @@ export default function AdminPage() {
                     <span style={{ fontSize: 11, fontWeight: 700, color: planConf.color }}>{planConf.label}</span>
                   </div>
 
-                  {/* Crédits */}
+                  {/* Générations */}
                   <div style={{ fontSize: 12, color: '#94A3B8' }}>
                     {u.credits_used} / {planConf.limit}
+                  </div>
+
+                  {/* Crédits PAYG */}
+                  <div>
+                    <div style={{ fontSize: 12, color: u.credits_balance > 0 ? '#D4FF57' : '#94A3B8', fontWeight: u.credits_balance > 0 ? 700 : 400 }}>
+                      {u.credits_balance ?? 0} crédits
+                    </div>
+                    {u.credits_status && (
+                      <div style={{ fontSize: 9, color: CREDIT_STATUS_CONFIG[u.credits_status]?.color ?? '#94A3B8', letterSpacing: '0.08em' }}>
+                        {CREDIT_STATUS_CONFIG[u.credits_status]?.label}
+                      </div>
+                    )}
                   </div>
 
                   {/* Date */}
@@ -256,6 +309,24 @@ export default function AdminPage() {
                       ))
                     )}
                   </div>
+                  {/* Ajouter crédits */}
+                  <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                    <input
+                      type="number"
+                      placeholder="±crédits"
+                      value={creditInput[u.id] ?? ''}
+                      onChange={e => setCreditInput(prev => ({ ...prev, [u.id]: e.target.value }))}
+                      style={{ width: 70, background: '#07090C', border: '1px solid #151C25', color: 'white', padding: '5px 8px', fontFamily: 'monospace', fontSize: 11, outline: 'none' }}
+                    />
+                    <button
+                      onClick={() => handleAddCredits(u.id, parseInt(creditInput[u.id] ?? '0'))}
+                      disabled={addingCredits === u.id || !creditInput[u.id]}
+                      style={{ padding: '5px 10px', fontSize: 10, fontWeight: 900, fontFamily: 'monospace', border: 'none', cursor: 'pointer', background: addingCredits === u.id ? '#151C25' : '#D4FF57', color: '#07090C' }}
+                    >
+                      {addingCredits === u.id ? '⟳' : '✦'}
+                    </button>
+                  </div>
+
                 </div>
               )
             })
