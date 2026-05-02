@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+export const dynamic = 'force-dynamic'
+
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
 
 const FROM = 'Prompt Architect <contact@prompt-architect.io>'
 const BASE_URL = 'https://www.prompt-architect.io'
@@ -144,6 +148,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
   }
 
+  const supabase = getSupabase()
   const log: Record<string, unknown> = {}
   const errors: string[] = []
 
@@ -160,6 +165,7 @@ export async function GET(request: NextRequest) {
 
   // Helper : récupérer les profils + email auth pour une fenêtre de jours
   async function getProfiles(daysMin: number, daysMax: number, status: string) {
+    const supabase = getSupabase()
     const { data, error } = await supabase
       .from('profiles')
       .select('id, credits_balance, credits_last_used_at')
