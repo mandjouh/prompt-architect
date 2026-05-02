@@ -17,7 +17,7 @@ export default function LibraryPage() {
 
   const modules = ['Tous', ...MODULES_LIST]
 
-  const filtered = PREMIUM_PROMPTS.filter(p => {
+  const filtered = PREMIUM_PROMPTS.filter((p): p is NonNullable<typeof PREMIUM_PROMPTS[0]> => Boolean(p)).filter(p => {
     const okMod = mod === 'Tous' || p.module === mod
     const q = search.toLowerCase()
     const okSearch = q === '' || p.title.toLowerCase().includes(q) || p.module.toLowerCase().includes(q) || (p.category || '').toLowerCase().includes(q) || (p.difficulty || '').toLowerCase().includes(q)
@@ -32,7 +32,7 @@ export default function LibraryPage() {
 
   const moduleCount = (m: string) => m === 'Tous'
     ? PREMIUM_PROMPTS.length
-    : PREMIUM_PROMPTS.filter(p => p.module === m).length
+    : PREMIUM_PROMPTS.filter((p): p is NonNullable<typeof PREMIUM_PROMPTS[0]> => Boolean(p)).filter(p => p.module === m).length
 
   return (
     <div style={{ minHeight: '100vh', background: '#07090C', color: 'white', fontFamily: 'monospace', display: 'flex', flexDirection: 'column' }}>
