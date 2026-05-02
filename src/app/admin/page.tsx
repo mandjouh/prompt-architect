@@ -7,6 +7,28 @@ import { useAuth } from '../context/AuthContext'
 // ⚠️ Seul cet email a accès à la page admin
 const ADMIN_EMAIL = 'mandjouh@yahoo.fr'
 
+type Analytics = {
+  mrr: number
+  payingUsers: number
+  conversionRate: number
+  totalUsers: number
+  planCounts: { free: number; standard: number; pro: number; premium: number }
+  newLast7: number
+  newLast30: number
+  growthRate: number
+  totalGenerations: number
+  avgGenerations: number
+  savedPromptsCount: number
+  totalCreditsBalance: number
+  activeCredits: number
+  frozenCredits: number
+  totalCreditsSold: number
+  creditRevenueLast30: number
+  totalReferrals: number
+  newsletterCount: number
+  recentTransactions: Array<{ amount: number; type: string; provider: string; created_at: string }>
+}
+
 type UserProfile = {
   id: string
   email: string
@@ -42,6 +64,8 @@ export default function AdminPage() {
   const [updated, setUpdated] = useState<string | null>(null)
   const [filterPlan, setFilterPlan] = useState<string>('all')
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
+  const [analytics, setAnalytics] = useState<Analytics | null>(null)
+  const [loadingAnalytics, setLoadingAnalytics] = useState(false)
   const [creditInput, setCreditInput] = useState<Record<string, string>>({})
   const [addingCredits, setAddingCredits] = useState<string | null>(null)
 
@@ -56,6 +80,7 @@ export default function AdminPage() {
   useEffect(() => {
     if (!loading && user?.email === ADMIN_EMAIL && session?.access_token) {
       fetchUsers(session.access_token)
+      fetchAnalytics(session.access_token)
     }
   }, [loading, user, session])
 
@@ -76,6 +101,22 @@ export default function AdminPage() {
       setErrorMsg('Erreur réseau')
     }
     setFetching(false)
+  }
+
+  const fetchAnalytics = async (token: string) => {
+    setLoadingAnalytics(true)
+    try {
+      const res = await fetch('/api/admin/analytics', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (res.ok) {
+        const json = await res.json()
+        setAnalytics(json)
+      }
+    } catch (e) {
+      console.error('Analytics error:', e)
+    }
+    setLoadingAnalytics(false)
   }
 
   const handleChangePlan = async (userId: string, newPlan: string) => {
@@ -185,6 +226,134 @@ export default function AdminPage() {
           <div style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 12 }}>// ADMIN</div>
           <h1 style={{ fontSize: 28, fontWeight: 900, letterSpacing: '-0.03em', marginBottom: 6 }}>Gestion des utilisateurs</h1>
           <p style={{ fontSize: 12, color: '#94A3B8' }}>Modifier les plans et accès de tes utilisateurs</p>
+        </div>
+
+
+        {/* DASHBOARD ANALYTICS */}
+        {analytics && (
+          <div style={{ marginBottom: 40 }}>
+
+            {/* ROW 1 — KPIs revenus */}
+            <div style={{ fontSize: 9, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 12 }}>REVENUS</div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, background: '#151C25', marginBottom: 24 }}>
+              {[
+                { label: 'MRR', value: `$${analytics.mrr}`, sub: 'Mensuel récurrent', color: '#D4FF57' },
+                { label: 'CLIENTS PAYANTS', value: analytics.payingUsers, sub: `${analytics.conversionRate}% de conversion`, color: '#38C4FF' },
+                { label: 'CRÉDITS VENDUS', value: analytics.totalCreditsSold, sub: `$${analytics.creditRevenueLast30 * 0.07 | 0} revenus 30j`, color: '#FF7A3D' },
+                { label: 'NEWSLETTER', value: analytics.newsletterCount, sub: 'Abonnés email', color: '#A47CFF' },
+              ].map((k, i) => (
+                <div key={i} style={{ background: '#07090C', padding: '20px 16px', textAlign: 'center' }}>
+                  <div style={{ fontSize: 26, fontWeight: 900, color: k.color, letterSpacing: '-0.03em', marginBottom: 4 }}>{k.value}</div>
+                  <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.1em', marginBottom: 2 }}>{k.label}</div>
+                  <div style={{ fontSize: 10, color: '#4A5568' }}>{k.sub}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* ROW 2 — Croissance utilisateurs */}
+            <div style={{ fontSize: 9, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 12 }}>CROISSANCE</div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, background: '#151C25', marginBottom: 24 }}>
+              {[
+                { label: 'NOUVEAUX 7J', value: `+${analytics.newLast7}`, color: 'white' },
+                { label: 'NOUVEAUX 30J', value: `+${analytics.newLast30}`, color: 'white' },
+                { label: 'CROISSANCE MoM', value: `${analytics.growthRate >= 0 ? '+' : ''}${analytics.growthRate}%`, color: analytics.growthRate >= 0 ? '#D4FF57' : '#FF5A5A' },
+                { label: 'PARRAINAGES', value: analytics.totalReferrals, color: 'white' },
+              ].map((k, i) => (
+                <div key={i} style={{ background: '#07090C', padding: '20px 16px', textAlign: 'center' }}>
+                  <div style={{ fontSize: 26, fontWeight: 900, color: k.color, letterSpacing: '-0.03em', marginBottom: 4 }}>{k.value}</div>
+                  <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.1em' }}>{k.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* ROW 3 — Engagement + Crédits PAYG */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }}>
+
+              {/* Engagement */}
+              <div style={{ border: '1px solid #151C25', background: '#0B0E13', padding: 20 }}>
+                <div style={{ fontSize: 9, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 16 }}>ENGAGEMENT</div>
+                {[
+                  { label: 'Générations totales', value: analytics.totalGenerations.toLocaleString() },
+                  { label: 'Moyenne / utilisateur', value: analytics.avgGenerations },
+                  { label: 'Prompts sauvegardés', value: analytics.savedPromptsCount.toLocaleString() },
+                ].map((row, i) => (
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: i < 2 ? '1px solid #0F1520' : 'none' }}>
+                    <span style={{ fontSize: 12, color: '#4A5568' }}>{row.label}</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: 'white' }}>{row.value}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Crédits PAYG */}
+              <div style={{ border: '1px solid #151C25', background: '#0B0E13', padding: 20 }}>
+                <div style={{ fontSize: 9, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 16 }}>CRÉDITS PAY-AS-YOU-GO</div>
+                {[
+                  { label: 'Crédits actifs', value: analytics.activeCredits, color: '#D4FF57' },
+                  { label: 'Crédits gelés', value: analytics.frozenCredits, color: '#FF7A3D' },
+                  { label: 'Total en circulation', value: analytics.totalCreditsBalance, color: 'white' },
+                ].map((row, i) => (
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: i < 2 ? '1px solid #0F1520' : 'none' }}>
+                    <span style={{ fontSize: 12, color: '#4A5568' }}>{row.label}</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: row.color }}>{row.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ROW 4 — Répartition plans + Transactions récentes */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 32 }}>
+
+              {/* Répartition plans */}
+              <div style={{ border: '1px solid #151C25', background: '#0B0E13', padding: 20 }}>
+                <div style={{ fontSize: 9, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 16 }}>RÉPARTITION PLANS</div>
+                {[
+                  { plan: 'Free', count: analytics.planCounts.free, color: '#94A3B8' },
+                  { plan: 'Standard', count: analytics.planCounts.standard, color: '#38C4FF' },
+                  { plan: 'Pro', count: analytics.planCounts.pro, color: '#D4FF57' },
+                  { plan: 'Premium', count: analytics.planCounts.premium, color: '#A47CFF' },
+                ].map((row, i) => {
+                  const pct = analytics.totalUsers > 0 ? Math.round((row.count / analytics.totalUsers) * 100) : 0
+                  return (
+                    <div key={i} style={{ marginBottom: i < 3 ? 10 : 0 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                        <span style={{ fontSize: 11, color: row.color, fontWeight: 700 }}>{row.plan}</span>
+                        <span style={{ fontSize: 11, color: '#94A3B8' }}>{row.count} ({pct}%)</span>
+                      </div>
+                      <div style={{ height: 4, background: '#151C25', borderRadius: 2 }}>
+                        <div style={{ height: '100%', width: `${pct}%`, background: row.color, borderRadius: 2, transition: 'width 0.5s' }} />
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Transactions récentes */}
+              <div style={{ border: '1px solid #151C25', background: '#0B0E13', padding: 20 }}>
+                <div style={{ fontSize: 9, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 16 }}>TRANSACTIONS RÉCENTES</div>
+                {analytics.recentTransactions.length === 0 ? (
+                  <div style={{ fontSize: 12, color: '#4A5568' }}>Aucune transaction</div>
+                ) : (
+                  analytics.recentTransactions.slice(0, 6).map((tx, i) => (
+                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: i < 5 ? '1px solid #0F1520' : 'none', alignItems: 'center' }}>
+                      <div>
+                        <span style={{ fontSize: 11, color: 'white', fontWeight: 700, marginRight: 8 }}>{tx.type}</span>
+                        <span style={{ fontSize: 10, color: '#4A5568' }}>{tx.provider}</span>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <span style={{ fontSize: 11, color: tx.amount > 0 ? '#D4FF57' : '#FF5A5A', fontWeight: 700 }}>{tx.amount > 0 ? '+' : ''}{tx.amount}</span>
+                        <div style={{ fontSize: 9, color: '#4A5568' }}>{new Date(tx.created_at).toLocaleDateString('fr-FR')}</div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Titre section utilisateurs */}
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 9, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 8 }}>GESTION UTILISATEURS</div>
         </div>
 
         {/* ERREUR */}
