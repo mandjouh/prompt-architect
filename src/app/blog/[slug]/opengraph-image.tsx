@@ -11,8 +11,9 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Viral Content': '#FF7A3D',
 }
 
-export default async function Image({ params }: { params: { slug: string } }) {
-  const article = ARTICLES.find(a => a.slug === params.slug)
+export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const article = ARTICLES.find(a => a.slug === slug)
 
   const title = article?.title ?? 'Prompt Architect'
   const category = article?.category ?? 'Guide'

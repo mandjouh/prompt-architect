@@ -1,13 +1,12 @@
-export const dynamic = 'force-dynamic'
-
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ARTICLES } from '../../lib/blog'
 import type { Metadata } from 'next'
 
 // Génération des métadonnées dynamiques par article
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const article = ARTICLES.find(a => a.slug === params.slug)
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const article = ARTICLES.find(a => a.slug === slug)
   if (!article) return { title: 'Article introuvable' }
   return {
     title: `${article.title} — Prompt Architect`,
@@ -97,8 +96,9 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Viral Content': '#FF7A3D',
 }
 
-export default function ArticlePage({ params }: { params: { slug: string } }) {
-  const article = ARTICLES.find(a => a.slug === params.slug)
+export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const article = ARTICLES.find(a => a.slug === slug)
   if (!article) notFound()
 
   const relatedArticles = ARTICLES.filter(a => a.slug !== article.slug && a.lang === article.lang).slice(0, 3)
