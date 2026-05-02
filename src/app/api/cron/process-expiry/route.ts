@@ -1,0 +1,29 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
+
+// Cron : tous les jours à 2h UTC
+// Gère le gel et l'expiration des crédits pay-as-you-go
+export async function GET(request: NextRequest) {
+  const authHeader = request.headers.get('authorization')
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
+  }
+
+  try {
+    const { data, error } = await supabase.rpc('process_credit_expiry')
+
+    if (error) throw error
+
+    console.log(`[CRON] process-expiry OK — ${new Date().toISOString()}`)
+    return NextResponse.json({ success: true, result: data, timestamp: new Date().toISOString() })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error('[CRON] process-expiry FAILED:', message)
+    return NextResponse.json({ success: false, error: message }, { status: 500 })
+  }
+}
