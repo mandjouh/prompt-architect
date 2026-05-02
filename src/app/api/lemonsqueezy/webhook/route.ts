@@ -2,10 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import crypto from 'crypto'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+export const dynamic = 'force-dynamic'
+
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
 
 // ─── Map variant ID → plan abonnement ───────────────────────────────────────
 const VARIANT_PLAN_MAP: Record<string, { plan: string; credits: number }> = {
@@ -135,6 +139,7 @@ function emailReactivation(firstName: string, balance: number) {
 
 // ─── Handler principal ───────────────────────────────────────────────────────
 export async function POST(request: NextRequest) {
+  const supabase = getSupabase()
   try {
     const rawBody = await request.text()
     const signature = request.headers.get('x-signature') ?? ''

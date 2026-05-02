@@ -2,14 +2,18 @@ import Anthropic from '@anthropic-ai/sdk'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
+export const dynamic = 'force-dynamic'
+
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!,
 })
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
 
 const PLAN_LIMITS: Record<string, number> = {
   free: 5,
@@ -39,6 +43,7 @@ function checkIpRateLimit(ip: string): boolean {
 }
 
 export async function POST(request: NextRequest) {
+  const supabase = getSupabase()
   try {
     const { module, caseType, userInput, userId } = await request.json()
 

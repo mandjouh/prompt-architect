@@ -385,7 +385,7 @@ export default function GeneratePage() {
                   const isLocked = !user || userPlan === 'free'
                   return (
                     <button key={m.id}
-                      onClick={() => isLocked ? window.location.href = '/pricing'; trackEvent('Upgrade_Clicked', { source: 'generate_module_locked' }) : setSelectedModule(m.id)}
+                      onClick={() => isLocked ? (window.location.href = '/pricing', trackEvent('Upgrade_Clicked', { source: 'generate_module_locked' })) : setSelectedModule(m.id)}
                       style={{ border: `1px solid ${isLocked ? '#1A2535' : m.color + '40'}`, background: isLocked ? '#080B0F' : '#0B0E13', padding: 24, textAlign: 'left', cursor: 'pointer', color: 'white', transition: 'all 0.15s', position: 'relative', overflow: 'hidden', opacity: isLocked ? 0.7 : 1 }}
                     >
                       {isLocked && (
