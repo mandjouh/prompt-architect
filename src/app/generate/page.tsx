@@ -204,6 +204,23 @@ export default function GeneratePage() {
       })
 
       const data = await response.json()
+      if (!response.ok) {
+        const errorMsg = data.message || 'Erreur lors de la génération.'
+        const errorCode = data.error || 'UNKNOWN'
+
+        // Messages selon le type d'erreur
+        const errorMessages: Record<string, string> = {
+          CLAUDE_OVERLOADED: '⏳ Claude est momentanément surchargé. Attends quelques secondes et réessaie.',
+          RATE_LIMIT: '⏱ Trop de requêtes simultanées. Réessaie dans un instant.',
+          TIMEOUT: '⌛ La génération a pris trop de temps. Réessaie.',
+          INVALID_REQUEST: '⚠️ Input invalide. Reformule ta demande.',
+          UNKNOWN: `❌ ${errorMsg}`,
+        }
+        setResult(errorMessages[errorCode] ?? `❌ ${errorMsg}`)
+        setGenerating(false)
+        return
+      }
+
       const promptResult = data.prompt || 'Erreur lors de la génération.'
       setResult(promptResult)
       trackEvent('Generate_Completed', { module: selectedModule ?? '' })
@@ -238,8 +255,12 @@ export default function GeneratePage() {
         setJustSaved(true)
         setTimeout(() => setJustSaved(false), 3000)
       }
-    } catch {
-      setResult('Erreur de connexion. Réessaie.')
+    } catch (err) {
+      const isTimeout = err instanceof Error && err.name === 'AbortError'
+      setResult(isTimeout
+        ? '⌛ La génération a pris trop de temps. Réessaie.'
+        : '❌ Erreur de connexion. Vérifie ta connexion internet et réessaie.'
+      )
     }
 
     setGenerating(false)
