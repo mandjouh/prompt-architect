@@ -4,10 +4,6 @@ import { ARTICLES } from '../../lib/blog'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export async function generateStaticParams() {
-  return ARTICLES.map(a => ({ slug: a.slug }))
-}
-
 const CATEGORY_COLORS: Record<string, string> = {
   'Guide': '#D4FF57',
   'Business': '#38C4FF',
@@ -15,14 +11,13 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Viral Content': '#FF7A3D',
 }
 
-export default async function Image({ params }: { params?: { slug?: string } }) {
-  const slug = params?.slug ?? ''
-  const article = ARTICLES.find(a => a.slug === slug)
+export default async function Image({ params }: { params: { slug: string } }) {
+  const article = ARTICLES.find(a => a.slug === params.slug)
 
   const title = article?.title ?? 'Prompt Architect'
   const category = article?.category ?? 'Guide'
   const color = CATEGORY_COLORS[category] ?? '#D4FF57'
-  const len = title ? title.length : 0
+  const len = title.length
   const fontSize = len > 60 ? 44 : len > 40 ? 52 : 60
 
   return new ImageResponse(
