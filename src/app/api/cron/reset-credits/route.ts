@@ -6,6 +6,8 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
+// Cron : 1er de chaque mois à 2h UTC
+// Remet à zéro le compteur de générations des abonnés
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -18,19 +20,13 @@ export async function GET(request: NextRequest) {
       .update({ credits_used: 0 })
       .neq('credits_used', 0)
 
-    if (error) {
-      console.error('Erreur reset credits:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
+    if (error) throw error
 
-    console.log(`Reset effectué le ${new Date().toISOString()}`)
-    return NextResponse.json({
-      success: true,
-      date: new Date().toISOString(),
-    })
-
-  } catch (error) {
-    console.error('Erreur cron:', error)
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
+    console.log(`[CRON] reset-credits OK — ${new Date().toISOString()}`)
+    return NextResponse.json({ success: true, timestamp: new Date().toISOString() })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error('[CRON] reset-credits FAILED:', message)
+    return NextResponse.json({ success: false, error: message }, { status: 500 })
   }
 }
