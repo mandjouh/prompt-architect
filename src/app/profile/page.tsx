@@ -62,6 +62,9 @@ export default function ProfilePage() {
   const [passwordError, setPasswordError] = useState('')
   const [passwordSaved, setPasswordSaved] = useState(false)
   const [promptCount, setPromptCount] = useState(0)
+  const [referralCode, setReferralCode] = useState<string | null>(null)
+  const [referralCount, setReferralCount] = useState(0)
+  const [referralCopied, setReferralCopied] = useState(false)
 
   useEffect(() => {
     if (!loading && !user) router.push('/login')
@@ -69,6 +72,20 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (!user) return
+    const fetchReferral = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session?.access_token) return
+      const res = await fetch('/api/referral', {
+        headers: { Authorization: `Bearer ${session.access_token}` }
+      })
+      if (res.ok) {
+        const json = await res.json()
+        setReferralCode(json.code)
+        setReferralCount(json.count)
+      }
+    }
+    fetchReferral()
+
     const fetchData = async () => {
       setFetching(true)
       const [{ data: profileData }, { count }, { data: txData }] = await Promise.all([
@@ -316,6 +333,39 @@ export default function ProfilePage() {
             </div>
           </div>
         )}
+
+        {/* PARRAINAGE */}
+        <div style={{ border: '1px solid #D4FF5740', background: '#0B0E13', padding: 24, marginBottom: 24 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+            <div style={{ fontSize: 9, color: '#D4FF57', letterSpacing: '0.12em' }}>PARRAINAGE</div>
+            {referralCount > 0 && (
+              <div style={{ fontSize: 9, color: '#D4FF57', background: '#D4FF5715', padding: '4px 10px', letterSpacing: '0.1em' }}>
+                {referralCount} filleul{referralCount > 1 ? 's' : ''}
+              </div>
+            )}
+          </div>
+          <p style={{ fontSize: 13, color: '#4A5568', lineHeight: 1.7, marginBottom: 16 }}>
+            Invite un ami et vous recevez chacun <strong style={{ color: 'white' }}>5 crédits offerts</strong>.
+          </p>
+          {referralCode && (
+            <div style={{ display: 'flex', gap: 10, marginBottom: 12 }}>
+              <div style={{ flex: 1, background: '#07090C', border: '1px solid #151C25', padding: '11px 14px', fontSize: 13, color: '#D4FF57', letterSpacing: '0.06em', fontWeight: 700 }}>
+                prompt-architect.io/login?ref={referralCode}
+              </div>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(`https://www.prompt-architect.io/login?ref=${referralCode}`)
+                  setReferralCopied(true)
+                  setTimeout(() => setReferralCopied(false), 2000)
+                }}
+                style={{ padding: '11px 20px', fontSize: 11, fontWeight: 900, fontFamily: 'monospace', border: 'none', cursor: 'pointer', background: referralCopied ? '#1A3A1A' : '#D4FF57', color: referralCopied ? '#5EDD5E' : '#07090C', transition: 'all 0.2s' }}
+              >
+                {referralCopied ? '✓ COPIÉ' : '⎘ COPIER'}
+              </button>
+            </div>
+          )}
+          <div style={{ fontSize: 11, color: '#2D3748' }}>Ton code : <span style={{ color: '#D4FF57' }}>{referralCode ?? '...'}</span></div>
+        </div>
 
         {/* INFOS PERSONNELLES */}
         <div style={{ border: '1px solid #151C25', background: '#0B0E13', padding: 24, marginBottom: 24 }}>

@@ -830,4 +830,227 @@ Writing viral YouTube scripts with AI is a learnable skill. The prompts above gi
 
 **Prompt Architect** generates optimized YouTube scripts tailored to your niche, audience, and goals. Stop spending hours on scripts and start creating. Our AI-powered generator produces professional-grade YouTube content in minutes.`,
   },
+  {
+    slug: 'prompt-engineering-debutant-guide-complet',
+    lang: 'fr' as const,
+    title: "Prompt Engineering pour debutants : le guide complet 2026",
+    metaTitle: "Prompt Engineering Debutant — Guide Complet 2026 | Prompt Architect",
+    metaDescription: "Apprends le prompt engineering de zero. Techniques, exemples et exercices pratiques pour maitriser l'art de parler aux IA en 2026.",
+    category: 'Guide',
+    readTime: 8,
+    publishedAt: '2026-04-22',
+    content: `## Qu'est-ce que le prompt engineering ?
+
+Le prompt engineering est l'art de formuler des instructions pour obtenir les meilleurs resultats d'une IA. C'est la competence cle du 21eme siecle.
+
+## Les 5 erreurs du debutant
+
+**1. Etre trop vague** — L'IA ne connait pas ton contexte. Donne-lui.
+**2. Ne pas definir de role** — "Tu es un expert en X" ameliore les resultats.
+**3. Oublier le format** — Precise si tu veux une liste, un paragraphe, un tableau.
+**4. Ignorer les contraintes** — Longueur, ton, public cible : dis-le explicitement.
+**5. Ne pas iterer** — Le premier prompt est rarement parfait. Affine.
+
+## Ta premiere semaine de pratique
+
+Jour 1-2 : Ajoute un role a chaque prompt.
+Jour 3-4 : Precise toujours le format souhaite.
+Jour 5-7 : Ajoute le contexte et les contraintes.`,
+  },
+  {
+    slug: 'claude-vs-chatgpt-comparaison-2026',
+    lang: 'fr' as const,
+    title: 'Claude vs ChatGPT : lequel choisir en 2026 ?',
+    metaTitle: 'Claude vs ChatGPT 2026 — Comparaison Complete | Prompt Architect',
+    metaDescription: "Comparaison detaillee entre Claude et ChatGPT en 2026. Forces, faiblesses et verdict final pour choisir le bon outil.",
+    category: 'Comparaison',
+    readTime: 6,
+    publishedAt: '2026-04-23',
+    content: `## Claude vs ChatGPT : la comparaison de 2026
+
+**Claude** excelle sur : raisonnement, longs documents, contexte 200K tokens, contenu structure.
+**ChatGPT** excelle sur : ecosysteme plugins, images DALL-E, integrations tierces.
+
+| Cas d'usage | Gagnant |
+|-------------|---------|
+| Redaction longue forme | Claude |
+| Generation d'images | ChatGPT |
+| Analyse de documents | Claude |
+| Integrations tierces | ChatGPT |
+
+Notre recommandation : utilise Claude pour la reflexion et la redaction, ChatGPT pour les images et l'ecosysteme.`,
+  },
+  {
+    slug: 'prompts-email-marketing-convertir',
+    lang: 'fr' as const,
+    title: '15 prompts IA pour des emails marketing qui convertissent',
+    metaTitle: '15 Prompts Email Marketing IA — Convertir Plus | Prompt Architect',
+    metaDescription: "15 prompts IA pour creer des emails marketing percutants. Sequences de bienvenue, relances, promotions et newsletters.",
+    category: 'Templates',
+    readTime: 7,
+    publishedAt: '2026-04-24',
+    content: `## 15 prompts pour des emails qui convertissent
+
+**Prompt 1 - Email de bienvenue SaaS :**
+"Tu es expert en onboarding SaaS. Ecris un email de bienvenue pour [PRODUIT]. Amene l'utilisateur a completer sa premiere action dans les 24h. 200 mots max."
+
+**Prompt 2 - Relance panier abandonne :**
+"Tu es copywriter e-commerce. Ecris un email de relance pour un panier abandonne de [PRODUIT] a [PRIX]. Utilise la FOMO sans etre agressif. 180 mots."
+
+**Prompt 3 - Newsletter hebdomadaire :**
+"Structure une newsletter pour une audience de [DESCRIPTION]. Format : 1 insight, 3 ressources, 1 tip actionnable. 400 mots."`,
+  },
+  {
+    slug: 'prompts-creation-contenu-instagram-2026',
+    lang: 'fr' as const,
+    title: 'Les 20 meilleurs prompts pour du contenu Instagram viral',
+    metaTitle: '20 Prompts Instagram Viral 2026 | Prompt Architect',
+    metaDescription: "20 prompts IA pour creer du contenu Instagram qui engage. Captions, stories, reels optimises pour 2026.",
+    category: 'Reseaux sociaux',
+    readTime: 6,
+    publishedAt: '2026-04-25',
+    content: `## 20 prompts Instagram pour exploser ton engagement
+
+**Prompt 1 - Caption educative :**
+"Ecris une caption Instagram educative sur [SUJET]. Format : hook (1 ligne), developpement (3-4 lignes), question CTA. 150 mots. 5 hashtags."
+
+**Prompt 2 - Caroussel 7 slides :**
+"Cree les textes pour un caroussel sur [SUJET]. Slide 1 : hook. Slides 2-6 : 1 tip par slide. Slide 7 : CTA."
+
+**Prompt 3 - Bio optimisee :**
+"Recris ma bio Instagram pour [METIER]. Elle doit expliquer ce que je fais, qui j'aide, ma valeur unique et un CTA. 150 caracteres."`,
+  },
+  {
+    slug: 'utiliser-ia-pour-apprendre-plus-vite',
+    lang: 'fr' as const,
+    title: "Comment utiliser l'IA pour apprendre 10x plus vite en 2026",
+    metaTitle: "Apprendre Plus Vite avec l'IA 2026 — Guide Pratique | Prompt Architect",
+    metaDescription: "Techniques pour utiliser Claude et ChatGPT comme tuteur personnel. Apprentissage accelere avec l'IA en 2026.",
+    category: 'Productivite',
+    readTime: 7,
+    publishedAt: '2026-04-26',
+    content: `## L'IA comme tuteur personnel
+
+**La technique de Feynman augmentee :**
+"Explique-moi [CONCEPT] comme si j'avais 10 ans, puis 18 ans, puis comme si j'etais expert. Pose-moi 3 questions pour tester ma comprehension."
+
+**Apprentissage par questions :**
+"Tu es mon professeur de [MATIERE]. Genere 10 questions progressives sur [SUJET]. Puis corrige mes reponses."
+
+**Creer son curriculum :**
+"Cree un curriculum de 4 semaines pour [COMPETENCE]. Niveau : debutant. Objectif : [OBJECTIF]. 1h par jour."`,
+  },
+  {
+    slug: 'prompts-business-plan-startup',
+    lang: 'fr' as const,
+    title: "Creer un business plan avec l'IA : methode complete",
+    metaTitle: "Business Plan avec IA 2026 — Prompts et Methode | Prompt Architect",
+    metaDescription: "Utilise l'IA pour creer un business plan solide. Prompts pour etude de marche, modele economique et projections financieres.",
+    category: 'Business',
+    readTime: 9,
+    publishedAt: '2026-04-27',
+    content: `## Business plan avec l'IA : la methode 2026
+
+**Etape 1 - Valider l'idee :**
+"Analyse le marche de [IDEE] en France. Taille, croissance, acteurs, tendances, opportunites et menaces."
+
+**Etape 2 - Modele economique :**
+"Propose 3 modeles economiques pour [BUSINESS]. Pour chaque : revenus, couts, metriques cles, avantages et risques."
+
+**Etape 3 - Go-to-market :**
+"Cree une strategie GTM pour [PRODUIT] ciblant [PERSONA]. Budget : [BUDGET]. Objectifs 30/60/90 jours."
+
+**Etape 4 - Pitch deck :**
+"Structure un pitch deck 10 slides pour [STARTUP] cherchant [MONTANT]. Contenu cle de chaque slide."`,
+  },
+  {
+    slug: 'prompts-seo-redaction-web-optimisee',
+    lang: 'fr' as const,
+    title: "Prompts IA pour une redaction web 100% optimisee SEO",
+    metaTitle: "Prompts IA Redaction SEO 2026 | Prompt Architect",
+    metaDescription: "Prompts IA pour creer du contenu web optimise SEO. Structure d'articles, meta-descriptions et strategie de mots-cles.",
+    category: 'SEO',
+    readTime: 7,
+    publishedAt: '2026-04-28',
+    content: `## Prompts SEO pour ranker en 2026
+
+**Recherche de mots-cles :**
+"Pour le sujet [SUJET], genere 20 expressions longue traine. Classe par intention : informationnelle, transactionnelle, navigationnelle."
+
+**Structure d'article :**
+"Cree la structure d'un article SEO sur [SUJET] ciblant [MOT-CLE]. H1, H2, H3, meta-description (155 car.), balise title (60 car.)."
+
+**FAQ pour featured snippets :**
+"Genere 10 questions-reponses FAQ pour [SUJET]. Reponses : 2-3 phrases concises, optimisees pour Google. Format JSON-LD."`,
+  },
+  {
+    slug: 'automatiser-travail-repetitif-ia',
+    lang: 'fr' as const,
+    title: "Automatiser 80% de son travail repetitif avec l'IA",
+    metaTitle: "Automatiser son Travail avec l'IA 2026 | Prompt Architect",
+    metaDescription: "Identifie et automatise tes taches repetitives avec l'IA. Cas pratiques et workflow pour gagner 2h par jour.",
+    category: 'Productivite',
+    readTime: 8,
+    publishedAt: '2026-04-29',
+    content: `## Automatiser 80% de son travail avec l'IA
+
+**Audit de tes taches :**
+"Voici mes taches hebdomadaires : [LISTE]. Classe-les : automatisables avec IA, accelerables avec IA, a conserver manuellement. Pour chaque tache automatisable, propose un prompt."
+
+**Les 5 categories les plus automatisables :**
+1. Communication ecrite (emails, reponses)
+2. Creation de contenu (posts, newsletters)
+3. Analyse de donnees (rapports, insights)
+4. Recherche et veille (resumes d'articles)
+5. Generation d'idees (brainstorming)
+
+**Creer ses templates :**
+Identifie une tache > 3x/semaine. Cree un prompt avec [VARIABLES]. Sauvegarde. Reutilise.`,
+  },
+  {
+    slug: 'prompts-recrutement-rh-ia',
+    lang: 'fr' as const,
+    title: "Revolutionner ses process RH avec l'IA : prompts pour recruteurs",
+    metaTitle: "Prompts RH et Recrutement IA 2026 | Prompt Architect",
+    metaDescription: "Prompts IA pour recruteurs : offres d'emploi, questions d'entretien, evaluation de candidats et onboarding.",
+    category: 'RH',
+    readTime: 6,
+    publishedAt: '2026-04-30',
+    content: `## Prompts RH pour recruteurs en 2026
+
+**Offre d'emploi attractive :**
+"Tu es expert en employer branding. Redige une offre pour [TITRE] chez [ENTREPRISE]. Mets en avant la culture et les opportunites. 400 mots."
+
+**Questions d'entretien :**
+"Genere 15 questions pour evaluer un candidat [POSTE]. Mix : 5 comportementales (STAR), 5 techniques, 5 mises en situation."
+
+**Evaluer un CV :**
+"Poste : [DESCRIPTION]. CV : [CV]. Evalue : adequation /10, points forts, vigilances, 3 questions a poser."
+
+**Plan d'onboarding 90 jours :**
+"Cree un plan d'onboarding pour un nouveau [POSTE]. Format : semaine par semaine, objectifs, actions, livrables."`,
+  },
+  {
+    slug: 'prompts-ecriture-creative-roman-scenarios',
+    lang: 'fr' as const,
+    title: "Prompts IA pour l'ecriture creative : romans et scenarios",
+    metaTitle: "Prompts Ecriture Creative IA 2026 | Prompt Architect",
+    metaDescription: "Prompts IA pour ecrivains et scenaristes. Developper des personnages, construire une intrigue, surmonter la page blanche.",
+    category: 'Creativite',
+    readTime: 7,
+    publishedAt: '2026-05-01',
+    content: `## Prompts pour l'ecriture creative en 2026
+
+**Personnage memorables :**
+"Cree un personnage complexe pour mon roman de [GENRE]. Developpe : backstory, motivations, defauts, arc emotionnel, secrets. Rends-le imparfait."
+
+**Construire une intrigue :**
+"Mon histoire : [PREMISSE]. Developpe une structure en 3 actes : monde ordinaire, element declencheur, obstacles, point culminant, resolution."
+
+**Vaincre la page blanche :**
+"Je veux ecrire une scene ou [CONTEXTE]. Genere 5 facons d'ouvrir cette scene : in medias res, dialogue, description, intériorité, flash-back."
+
+**Dialogues authentiques :**
+"Ecris un dialogue entre [PERSO A] et [PERSO B] sur [CONFLIT]. Chaque personnage a sa propre façon de parler. 20-25 repliques."`,
+  }
 ]

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import FAQSection from '@/components/FAQSection'
+import NewsletterSection from './components/NewsletterSection'
 
 export const metadata: Metadata = {
   title: 'Prompt Architect — Générateur de prompts IA experts',
@@ -339,6 +340,9 @@ export default function Home() {
         </div>
       </section>
 
+
+      {/* NEWSLETTER */}
+      <NewsletterSection />
       {/* FOOTER */}
       <footer style={{ borderTop: '1px solid #151C25', padding: '24px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
