@@ -47,6 +47,7 @@ export default function MyPromptsPage() {
   const [fetching, setFetching] = useState(true)
   const [confirmClear, setConfirmClear] = useState(false)
   const [deleting, setDeleting] = useState<string | null>(null)
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     if (!loading && !user) router.push('/login')
@@ -73,7 +74,15 @@ export default function MyPromptsPage() {
   }, [user])
 
   const modules = ['Tous', ...Array.from(new Set(prompts.map(p => p.module_label)))]
-  const filtered = filterModule === 'Tous' ? prompts : prompts.filter(p => p.module_label === filterModule)
+  const filtered = prompts
+    .filter(p => filterModule === 'Tous' || p.module_label === filterModule)
+    .filter(p => {
+      if (!search.trim()) return true
+      const q = search.toLowerCase()
+      return p.case_label.toLowerCase().includes(q) ||
+             p.user_input.toLowerCase().includes(q) ||
+             p.prompt.toLowerCase().includes(q)
+    })
 
   const handleDelete = async (id: string) => {
     setDeleting(id)
@@ -274,7 +283,20 @@ export default function MyPromptsPage() {
 
           {/* SIDEBAR */}
           <div style={{ width: 300, borderRight: '1px solid #151C25', display: 'flex', flexDirection: 'column', position: 'sticky', top: 57, height: 'calc(100vh - 57px)', overflowY: 'auto' }}>
-            <div style={{ padding: '16px', borderBottom: '1px solid #0F1520' }}>
+            <div style={{ padding: '12px 16px', borderBottom: '1px solid #0F1520' }}>
+              <input
+                type="text"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Rechercher dans mes prompts..."
+                style={{
+                  width: '100%', background: '#07090C', border: '1px solid #151C25',
+                  color: 'white', padding: '9px 12px', fontFamily: 'monospace',
+                  fontSize: 11, outline: 'none', boxSizing: 'border-box',
+                }}
+              />
+            </div>
+                        <div style={{ padding: '16px', borderBottom: '1px solid #0F1520' }}>
               <div style={{ fontSize: 9, color: '#94A3B8', letterSpacing: '0.12em', marginBottom: 10 }}>FILTRER PAR MODULE</div>
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                 {modules.map(m => (
@@ -291,6 +313,11 @@ export default function MyPromptsPage() {
               </div>
             </div>
             <div style={{ flex: 1, overflowY: 'auto' }}>
+              {filtered.length === 0 && (
+                <div style={{ padding: '32px 16px', textAlign: 'center', color: '#4A5568', fontSize: 12 }}>
+                  Aucun résultat pour « {search} »
+                </div>
+              )}
               {filtered.map(p => (
                 <div key={p.id} onClick={() => setSelected(p)} style={{
                   padding: '14px 16px', borderBottom: '1px solid #0A0D12', cursor: 'pointer',
