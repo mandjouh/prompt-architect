@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { supabase } from '../lib/supabase'
 
 export default function LoginPage() {
@@ -12,8 +12,12 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-  const searchParams = useSearchParams()
-  const refCode = searchParams.get('ref')
+  const [refCode, setRefCode] = useState<string | null>(null)
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    setRefCode(params.get('ref'))
+  }, [])
 
   const handleSubmit = async () => {
     if (!email.trim() || !password.trim()) {
