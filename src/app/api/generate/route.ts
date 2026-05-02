@@ -128,7 +128,49 @@ Génère un prompt expert et optimisé pour ce besoin.`
     return NextResponse.json({ prompt })
 
   } catch (error) {
-    console.error('Erreur API:', error)
-    return NextResponse.json({ error: 'Erreur lors de la génération' }, { status: 500 })
+    console.error('Erreur API generate:', error)
+
+    // Erreurs Anthropic spécifiques
+    if (error && typeof error === 'object' && 'status' in error) {
+      const status = (error as { status: number }).status
+
+      if (status === 529) {
+        return NextResponse.json(
+          { error: 'CLAUDE_OVERLOADED', message: 'Claude est surchargé. Réessaie dans quelques secondes.' },
+          { status: 503 }
+        )
+      }
+      if (status === 429) {
+        return NextResponse.json(
+          { error: 'RATE_LIMIT', message: 'Trop de requêtes. Réessaie dans un instant.' },
+          { status: 429 }
+        )
+      }
+      if (status === 400) {
+        return NextResponse.json(
+          { error: 'INVALID_REQUEST', message: 'Requête invalide. Vérifie ton input.' },
+          { status: 400 }
+        )
+      }
+      if (status === 401 || status === 403) {
+        return NextResponse.json(
+          { error: 'API_AUTH_ERROR', message: "Erreur d'authentification API." },
+          { status: 500 }
+        )
+      }
+    }
+
+    // Timeout réseau
+    if (error instanceof Error && error.name === 'AbortError') {
+      return NextResponse.json(
+        { error: 'TIMEOUT', message: 'Délai dépassé. Réessaie.' },
+        { status: 504 }
+      )
+    }
+
+    return NextResponse.json(
+      { error: 'UNKNOWN', message: 'Erreur lors de la génération. Réessaie.' },
+      { status: 500 }
+    )
   }
 }
