@@ -52,7 +52,7 @@ export default function Home() {
             <Link href="/faq" style={{ color: '#FFFFFF', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>FAQ</Link>
             <Link href="/contact" style={{ color: '#FFFFFF', fontSize: 12, textDecoration: 'none', letterSpacing: '0.06em' }}>CONTACT</Link>
           </div>
-          <Link href="/generate" style={{ background: '#D4FF57', color: '#07090C', padding: '9px 18px', fontSize: 11, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>
+          <Link href="/generate" data-track="CTA_Clicked" data-track-props='{"source":"header"}' style={{ background: '#D4FF57', color: '#07090C', padding: '9px 18px', fontSize: 11, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>
             ✦ COMMENCER
           </Link>
         </div>
@@ -79,7 +79,7 @@ export default function Home() {
           </p>
 
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 48 }}>
-            <Link href="/generate" style={{ background: '#D4FF57', color: '#07090C', padding: '14px 28px', fontSize: 12, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Link href="/generate" data-track="CTA_Clicked" data-track-props='{"source":"hero"}' style={{ background: '#D4FF57', color: '#07090C', padding: '14px 28px', fontSize: 12, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em', display: 'flex', alignItems: 'center', gap: 8 }}>
               ✦ GÉNÉRER MON PROMPT
             </Link>
             <Link href="/library" style={{ border: '1px solid #2A3545', color: '#8A9AAA', padding: '14px 28px', fontSize: 12, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em' }}>
@@ -217,7 +217,7 @@ export default function Home() {
           </div>
 
           <div style={{ marginTop: 32, textAlign: 'center' }}>
-            <Link href="/generate" style={{ background: '#D4FF57', color: '#07090C', padding: '13px 28px', fontSize: 12, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+            <Link href="/generate" data-track="CTA_Clicked" data-track-props='{"source":"mid"}' style={{ background: '#D4FF57', color: '#07090C', padding: '13px 28px', fontSize: 12, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
               ✦ GÉNÉRER MON PREMIER PROMPT
             </Link>
           </div>
@@ -333,7 +333,7 @@ export default function Home() {
             </h2>
             <p style={{ color: '#3A5010', fontSize: 13, lineHeight: 1.6 }}>100% gratuit — Aucune inscription requise</p>
           </div>
-          <Link href="/generate" style={{ background: '#07090C', color: '#D4FF57', padding: '14px 32px', fontSize: 12, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <Link href="/generate" data-track="CTA_Clicked" data-track-props='{"source":"bottom"}' style={{ background: '#07090C', color: '#D4FF57', padding: '14px 32px', fontSize: 12, fontWeight: 900, textDecoration: 'none', letterSpacing: '0.08em', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 10 }}>
             ✦ COMMENCER GRATUITEMENT
           </Link>
         </div>

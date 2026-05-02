@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
+import { trackEvent } from '../lib/plausible'
 
 // Modules gratuits + payants
 const MODULES_FREE = [
@@ -147,6 +148,7 @@ export default function GeneratePage() {
   }, [user])
 
   const handleGenerate = async () => {
+    trackEvent('Generate_Started', { module: selectedModule ?? '', case: selectedCase?.label ?? '' })
     if (!input.trim()) return
 
     // Bloquer si aucune source de génération disponible
@@ -204,6 +206,7 @@ export default function GeneratePage() {
       const data = await response.json()
       const promptResult = data.prompt || 'Erreur lors de la génération.'
       setResult(promptResult)
+      trackEvent('Generate_Completed', { module: selectedModule ?? '' })
 
       if (currentModule && selectedCase && data.prompt) {
         const promptData = {
@@ -244,6 +247,7 @@ export default function GeneratePage() {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(result)
+    trackEvent('Result_Copied')
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -381,7 +385,7 @@ export default function GeneratePage() {
                   const isLocked = !user || userPlan === 'free'
                   return (
                     <button key={m.id}
-                      onClick={() => isLocked ? window.location.href = '/pricing' : setSelectedModule(m.id)}
+                      onClick={() => isLocked ? window.location.href = '/pricing'; trackEvent('Upgrade_Clicked', { source: 'generate_module_locked' }) : setSelectedModule(m.id)}
                       style={{ border: `1px solid ${isLocked ? '#1A2535' : m.color + '40'}`, background: isLocked ? '#080B0F' : '#0B0E13', padding: 24, textAlign: 'left', cursor: 'pointer', color: 'white', transition: 'all 0.15s', position: 'relative', overflow: 'hidden', opacity: isLocked ? 0.7 : 1 }}
                     >
                       {isLocked && (
@@ -587,7 +591,7 @@ export default function GeneratePage() {
             <button onClick={() => setShowBuyCreditsModal(true)} style={{ background: '#D4FF57', color: '#07090C', padding: '8px 18px', fontSize: 11, fontWeight: 900, border: 'none', cursor: 'pointer', letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>
               ✦ RECHARGER LES CRÉDITS
             </button>
-            <a href="/pricing" style={{ color: '#94A3B8', padding: '8px 12px', fontSize: 11, textDecoration: 'none', border: '1px solid #151C25', whiteSpace: 'nowrap' }}>
+            <a href="/pricing" data-track="Upgrade_Clicked" data-track-props='{"source":"generate_result_banner"}' style={{ color: '#94A3B8', padding: '8px 12px', fontSize: 11, textDecoration: 'none', border: '1px solid #151C25', whiteSpace: 'nowrap' }}>
               Voir les plans
             </a>
             <button onClick={() => setBannerDismissed(true)} style={{ background: 'transparent', border: 'none', color: '#94A3B8', cursor: 'pointer', fontSize: 16, padding: '4px 8px', lineHeight: 1 }}>
