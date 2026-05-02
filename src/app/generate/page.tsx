@@ -74,6 +74,22 @@ const MODULES_PREMIUM = [
       { id: "prompt_runway", label: "Prompt Runway ML", desc: "Effets et transitions avancés" },
       { id: "voiceover", label: "Script Voix Off", desc: "Narration optimisée pour synthèse vocale" },
     ]},
+,  { id: "personal_brand", icon: "◐", label: "Personal Branding", color: '#FF4DFF', desc: "LinkedIn, ghostwriting, thought leadership, audience", premium: true,
+    cases: [
+      { id: "linkedin_profil", label: "Profil LinkedIn Magnétique", desc: "Profil qui attire clients et recruteurs" },
+      { id: "ghostwriting", label: "Ghostwriting LinkedIn", desc: "Posts viraux à ta voix" },
+      { id: "thought_leadership", label: "Thought Leadership", desc: "Positionnement expert dans ton secteur" },
+      { id: "bio_pro", label: "Bio Professionnelle", desc: "Bio percutante pour tous supports" },
+      { id: "personal_brand_strategy", label: "Stratégie Personal Brand", desc: "Roadmap complète sur 90 jours" },
+    ]},
+  { id: "finance", icon: "◇", label: "Finance & Investissement", color: '#00FF9D', desc: "Analyse financière, investissement, crypto, épargne", premium: true,
+    cases: [
+      { id: "analyse_financiere", label: "Analyse Financière", desc: "Audit complet d'une entreprise" },
+      { id: "strategie_invest", label: "Stratégie d'Investissement", desc: "Portefeuille personnalisé" },
+      { id: "pitch_investisseur", label: "Pitch Investisseur", desc: "Mémorandum pour levée de fonds" },
+      { id: "analyse_crypto", label: "Analyse Crypto/DeFi", desc: "Due diligence projet blockchain" },
+      { id: "plan_epargne", label: "Plan d'Épargne", desc: "Stratégie patrimoniale personnalisée" },
+    ]},
 ]
 
 // Packs de crédits — liens Lemon Squeezy
@@ -110,7 +126,7 @@ export default function GeneratePage() {
   const [tone, setTone] = useState('')
   const [outputFormat, setOutputFormat] = useState('')
 
-  const currentModule = MODULES.find(m => m.id === selectedModule)
+  const currentModule = (MODULES.filter(Boolean) as typeof MODULES).find(m => m!.id === selectedModule) ?? null
 
   const showUpgradeBanner = user && userPlan === 'free' && creditsUsed >= 3 && creditsBalance === 0 && !bannerDismissed
   const creditsLeft = Math.max(0, FREE_LIMIT - creditsUsed)
@@ -402,7 +418,8 @@ export default function GeneratePage() {
             <div>
               <div style={{ fontSize: 9, color: '#D4FF57', letterSpacing: '0.12em', marginBottom: 12 }}>MODULES EXCLUSIFS — PLANS PAYANTS 🔒</div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
-                {MODULES_PREMIUM.map(m => {
+                {MODULES_PREMIUM.filter(Boolean).map(m => {
+                  if (!m) return null
                   const isLocked = !user || userPlan === 'free'
                   return (
                     <button key={m.id}

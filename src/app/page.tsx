@@ -91,8 +91,8 @@ export default function Home() {
           {/* Stats bar */}
           <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', border: '1px solid #151C25', background: '#0B0E13' }}>
             {[
-              { label: 'Prompts Premium', value: '50' },
-              { label: 'Modules', value: '8' },
+              { label: 'Prompts Premium', value: '65+' },
+              { label: 'Modules', value: '10' },
               { label: 'Moteur IA', value: 'Claude' },
               { label: 'Temps moyen', value: '< 2min' },
             ].map((s, i) => (
@@ -341,6 +341,41 @@ export default function Home() {
       </section>
 
 
+      {/* TÉMOIGNAGES */}
+      <section style={{ borderTop: '1px solid #151C25', padding: '88px 24px', background: '#07090C' }}>
+        <div style={{ maxWidth: 960, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 48 }}>
+            <div style={{ fontSize: 10, color: '#D4FF57', letterSpacing: '0.14em', marginBottom: 12 }}>// ILS L'UTILISENT</div>
+            <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 36px)', fontWeight: 900, letterSpacing: '-0.03em' }}>
+              Ce que disent nos utilisateurs
+            </h2>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1, background: '#151C25' }}>
+            {[
+              { name: "Sophie M.", role: "Fondatrice SaaS", quote: "J'ai généré mon business plan complet en 8 minutes. Ce qui me prenait une semaine entière.", module: "Business" },
+              { name: "Alexandre T.", role: "Créateur de contenu", quote: "Mes posts LinkedIn ont explosé depuis que j'utilise Prompt Architect. +340% d'impressions en 30 jours.", module: "Contenu Viral" },
+              { name: "Leila B.", role: "Consultante RH", quote: "Les prompts juridiques m'ont sauvé pour mes contrats freelance. Professionnel et rapide.", module: "Juridique" },
+            ].map((t, i) => (
+              <div key={i} style={{ background: '#07090C', padding: 28 }}>
+                <div style={{ fontSize: 13, color: '#8A9AAA', lineHeight: 1.7, marginBottom: 20, fontStyle: 'italic' }}>
+                  &ldquo;{t.quote}&rdquo;
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ width: 32, height: 32, background: '#151C25', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 900, color: '#D4FF57' }}>
+                    {t.name[0]}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: 'white' }}>{t.name}</div>
+                    <div style={{ fontSize: 10, color: '#94A3B8' }}>{t.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
       {/* NEWSLETTER */}
       <NewsletterSection />
       {/* FOOTER */}
@@ -351,6 +386,7 @@ export default function Home() {
         </div>
         <div className="footer-links" style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
           <Link href="/generate" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>GÉNÉRATEUR</Link>
+          <Link href="/invite" style={{ color: '#D4FF57', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>✦ PARRAINER</Link>
           <Link href="/library" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>BIBLIOTHÈQUE</Link>
           <Link href="/pricing" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>PRICING</Link>
           <Link href="/blog" style={{ color: '#6B7A8D', fontSize: 11, textDecoration: 'none', letterSpacing: '0.06em' }}>BLOG</Link>

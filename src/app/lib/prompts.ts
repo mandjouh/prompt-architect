@@ -2025,14 +2025,228 @@ Résumé exécutif | Impact chiffré | Timeline précise
 Ce qui a bien fonctionné | Ce qui n'a pas fonctionné
 Action Items : | Action | Owner | Deadline | Status |
 Leçons apprises`,
-  },
-];
+  },,
 
+  // MODULE 5 — PERSONAL BRANDING
+  // ══════════════════════════════
+  {
+    id: 47,
+    module: "Personal Branding",
+    category: "LinkedIn",
+    title: "Profil LinkedIn Magnétique",
+    difficulty: "Intermédiaire",
+    tags: ["LinkedIn", "Personal Branding", "Recrutement"],
+    prompt: `Tu es expert en personal branding LinkedIn avec 10 ans d'expérience à transformer des profils ordinaires en aimants à opportunités.
+
+MISSION : Rédige un profil LinkedIn complet et optimisé pour attirer [clients idéaux / recruteurs / partenaires].
+
+MON PROFIL ACTUEL :
+- Métier/Poste : [Ton poste actuel]
+- Secteur : [Ton secteur]
+- Expertise principale : [Ce en quoi tu excelles]
+- Cible : [Qui tu veux attirer]
+- Objectif : [Recruitement / Clients / Partenariats]
+
+LIVRABLES :
+## 1. TITRE LINKEDIN (220 car. max)
+3 versions A/B/C avec la formule : [Résultat] + [Pour qui] + [Comment]
+
+## 2. RÉSUMÉ "À PROPOS" (2600 car. max)
+- Hook d'ouverture (1 phrase qui arrête le scroll)
+- Ton story en 3 paragraphes (problème → transformation → mission)
+- Preuves concrètes (chiffres, résultats, clients)
+- CTA clair et humain
+
+## 3. SECTION EXPÉRIENCE
+Reformulation de ton expérience actuelle en bullet points résultats
+
+## 4. COMPÉTENCES TOP 5
+Les 5 compétences à mettre en avant pour ta cible
+
+## 5. HASHTAGS DE NICHE
+15 hashtags stratégiques
+
+CONTRAINTE : Authentique, humain, jamais corporate.`,
+  },
+  {
+    id: 48,
+    module: "Personal Branding",
+    category: "Contenu",
+    title: "Ghostwriting LinkedIn",
+    difficulty: "Expert",
+    tags: ["LinkedIn", "Ghostwriting", "Contenu"],
+    prompt: `Tu es ghostwriter LinkedIn expert. Tu maîtrises les formats qui performent : storytelling, éducation, opinion, behind-the-scenes.
+
+MISSION : Écris 5 posts LinkedIn viraux à ma voix sur [THÉMATIQUE PRINCIPALE].
+
+MA VOIX ET MON STYLE :
+- Ton : [Décontracté / Professionnel / Provocateur / Éducatif]
+- Valeurs : [Tes 3 valeurs principales]
+- Ce que tu veux éviter : [Style ou sujets à éviter]
+- Audience : [Description de tes abonnés]
+
+GÉNÈRE 5 POSTS :
+
+**POST 1 — STORYTELLING PERSONNEL**
+Histoire vraie avec leçon business. Format : situation → crise → insight → leçon universelle.
+
+**POST 2 — ÉDUCATIF "COMMENT FAIRE"**
+Contenu actionnable. Format : Hook choc + 5-7 points numérotés + CTA.
+
+**POST 3 — OPINION POLARISANTE**
+Prends une position tranchée sur [SUJET CONTROVERSÉ DU SECTEUR]. Argumente.
+
+**POST 4 — BEHIND THE SCENES**
+Coulisses de ton travail ou d'un projet. Humanise et inspire.
+
+**POST 5 — SOCIAL PROOF SUBTIL**
+Mise en avant d'un résultat ou témoignage sans paraître arrogant.
+
+CONTRAINTES : Chaque post : 150-300 mots. Pas d'emojis excessifs. Appel à l'engagement naturel.`,
+  },
+  {
+    id: 49,
+    module: "Personal Branding",
+    category: "Stratégie",
+    title: "Stratégie Personal Brand 90 jours",
+    difficulty: "Expert",
+    tags: ["Stratégie", "Personal Brand", "LinkedIn"],
+    prompt: `Tu es consultant en personal branding, ex-CMO de scale-up, spécialisé dans la construction d'audiences qualifiées.
+
+MISSION : Crée une roadmap personal branding sur 90 jours pour [PROFIL].
+
+MON CONTEXTE :
+- Qui je suis : [Ton background en 3 lignes]
+- Objectif : [Ce que tu veux obtenir dans 90 jours]
+- Disponibilité : [Heures/semaine pour le contenu]
+- Plateformes : [LinkedIn / X / Newsletter / Autre]
+
+STRUCTURE DE LA ROADMAP :
+
+## PHASE 1 — FONDATIONS (Jours 1-30)
+- Audit et positionnement unique
+- Définition du message central
+- Optimisation de tous les profils
+- Calendrier de contenu inaugural
+
+## PHASE 2 — ACCÉLÉRATION (Jours 31-60)
+- Rythme de publication optimal
+- Stratégie d'engagement et de réseau
+- Collaborations et co-créations
+- Premières métriques à surveiller
+
+## PHASE 3 — MONÉTISATION (Jours 61-90)
+- Conversion audience → opportunités
+- Offre à positionner
+- Métriques de succès
+- Passage à l'échelle
+
+MÉTRIQUES CIBLES : Abonnés, impressions, leads entrants, opportunités créées.
+FORMAT : Concret, semaine par semaine, avec des actions journalières spécifiques.`,
+  },
+  // MODULE 6 — FINANCE & INVESTISSEMENT
+  // ══════════════════════════════
+  {
+    id: 50,
+    module: "Finance & Investissement",
+    category: "Analyse",
+    title: "Analyse Financière Complète",
+    difficulty: "Expert",
+    tags: ["Finance", "Analyse", "Investissement"],
+    prompt: `Tu es analyste financier senior, CFA charterholder, 15 ans d'expérience en private equity et M&A.
+
+MISSION : Réalise une analyse financière complète de [ENTREPRISE/SECTEUR].
+
+CONTEXTE :
+- Entité analysée : [Nom de l'entreprise ou secteur]
+- Objectif : [Investissement / Acquisition / Veille concurrentielle]
+- Horizon : [Court terme <1 an / Moyen 1-3 ans / Long terme 3+ ans]
+- Données disponibles : [Annuel / Trimestriel / Estimations]
+
+STRUCTURE D'ANALYSE :
+
+## 1. PROFIL ET POSITIONNEMENT
+- Business model et sources de revenus
+- Parts de marché et position concurrentielle
+- Avantages compétitifs durables (moat)
+
+## 2. ANALYSE DES ÉTATS FINANCIERS
+- Compte de résultat : tendances revenus, marges, EBITDA
+- Bilan : solidité financière, dette, liquidités
+- Cash-flow : génération de trésorerie, capex, free cash-flow
+
+## 3. VALORISATION
+- Multiple de valorisation sectoriel (EV/EBITDA, P/E, P/S)
+- DCF simplifié sur 3 scénarios
+- Comparaison avec les pairs
+
+## 4. ANALYSE DES RISQUES
+- Risques macroéconomiques
+- Risques sectoriels
+- Risques spécifiques à l'entité
+- Catalyseurs positifs
+
+## 5. CONCLUSION ET RECOMMANDATION
+- Verdict (Acheter / Neutre / Vendre)
+- Prix cible et horizon
+- Facteurs de révision
+
+FORMAT : Rigoureux, chiffré, avec hypothèses explicitées.`,
+  },
+  {
+    id: 51,
+    module: "Finance & Investissement",
+    category: "Investissement",
+    title: "Stratégie d'Investissement Personnalisée",
+    difficulty: "Intermédiaire",
+    tags: ["Investissement", "Épargne", "Portefeuille"],
+    prompt: `Tu es conseiller en gestion de patrimoine indépendant, expert en allocation d'actifs et planification financière personnelle.
+
+MISSION : Construis une stratégie d'investissement personnalisée et un portefeuille optimisé.
+
+MON PROFIL FINANCIER :
+- Âge : [Ton âge]
+- Situation : [Salarié / Entrepreneur / Retraité]
+- Capital disponible : [Montant à investir]
+- Épargne mensuelle possible : [Montant/mois]
+- Horizon d'investissement : [Nombre d'années]
+- Objectif principal : [Retraite / Achat immobilier / Revenus passifs / Transmission]
+- Tolérance au risque : [Faible / Modérée / Élevée]
+- Fiscalité : [France / Autre pays]
+
+LIVRABLES :
+
+## 1. DIAGNOSTIC PATRIMONIAL
+Analyse de ta situation et identification des priorités.
+
+## 2. ALLOCATION STRATÉGIQUE
+Répartition optimale par classe d'actifs :
+- Actions (géographies, secteurs)
+- Obligations
+- Immobilier (direct ou SCPI)
+- Actifs alternatifs
+- Liquidités
+
+## 3. VÉHICULES D'INVESTISSEMENT RECOMMANDÉS
+PEA, Assurance-vie, PER, CTO — avec montants et stratégie fiscale.
+
+## 4. PORTEFEUILLE MODÈLE
+ETF et supports recommandés avec poids.
+
+## 5. PLAN D'ACTION 12 MOIS
+Actions concrètes mois par mois.
+
+AVERTISSEMENT À INCLURE : Rappelle que c'est informatif, pas un conseil financier réglementé.`,
+  },
+
+]
 export const MODULE_COLORS: Record<string, string> = {
   Business: "#D4FF57",
   "Contenu Viral": "#FF7A3D",
   "Usage Pro": "#38C4FF",
   Développement: "#A47CFF",
+  "Personal Branding": "#FF4DFF",
+  "Finance & Investissement": "#00FF9D",
 };
 
-export const MODULES_LIST = ["Business", "Contenu Viral", "Usage Pro", "Développement"];
+export const MODULES_LIST = ["Business", "Contenu Viral", "Usage Pro", "Développement", "Personal Branding", "Finance & Investissement"];
