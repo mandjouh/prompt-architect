@@ -1,6 +1,13 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
+import { JetBrains_Mono } from 'next/font/google'
 import './globals.css'
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+})
 import { AuthProvider } from './context/AuthContext'
 import PlausibleTracker from './components/PlausibleTracker'
 import TawkTo from './components/TawkTo'
@@ -54,7 +61,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr">
+    <html lang="fr" className={jetbrainsMono.variable}>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
